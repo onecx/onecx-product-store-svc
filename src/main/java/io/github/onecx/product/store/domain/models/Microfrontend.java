@@ -17,7 +17,6 @@ import lombok.Setter;
                 "EXPOSED_MODULE" }),
         @UniqueConstraint(name = "PS_MICROFRONTEND_MFE_ID", columnNames = { "MFE_ID" })
 }, indexes = {
-        @Index(name = "PS_MICROFRONTEND_MFE_ID", columnList = "MFE_ID"),
         @Index(name = "PS_MICROFRONTEND_PRODUCT_NAME", columnList = "PRODUCT_NAME")
 })
 @SuppressWarnings("java:S2160")
