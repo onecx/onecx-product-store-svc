@@ -1,0 +1,86 @@
+---
+openapi: 3.0.3
+info:
+  title: onecx-product-store product operator service
+  version: 1.0.0
+servers:
+  - url: "http://onecx-product-store:8080"
+tags:
+  - name: operatorProduct
+paths:
+  /operator/product/v1/update/{name}:
+     put:
+      tags:
+        - operatorProduct
+      description: Creates or updates a product registration.
+      operationId: createOrUpdateProduct
+      parameters:
+        - name: name
+          in: path
+          description: Product name
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+      responses:
+        "201":
+          description: Create new product
+        "204":
+          description: Update existing product
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestException'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestException'
+components:
+  schemas:
+    RestException:
+       type: object
+       properties:
+         errorCode:
+           type: string
+         message:
+           type: string
+         parameters:
+           type: array
+           items:
+             type: object
+         namedParameters:
+           type: object
+           additionalProperties:
+             type: object
+         validations:
+           type: array
+           items:
+             $ref: '#/components/schemas/ValidationConstraint'
+    ValidationConstraint:
+      type: object
+      properties:
+        parameter:
+          type: string
+        message:
+          type: string
+    UpdateProductRequest:
+       required:
+         - basePath
+       type: object
+       properties:
+         basePath:
+           minLength: 2
+           type: string
+         description:
+           type: string
+         image-url:
+           type: string
