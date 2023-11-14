@@ -20,7 +20,18 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", ignore = true)
+    @Mapping(target = "operator", constant = "true")
     Product create(UpdateProductRequestDTOV1 dto);
 
-    void update(Product product, @MappingTarget UpdateProductRequestDTOV1 dto);
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "creationUser", ignore = true)
+    @Mapping(target = "modificationDate", ignore = true)
+    @Mapping(target = "modificationUser", ignore = true)
+    @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "modificationCount", ignore = true)
+    @Mapping(target = "persisted", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "name", ignore = true)
+    @Mapping(target = "operator", constant = "true")
+    void update(@MappingTarget Product product, UpdateProductRequestDTOV1 dto);
 }

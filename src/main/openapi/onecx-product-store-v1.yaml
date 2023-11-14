@@ -1,0 +1,83 @@
+---
+openapi: 3.0.3
+info:
+  title: onecx-product-store external service
+  version: 1.0.0
+servers:
+  - url: "http://onecx-product-store:8080"
+tags:
+  - name: products
+paths:
+  /internal/products/search:
+    post:
+      tags:
+        - products
+      description: Search for products by search criteria
+      operationId: searchProducts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSearchCriteria'
+      responses:
+        "200":
+          description: Corresponding products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResultPage'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestException'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestException'
+
+components:
+  schemas:
+    ProductResultPage:
+      type: object
+      properties: {}
+    ProductSearchCriteria:
+      type: object
+      properties: {}
+    Product:
+      type: object
+      properties: {}
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00
+    RestException:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        message:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+        namedParameters:
+          type: object
+          additionalProperties:
+            type: object
+        validations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationConstraint'
+    ValidationConstraint:
+      type: object
+      properties:
+        parameter:
+          type: string
+        message:
+          type: string

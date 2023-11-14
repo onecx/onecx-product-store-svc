@@ -28,4 +28,7 @@ public class Product extends TraceableEntity {
 
     @Column(name = "BASE_PATH")
     private String basePath;
+
+    @Column(name = "OPERATOR")
+    private boolean operator;
 }

@@ -21,7 +21,19 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "mfeId", ignore = true)
     @Mapping(target = "i18nPath", ignore = true)
+    @Mapping(target = "operator", constant = "true")
     Microfrontend create(UpdateMfeRequestDTOV1 dto);
 
-    void update(Microfrontend mfe, @MappingTarget UpdateMfeRequestDTOV1 dto);
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "creationUser", ignore = true)
+    @Mapping(target = "modificationDate", ignore = true)
+    @Mapping(target = "modificationUser", ignore = true)
+    @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "modificationCount", ignore = true)
+    @Mapping(target = "persisted", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "mfeId", ignore = true)
+    @Mapping(target = "i18nPath", ignore = true)
+    @Mapping(target = "operator", constant = "true")
+    void update(@MappingTarget Microfrontend mfe, UpdateMfeRequestDTOV1 dto);
 }

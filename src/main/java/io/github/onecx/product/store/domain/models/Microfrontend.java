@@ -65,6 +65,9 @@ public class Microfrontend extends TraceableEntity {
     @Enumerated(STRING)
     private ModuleType moduleType;
 
+    @Column(name = "OPERATOR")
+    private boolean operator;
+
     public enum ModuleType {
         ANGULAR,
         WEBCOMPONENT

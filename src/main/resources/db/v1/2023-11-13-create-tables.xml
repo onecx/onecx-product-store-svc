@@ -31,6 +31,7 @@
             <column name="wc_tag_name" type="VARCHAR(255)"/>
             <column name="creationuser" type="VARCHAR(255)"/>
             <column name="modificationuser" type="VARCHAR(255)"/>
+            <column name="operator" type="bool" defaultValueBoolean="false"/>
         </createTable>
 
         <createTable tableName="ps_product">
@@ -48,6 +49,7 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="creationuser" type="VARCHAR(255)"/>
             <column name="modificationuser" type="VARCHAR(255)"/>
+            <column name="operator" type="bool" defaultValueBoolean="false"/>
         </createTable>
 
         <createIndex indexName="ps_microfrontend_product_name" tableName="ps_microfrontend">

@@ -64,7 +64,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
     }
 
     @Test
-    void createUpdateMfeTest() {
+    void updateMfeTest() {
         var dto = new UpdateMfeRequestDTOV1();
         dto.setExposedModule("exposed-module");
         dto.setRemoteBaseUrl("remote-base-url");
