@@ -10,43 +10,53 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
-import gen.io.github.onecx.product.store.rs.internal.MicrofrontendsInternalApi;
-import gen.io.github.onecx.product.store.rs.internal.model.CreateMicrofrontendDTO;
-import gen.io.github.onecx.product.store.rs.internal.model.MicrofrontendSearchCriteriaDTO;
+import gen.io.github.onecx.product.store.rs.internal.ProductsInternalApi;
+import gen.io.github.onecx.product.store.rs.internal.model.CreateProductDTO;
+import gen.io.github.onecx.product.store.rs.internal.model.ProductSearchCriteriaDTO;
 import gen.io.github.onecx.product.store.rs.internal.model.RestExceptionDTO;
-import gen.io.github.onecx.product.store.rs.internal.model.UpdateMicrofrontendDTO;
+import gen.io.github.onecx.product.store.rs.internal.model.UpdateProductDTO;
+import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
+import io.github.onecx.product.store.rs.internal.mappers.ProductMapper;
 
-@Path("/internal/microfrontends")
+@Path("/internal/products/search")
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
-public class MicrofrontendsInternalRestController implements MicrofrontendsInternalApi {
+public class ProductsInternalRestController implements ProductsInternalApi {
 
     @Inject
     InternalExceptionMapper exceptionMapper;
 
+    @Inject
+    ProductMapper mapper;
+
+    @Inject
+    ProductDAO dao;
+
     @Override
-    public Response createMicrofrontend(CreateMicrofrontendDTO createMicrofrontendDTO) {
+    public Response createProduct(CreateProductDTO createProductDTO) {
         return null;
     }
 
     @Override
-    public Response deleteMicrofrontend(String id) {
+    public Response deleteProduct(String id) {
         return null;
     }
 
     @Override
-    public Response getMicrofrontend(String id) {
+    public Response getProduct(String id) {
         return null;
     }
 
     @Override
-    public Response searchMicrofrontends(MicrofrontendSearchCriteriaDTO microfrontendSearchCriteriaDTO) {
-        return null;
+    public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
+        var criteria = mapper.map(productSearchCriteriaDTO);
+        var result = dao.findProductsByCriteria(criteria);
+        return Response.ok(mapper.mapPageResult(result)).build();
     }
 
     @Override
-    public Response updateMicrofrontend(String id, UpdateMicrofrontendDTO updateMicrofrontendDTO) {
+    public Response updateProduct(String id, UpdateProductDTO updateProductDTO) {
         return null;
     }
 
