@@ -15,9 +15,6 @@ import io.github.onecx.product.store.domain.models.Microfrontend_;
 public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
 
     public Microfrontend findByMfeId(String mfeId) {
-        if (mfeId == null) {
-            return null;
-        }
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
@@ -27,11 +24,11 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKey.ERROR_FIND_MFE_BY_ID, ex, mfeId);
+            throw new DAOException(ErrorKeys.ERROR_FIND_MFE_BY_ID, ex, mfeId);
         }
     }
 
-    public enum ErrorKey {
+    public enum ErrorKeys {
 
         ERROR_FIND_MFE_BY_ID;
     }

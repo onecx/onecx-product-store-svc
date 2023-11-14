@@ -15,9 +15,6 @@ import io.github.onecx.product.store.domain.models.Product_;
 public class ProductDAO extends AbstractDAO<Product> {
 
     public Product findProductByName(String productName) {
-        if (productName == null) {
-            return null;
-        }
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Product.class);
@@ -27,11 +24,11 @@ public class ProductDAO extends AbstractDAO<Product> {
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKey.ERROR_FIND_PRODUCT_BY_NAME, ex, productName);
+            throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME, ex, productName);
         }
     }
 
-    public enum ErrorKey {
+    public enum ErrorKeys {
 
         ERROR_FIND_PRODUCT_BY_NAME;
     }
