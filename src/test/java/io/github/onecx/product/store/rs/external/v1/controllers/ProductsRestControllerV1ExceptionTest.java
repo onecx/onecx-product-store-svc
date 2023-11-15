@@ -39,14 +39,14 @@ class ProductsRestControllerV1ExceptionTest extends AbstractTest {
         given()
                 .contentType(APPLICATION_JSON)
                 .body(new ProductSearchCriteriaDTOV1())
-                .post()
+                .post("/search")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
         var exception = given()
                 .contentType(APPLICATION_JSON)
                 .body(new ProductSearchCriteriaDTOV1())
-                .post()
+                .post("/search")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .extract().as(RestExceptionDTOV1.class);

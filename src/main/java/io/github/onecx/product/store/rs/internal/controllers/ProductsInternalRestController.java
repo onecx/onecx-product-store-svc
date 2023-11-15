@@ -22,7 +22,7 @@ import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import io.github.onecx.product.store.rs.internal.mappers.ProductMapper;
 
-@Path("/internal/products/search")
+@Path("/internal/products")
 @LogService
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)

@@ -19,7 +19,7 @@ import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import io.github.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
 
-@Path("/v1/products/search")
+@Path("/v1/products")
 @LogService
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
@@ -33,6 +33,15 @@ public class ProductsRestControllerV1 implements ProductsApi {
 
     @Inject
     ProductDAO dao;
+
+    @Override
+    public Response getProductByName(String name) {
+        var product = dao.findProductByName(name);
+        if (product == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(mapper.map(product)).build();
+    }
 
     @Override
     public Response searchProducts(ProductSearchCriteriaDTOV1 productSearchCriteriaDTOV1) {
