@@ -9,6 +9,9 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
+import org.tkit.quarkus.jpa.exceptions.ConstraintException;
+import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.operator.product.v1.OperatorProductApi;
 import gen.io.github.onecx.product.store.rs.operator.product.v1.model.RestExceptionDTOV1;
@@ -20,6 +23,7 @@ import io.github.onecx.product.store.rs.operator.product.v1.mappers.OperatorProd
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
 @Path("/operator/product/v1/update/{name}")
+@LogService
 public class OperatorProductRestControllerV1 implements OperatorProductApi {
 
     @Inject
@@ -51,7 +55,12 @@ public class OperatorProductRestControllerV1 implements OperatorProductApi {
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> exception(Exception ex) {
+    public Response exception(ConstraintException ex) {
+        return exceptionMapper.exception(ex);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<RestExceptionDTOV1> exception(DAOException ex) {
         return exceptionMapper.exception(ex);
     }
 

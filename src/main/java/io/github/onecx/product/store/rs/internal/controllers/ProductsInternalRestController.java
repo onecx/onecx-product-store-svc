@@ -9,6 +9,9 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
+import org.tkit.quarkus.jpa.exceptions.ConstraintException;
+import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.internal.ProductsInternalApi;
 import gen.io.github.onecx.product.store.rs.internal.model.CreateProductDTO;
@@ -20,6 +23,7 @@ import io.github.onecx.product.store.rs.internal.mappers.InternalExceptionMapper
 import io.github.onecx.product.store.rs.internal.mappers.ProductMapper;
 
 @Path("/internal/products/search")
+@LogService
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
 public class ProductsInternalRestController implements ProductsInternalApi {
@@ -61,7 +65,12 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTO> exception(Exception ex) {
+    public RestResponse<RestExceptionDTO> exception(ConstraintException ex) {
+        return exceptionMapper.exception(ex);
+    }
+
+    @ServerExceptionMapper
+    public RestResponse<RestExceptionDTO> exception(DAOException ex) {
         return exceptionMapper.exception(ex);
     }
 

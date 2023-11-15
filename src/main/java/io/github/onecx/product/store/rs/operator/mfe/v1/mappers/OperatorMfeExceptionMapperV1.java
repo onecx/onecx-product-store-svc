@@ -11,7 +11,9 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.log.cdi.LogService;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
 import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.RestExceptionDTOV1;
@@ -22,24 +24,24 @@ import lombok.extern.slf4j.Slf4j;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public abstract class OperatorMfeExceptionMapperV1 {
 
+    @LogService(log = false)
     public RestResponse<RestExceptionDTOV1> constraint(ConstraintViolationException ex) {
-        log.error("Processing mfe operator rest controller error: {}", ex.getMessage());
-
         var dto = exception("CONSTRAINT_VIOLATIONS", ex.getMessage());
         dto.setValidations(createErrorValidationResponse(ex.getConstraintViolations()));
         return RestResponse.status(Response.Status.BAD_REQUEST, dto);
     }
 
-    public RestResponse<RestExceptionDTOV1> exception(Exception ex) {
-        log.error("Processing mfe operator rest controller error: {}", ex.getMessage());
+    @LogService(log = false)
+    public RestResponse<RestExceptionDTOV1> exception(ConstraintException ce) {
+        var e = exception(ce.getMessageKey().name(), ce.getConstraints(), ce.parameters);
+        e.setNamedParameters(ce.namedParameters);
+        return RestResponse.status(Response.Status.BAD_REQUEST, e);
+    }
 
-        if (ex instanceof DAOException de) {
-            return RestResponse.status(Response.Status.BAD_REQUEST,
-                    exception(de.getMessageKey().name(), ex.getMessage(), de.parameters));
-        }
-        return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR,
-                exception("UNDEFINED_ERROR_CODE", ex.getMessage()));
-
+    @LogService(log = false)
+    public RestResponse<RestExceptionDTOV1> exception(DAOException de) {
+        return RestResponse.status(Response.Status.BAD_REQUEST,
+                exception(de.getMessageKey().name(), de.getMessage(), de.parameters));
     }
 
     @Mapping(target = "removeParametersItem", ignore = true)

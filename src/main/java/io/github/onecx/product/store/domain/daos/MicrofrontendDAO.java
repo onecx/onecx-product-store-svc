@@ -5,14 +5,38 @@ import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
+import org.tkit.quarkus.jpa.daos.Page;
+import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
+import io.github.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import io.github.onecx.product.store.domain.models.Microfrontend;
 import io.github.onecx.product.store.domain.models.Microfrontend_;
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
 public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
+
+    public PageResult<Microfrontend> findMicrofrontendsByCriteria(MicrofrontendSearchCriteria criteria) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microfrontend.class);
+            var root = cq.from(Microfrontend.class);
+
+            if (criteria.getProductName() != null && !criteria.getProductName().isBlank()) {
+                cq.where(cb.like(root.get(Microfrontend_.PRODUCT_NAME), QueryCriteriaUtil.wildcard(criteria.getProductName())));
+            }
+
+            if (criteria.getDisplayName() != null && !criteria.getDisplayName().isBlank()) {
+                cq.where(cb.like(root.get(Microfrontend_.DISPLAY_NAME), QueryCriteriaUtil.wildcard(criteria.getDisplayName())));
+            }
+
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA, ex);
+        }
+    }
 
     public Microfrontend findByMfeId(String mfeId) {
         try {
@@ -29,6 +53,8 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
     }
 
     public enum ErrorKeys {
+
+        ERROR_FIND_MFE_BY_CRITERIA,
 
         ERROR_FIND_MFE_BY_ID;
     }

@@ -61,7 +61,8 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
                 .pathParam("name", "new_product_name")
                 .body(dto)
                 .put()
-                .then().statusCode(BAD_REQUEST.getStatusCode());
+                .then().log().all()
+                .statusCode(BAD_REQUEST.getStatusCode());
 
     }
 
@@ -72,7 +73,8 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParam("name", "new_product_name")
                 .put()
-                .then().statusCode(BAD_REQUEST.getStatusCode());
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode());
 
     }
 }

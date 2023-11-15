@@ -40,12 +40,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestException'
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
   /internal/microfrontends/search:
     post:
       tags:
@@ -71,12 +65,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestException'
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
   /internal/microfrontends/{id}:
     get:
       tags:
@@ -98,12 +86,6 @@ paths:
                 $ref: '#/components/schemas/Microfrontend'
         "404":
           description: Not found
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
     put:
       tags:
         - microfrontendsInternal
@@ -132,12 +114,6 @@ paths:
                 $ref: '#/components/schemas/RestException'
         "404":
           description: Microfrontend not found
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
     delete:
       tags:
         - microfrontendsInternal
@@ -152,7 +128,7 @@ paths:
       responses:
         "204":
           description: No Content
-        "500":
+        "400":
           description: Internal Server Error
           content:
             application/json:
@@ -189,12 +165,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestException'
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
   /internal/products/search:
     post:
       tags:
@@ -220,12 +190,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestException'
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
   /internal/products/{id}:
     get:
       tags:
@@ -245,14 +209,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-        "404":
-          description: Not found
-        "500":
+        "400":
           description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestException'
+        "404":
+          description: Not found
     put:
       tags:
         - productsInternal
@@ -281,12 +245,6 @@ paths:
                 $ref: '#/components/schemas/RestException'
         "404":
           description: Product not found
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestException'
     delete:
       tags:
         - productsInternal
@@ -301,8 +259,8 @@ paths:
       responses:
         "204":
           description: No Content
-        "500":
-          description: Internal Server Error
+        "400":
+          description: Bad request
           content:
             application/json:
               schema:
@@ -426,6 +384,8 @@ components:
     MicrofrontendSearchCriteria:
       type: object
       properties:
+        displayName:
+          type: string
         productName:
           type: string
         pageNumber:
