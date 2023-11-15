@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.log.cdi.LogService;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -28,13 +27,6 @@ public abstract class ExceptionMapperV1 {
         var dto = exception("CONSTRAINT_VIOLATIONS", ex.getMessage());
         dto.setValidations(createErrorValidationResponse(ex.getConstraintViolations()));
         return RestResponse.status(Response.Status.BAD_REQUEST, dto);
-    }
-
-    @LogService(log = false)
-    public RestResponse<RestExceptionDTOV1> exception(ConstraintException ce) {
-        var e = exception(ce.getMessageKey().name(), ce.getConstraints(), ce.parameters);
-        e.setNamedParameters(ce.namedParameters);
-        return RestResponse.status(Response.Status.BAD_REQUEST, e);
     }
 
     @LogService(log = false)

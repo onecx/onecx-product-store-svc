@@ -9,7 +9,6 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.log.cdi.LogService;
 
@@ -40,11 +39,6 @@ public class ProductsRestControllerV1 implements ProductsApi {
         var criteria = mapper.map(productSearchCriteriaDTOV1);
         var result = dao.findProductsByCriteria(criteria);
         return Response.ok(mapper.mapPageResult(result)).build();
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> exception(ConstraintException ex) {
-        return exceptionMapper.exception(ex);
     }
 
     @ServerExceptionMapper
