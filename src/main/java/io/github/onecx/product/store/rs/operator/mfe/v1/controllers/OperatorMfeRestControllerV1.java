@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
-import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.operator.mfe.v1.OperatorMfeApi;
@@ -52,11 +51,6 @@ public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
 
     @ServerExceptionMapper
     public RestResponse<RestExceptionDTOV1> exception(ConstraintException ex) {
-        return exceptionMapper.exception(ex);
-    }
-
-    @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> exception(DAOException ex) {
         return exceptionMapper.exception(ex);
     }
 

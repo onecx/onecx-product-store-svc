@@ -2,8 +2,7 @@ package io.github.onecx.product.store.rs.external.v1.controllers;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
-import static jakarta.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
@@ -36,6 +35,13 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getName()).isEqualTo("product1");
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParams("name", "does-not-exists")
+                .get("{name}")
+                .then()
+                .statusCode(NOT_FOUND.getStatusCode());
 
     }
 

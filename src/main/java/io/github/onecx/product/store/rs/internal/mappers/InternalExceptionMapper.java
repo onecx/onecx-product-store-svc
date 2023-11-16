@@ -12,7 +12,6 @@ import org.jboss.resteasy.reactive.RestResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
-import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.log.cdi.LogService;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
@@ -35,12 +34,6 @@ public abstract class InternalExceptionMapper {
         var e = exception(ce.getMessageKey().name(), ce.getConstraints(), ce.parameters);
         e.setNamedParameters(ce.namedParameters);
         return RestResponse.status(Response.Status.BAD_REQUEST, e);
-    }
-
-    @LogService(log = false)
-    public RestResponse<RestExceptionDTO> exception(DAOException de) {
-        return RestResponse.status(Response.Status.BAD_REQUEST,
-                exception(de.getMessageKey().name(), de.getMessage(), de.parameters));
     }
 
     @Mapping(target = "removeParametersItem", ignore = true)

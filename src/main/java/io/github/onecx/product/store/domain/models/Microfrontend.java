@@ -22,6 +22,9 @@ import lombok.Setter;
 @SuppressWarnings("java:S2160")
 public class Microfrontend extends TraceableEntity {
 
+    @Column(name = "BASE_PATH")
+    private String basePath;
+
     @Column(name = "MFE_ID")
     private String mfeId;
 

@@ -3,7 +3,6 @@ package io.github.onecx.product.store.rs.operator.product.v1.controllers;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.RestExceptionDTOV1;
 import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
 import io.github.onecx.product.store.AbstractTest;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
@@ -44,19 +42,16 @@ class OperatorProductRestControllerV1ExceptionTest extends AbstractTest {
                 .body(dto)
                 .pathParam("name", "new_product_name")
                 .put()
-                .then()
+                .then().log().all()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
-        var exception = given()
+        given()
                 .contentType(APPLICATION_JSON)
                 .body(dto)
                 .pathParam("name", "new_product_name")
                 .put()
                 .then()
-                .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTOV1.class);
-
-        assertThat(exception.getErrorCode()).isEqualTo(ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME.name());
+                .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
     }
 
 }

@@ -77,6 +77,9 @@ components:
         - productName
       type: object
       properties:
+        basePath:
+          minLength: 2
+          type: string
         productName:
           minLength: 2
           type: string

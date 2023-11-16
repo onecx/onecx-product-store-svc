@@ -28,6 +28,8 @@ class MicrofrontendDAOTest {
 
     @Test
     void methodExceptionTests() {
+        methodExceptionTests(() -> dao.findMicrofrontendsByCriteria(null),
+                MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
         methodExceptionTests(() -> dao.findByMfeId("test"),
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_ID);
     }

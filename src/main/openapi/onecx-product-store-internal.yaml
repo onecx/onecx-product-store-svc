@@ -407,8 +407,16 @@ components:
         - moduleType
         - remoteBaseUrl
         - productName
+        - basePath
+        - mfeId
       type: object
       properties:
+        mfeId:
+          minLength: 2
+          type: string
+        basePath:
+          minLength: 2
+          type: string
         productName:
           minLength: 2
           type: string
@@ -426,6 +434,9 @@ components:
           type: string
         moduleType:
           $ref: '#/components/schemas/ModuleType'
+        i18nPath:
+          minLength: 2
+          type: string
         wcTagName:
           type: string
         appId:
@@ -448,8 +459,16 @@ components:
         - moduleType
         - remoteBaseUrl
         - productName
+        - basePath
+        - mfeId
       type: object
       properties:
+        mfeId:
+          minLength: 2
+          type: string
+        basePath:
+          minLength: 2
+          type: string
         productName:
           minLength: 2
           type: string
@@ -467,6 +486,9 @@ components:
           type: string
         moduleType:
           $ref: '#/components/schemas/ModuleType'
+        i18nPath:
+          minLength: 2
+          type: string
         wcTagName:
           type: string
         appId:
@@ -491,9 +513,13 @@ components:
         - productName
         - mfeId
         - operator
+        - basePath
       type: object
       properties:
         mfeId:
+          minLength: 2
+          type: string
+        basePath:
           minLength: 2
           type: string
         operator:
@@ -528,6 +554,9 @@ components:
           type: string
         moduleType:
           $ref: '#/components/schemas/ModuleType'
+        i18nPath:
+          minLength: 2
+          type: string
         wcTagName:
           type: string
         appId:

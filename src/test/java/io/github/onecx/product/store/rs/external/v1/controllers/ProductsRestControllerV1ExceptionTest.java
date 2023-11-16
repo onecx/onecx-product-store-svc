@@ -3,7 +3,6 @@ package io.github.onecx.product.store.rs.external.v1.controllers;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.mockito.Mockito;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
 import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOV1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.RestExceptionDTOV1;
 import io.github.onecx.product.store.AbstractTest;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.quarkus.test.InjectMock;
@@ -30,7 +28,7 @@ class ProductsRestControllerV1ExceptionTest extends AbstractTest {
     void beforeAll() {
         Mockito.when(dao.findProductsByCriteria(any()))
                 .thenThrow(new RuntimeException("Test technical error exception"))
-                .thenThrow(new DAOException(ErrorKey.ERROR_TEST, new RuntimeException("Test")));
+                .thenThrow(new DAOException(ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME, new RuntimeException("Test")));
     }
 
     @Test
@@ -48,13 +46,7 @@ class ProductsRestControllerV1ExceptionTest extends AbstractTest {
                 .body(new ProductSearchCriteriaDTOV1())
                 .post("/search")
                 .then()
-                .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTOV1.class);
-
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorKey.ERROR_TEST.name());
+                .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
     }
 
-    public enum ErrorKey {
-        ERROR_TEST;
-    }
 }

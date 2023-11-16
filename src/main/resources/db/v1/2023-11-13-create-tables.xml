@@ -32,6 +32,7 @@
             <column name="creationuser" type="VARCHAR(255)"/>
             <column name="modificationuser" type="VARCHAR(255)"/>
             <column name="operator" type="bool" defaultValueBoolean="false"/>
+            <column name="base_path" type="VARCHAR(255)"/>
         </createTable>
 
         <createTable tableName="ps_product">
