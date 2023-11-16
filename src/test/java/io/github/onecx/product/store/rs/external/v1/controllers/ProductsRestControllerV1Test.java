@@ -27,7 +27,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParams("name", "product1")
                 .get("{name}")
-                .then()
+                .then().log().all()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
@@ -35,6 +35,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getName()).isEqualTo("product1");
+        assertThat(dto.getMicrofrontends()).isNotNull().hasSize(2);
 
         given()
                 .contentType(APPLICATION_JSON)

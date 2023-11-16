@@ -14,6 +14,7 @@ import org.tkit.quarkus.log.cdi.LogService;
 import gen.io.github.onecx.product.store.rs.external.v1.ProductsApi;
 import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOV1;
 import gen.io.github.onecx.product.store.rs.external.v1.model.RestExceptionDTOV1;
+import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import io.github.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
@@ -33,13 +34,21 @@ public class ProductsRestControllerV1 implements ProductsApi {
     @Inject
     ProductDAO dao;
 
+    @Inject
+    MicrofrontendDAO microfrontendDAO;
+
     @Override
     public Response getProductByName(String name) {
         var product = dao.findProductByName(name);
         if (product == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(mapper.map(product)).build();
+
+        var microfrontends = microfrontendDAO.findByProductName(product.getName());
+
+        var dto = mapper.map(product, microfrontends);
+
+        return Response.ok(dto).build();
     }
 
     @Override

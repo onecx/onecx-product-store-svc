@@ -15,7 +15,8 @@ import lombok.Setter;
 @Table(name = "PS_MICROFRONTEND", uniqueConstraints = {
         @UniqueConstraint(name = "PS_MICROFRONTEND_UNIQUE", columnNames = { "REMOTE_ENTRY", "REMOTE_BASE_URL",
                 "EXPOSED_MODULE" }),
-        @UniqueConstraint(name = "PS_MICROFRONTEND_MFE_ID", columnNames = { "MFE_ID" })
+        @UniqueConstraint(name = "PS_MICROFRONTEND_MFE_ID", columnNames = { "PRODUCT_NAME", "MFE_ID" }),
+        @UniqueConstraint(name = "PS_MICROFRONTEND_MFE_ID", columnNames = { "PRODUCT_NAME", "BASE_PATH" })
 }, indexes = {
         @Index(name = "PS_MICROFRONTEND_PRODUCT_NAME", columnList = "PRODUCT_NAME")
 })
@@ -68,7 +69,7 @@ public class Microfrontend extends TraceableEntity {
     @Enumerated(STRING)
     private ModuleType moduleType;
 
-    @Column(name = "OPERATOR")
+    @Column(name = "OPERATOR", nullable = false)
     private boolean operator;
 
     public enum ModuleType {

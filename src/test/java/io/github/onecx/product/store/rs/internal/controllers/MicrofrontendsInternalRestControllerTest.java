@@ -72,7 +72,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(exception.getMessage()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_mfe_id'  Detail: Key (mfe_id)=(mfeId) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_unique'  Detail: Key (remote_entry, remote_base_url, exposed_module)=(remote-entry, remote-base-url, exposed-module) already exists.]");
 
     }
 

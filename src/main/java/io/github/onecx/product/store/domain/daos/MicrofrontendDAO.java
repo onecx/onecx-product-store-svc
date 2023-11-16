@@ -1,5 +1,7 @@
 package io.github.onecx.product.store.domain.daos;
 
+import java.util.stream.Stream;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
@@ -52,10 +54,22 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
+    public Stream<Microfrontend> findByProductName(String productName) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microfrontend.class);
+            var root = cq.from(Microfrontend.class);
+            cq.where(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
+            return this.getEntityManager().createQuery(cq).getResultStream();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_MFES_BY_PRODUCT_NAME, ex, productName);
+        }
+    }
+
     public enum ErrorKeys {
 
         ERROR_FIND_MFE_BY_CRITERIA,
-
+        ERROR_FIND_MFES_BY_PRODUCT_NAME,
         ERROR_FIND_MFE_BY_ID;
     }
 }

@@ -75,7 +75,7 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            $ref: '#/components/schemas/ProductItem'
     ProductSearchCriteria:
       type: object
       properties:
@@ -92,6 +92,37 @@ components:
           default: 10
           type: integer
     Product:
+      type: object
+      required:
+        - name
+        - basePath
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+        microfrontends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Microfrontend'
+    Microfrontend:
+      type: object
+      properties:
+        mfeId:
+          type: string
+        basePath:
+          type: string
+        displayName:
+          type: string
+        appId:
+          type: string
+        appVersion:
+          type: string
+    ProductItem:
       type: object
       required:
         - name
