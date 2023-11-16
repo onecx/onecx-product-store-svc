@@ -1,0 +1,168 @@
+---
+openapi: 3.0.3
+info:
+  title: onecx-product-store external service
+  version: 1.0.0
+servers:
+  - url: "http://onecx-product-store:8080"
+tags:
+  - name: products
+paths:
+  /v1/products/{name}:
+    get:
+      tags:
+        - products
+      description: Get product by name
+      operationId: getProductByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Corresponding product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "404":
+          description: Product not found
+  /v1/products/search:
+    post:
+      tags:
+        - products
+      description: Search for products by search criteria
+      operationId: searchProducts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSearchCriteria'
+      responses:
+        "200":
+          description: Corresponding products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPageResult'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestException'
+components:
+  schemas:
+    ProductPageResult:
+      type: object
+      properties:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductItem'
+    ProductSearchCriteria:
+      type: object
+      properties:
+        name:
+          type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 10
+          type: integer
+    Product:
+      type: object
+      required:
+        - name
+        - basePath
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+        microfrontends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Microfrontend'
+    Microfrontend:
+      type: object
+      properties:
+        mfeId:
+          type: string
+        basePath:
+          type: string
+        displayName:
+          type: string
+        appId:
+          type: string
+        appVersion:
+          type: string
+    ProductItem:
+      type: object
+      required:
+        - name
+        - basePath
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00
+    RestException:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        message:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: object
+        namedParameters:
+          type: object
+          additionalProperties:
+            type: object
+        validations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationConstraint'
+    ValidationConstraint:
+      type: object
+      properties:
+        parameter:
+          type: string
+        message:
+          type: string
