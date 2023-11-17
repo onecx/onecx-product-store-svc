@@ -41,7 +41,7 @@ public abstract class OperatorMfeExceptionMapperV1 {
 
     public List<ProblemDetailParamMDTOv1> map(Map<String, Object> params) {
         if (params == null) {
-            return null;
+            return List.of();
         }
         return params.entrySet().stream().map(e -> {
             var item = new ProblemDetailParamMDTOv1();

@@ -39,7 +39,7 @@ public abstract class OperatorProductExceptionMapperV1 {
 
     public List<ProblemDetailParamPDTOv1> map(Map<String, Object> params) {
         if (params == null) {
-            return null;
+            return List.of();
         }
         return params.entrySet().stream().map(e -> {
             var item = new ProblemDetailParamPDTOv1();
