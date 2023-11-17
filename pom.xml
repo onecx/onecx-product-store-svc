@@ -165,7 +165,7 @@
                             <inputSpec>src/main/openapi/onecx-product-store-operator-product-v1.yaml</inputSpec>
                             <apiPackage>gen.io.github.onecx.product.store.rs.operator.product.v1</apiPackage>
                             <modelPackage>gen.io.github.onecx.product.store.rs.operator.product.v1.model</modelPackage>
-                            <modelNameSuffix>DTOV1</modelNameSuffix>
+                            <modelNameSuffix>PDTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
                     <execution>
@@ -177,7 +177,7 @@
                             <inputSpec>src/main/openapi/onecx-product-store-operator-mfe-v1.yaml</inputSpec>
                             <apiPackage>gen.io.github.onecx.product.store.rs.operator.mfe.v1</apiPackage>
                             <modelPackage>gen.io.github.onecx.product.store.rs.operator.mfe.v1.model</modelPackage>
-                            <modelNameSuffix>DTOV1</modelNameSuffix>
+                            <modelNameSuffix>MDTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
                     <execution>
@@ -201,7 +201,7 @@
                             <inputSpec>src/main/openapi/onecx-product-store-v1.yaml</inputSpec>
                             <apiPackage>gen.io.github.onecx.product.store.rs.external.v1</apiPackage>
                             <modelPackage>gen.io.github.onecx.product.store.rs.external.v1.model</modelPackage>
-                            <modelNameSuffix>DTOV1</modelNameSuffix>
+                            <modelNameSuffix>DTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
                 </executions>

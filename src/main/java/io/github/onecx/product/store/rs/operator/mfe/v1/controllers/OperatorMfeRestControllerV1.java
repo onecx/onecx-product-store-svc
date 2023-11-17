@@ -13,8 +13,8 @@ import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.operator.mfe.v1.OperatorMfeApi;
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.RestExceptionDTOV1;
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ProblemDetailResponseMDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
 import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.rs.operator.mfe.v1.mappers.OperatorMfeExceptionMapperV1;
 import io.github.onecx.product.store.rs.operator.mfe.v1.mappers.OperatorMfeMapperV1;
@@ -35,7 +35,7 @@ public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
     OperatorMfeExceptionMapperV1 exceptionMapper;
 
     @Override
-    public Response createOrUpdateMfe(String mfeId, UpdateMfeRequestDTOV1 dto) {
+    public Response createOrUpdateMfe(String mfeId, UpdateMfeRequestMDTOv1 dto) {
 
         var mfe = dao.findByMfeId(mfeId);
         if (mfe == null) {
@@ -50,12 +50,12 @@ public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> exception(ConstraintException ex) {
+    public RestResponse<ProblemDetailResponseMDTOv1> exception(ConstraintException ex) {
         return exceptionMapper.exception(ex);
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponseMDTOv1> constraint(ConstraintViolationException ex) {
         return exceptionMapper.constraint(ex);
     }
 }

@@ -23,7 +23,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void createProductTest() {
 
         // create product
-        var createProductDTO = new CreateProductDTO();
+        var createProductDTO = new CreateProductRequestDTO();
         createProductDTO.setName("test01");
         createProductDTO.setBasePath("basePath");
 
@@ -48,10 +48,10 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .post()
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         assertThat(exception.getErrorCode()).isEqualTo("CONSTRAINT_VIOLATIONS");
-        assertThat(exception.getMessage()).isEqualTo("createProduct.createProductDTO: must not be null");
+        assertThat(exception.getDetail()).isEqualTo("createProduct.createProductRequestDTO: must not be null");
 
         // create theme with existing name
         exception = given().when()
@@ -60,10 +60,10 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .post()
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
-        assertThat(exception.getMessage()).isEqualTo(
+        assertThat(exception.getDetail()).isEqualTo(
                 "could not execute statement [ERROR: duplicate key value violates unique constraint 'ui_ps_product_base_path'  Detail: Key (base_path)=(basePath) already exists.]");
     }
 
@@ -174,15 +174,15 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(RestExceptionDTO.class);
+                .as(ProblemDetailResponseDTO.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getMessage()).isEqualTo("searchProducts.productSearchCriteriaDTO: must not be null");
+        assertThat(data.getDetail()).isEqualTo("searchProducts.productSearchCriteriaDTO: must not be null");
     }
 
     @Test
     void updateProductTest() {
-        var updateDto = new UpdateProductDTO();
+        var updateDto = new UpdateProductRequestDTO();
         updateDto.setName("test01");
         updateDto.setDescription("description-update");
         updateDto.setBasePath("basePath");
@@ -228,13 +228,13 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .put("{id}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         Assertions.assertNotNull(exception);
         Assertions.assertEquals("CONSTRAINT_VIOLATIONS", exception.getErrorCode());
-        Assertions.assertEquals("updateProduct.updateProductDTO: must not be null",
-                exception.getMessage());
-        Assertions.assertNotNull(exception.getValidations());
-        Assertions.assertEquals(1, exception.getValidations().size());
+        Assertions.assertEquals("updateProduct.updateProductRequestDTO: must not be null",
+                exception.getDetail());
+        Assertions.assertNotNull(exception.getInvalidParams());
+        Assertions.assertEquals(1, exception.getInvalidParams().size());
     }
 }

@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.*;
 import io.github.onecx.product.store.domain.models.Product;
 
 @Mapper(uses = { OffsetDateTimeMapper.class })
@@ -21,7 +21,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", ignore = true)
     @Mapping(target = "operator", constant = "true")
-    Product create(UpdateProductRequestDTOV1 dto);
+    Product create(UpdateProductRequestPDTOv1 dto);
 
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
@@ -33,5 +33,5 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", ignore = true)
     @Mapping(target = "operator", constant = "true")
-    void update(@MappingTarget Product product, UpdateProductRequestDTOV1 dto);
+    void update(@MappingTarget Product product, UpdateProductRequestPDTOv1 dto);
 }

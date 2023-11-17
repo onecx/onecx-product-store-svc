@@ -7,9 +7,8 @@ import static jakarta.ws.rs.core.Response.Status.*;
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ModuleTypeDTOV1;
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestDTOV1;
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ModuleTypeMDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -21,12 +20,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void createMfeTest() {
-        var dto = new UpdateMfeRequestDTOV1();
+        var dto = new UpdateMfeRequestMDTOv1();
         dto.setExposedModule("exposed-module");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeDTOV1.ANGULAR);
+        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
         dto.setDisplayName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
@@ -43,12 +42,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void createMfeUniqueErrorTest() {
-        var dto = new UpdateMfeRequestDTOV1();
+        var dto = new UpdateMfeRequestMDTOv1();
         dto.setExposedModule("exposed-module1");
         dto.setRemoteBaseUrl("remote_base_url1");
         dto.setRemoteEntry("remote-entry1");
         dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeDTOV1.ANGULAR);
+        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
         dto.setDisplayName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote_base_url1");
@@ -65,12 +64,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void updateMfeTest() {
-        var dto = new UpdateMfeRequestDTOV1();
+        var dto = new UpdateMfeRequestMDTOv1();
         dto.setExposedModule("exposed-module");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeDTOV1.ANGULAR);
+        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
         dto.setDisplayName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
@@ -87,7 +86,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void createOrUpdateMfeNotValidTest() {
-        var dto = new UpdateProductRequestDTOV1();
+        var dto = new UpdateMfeRequestMDTOv1();
         dto.setBasePath("/base_new");
 
         given()

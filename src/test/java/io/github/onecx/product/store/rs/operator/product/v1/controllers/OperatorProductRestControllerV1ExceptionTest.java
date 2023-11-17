@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestPDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.quarkus.test.InjectMock;
@@ -34,7 +34,7 @@ class OperatorProductRestControllerV1ExceptionTest extends AbstractTest {
     @Test
     void exceptionTest() {
 
-        var dto = new UpdateProductRequestDTOV1();
+        var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/new_product");
 
         given()

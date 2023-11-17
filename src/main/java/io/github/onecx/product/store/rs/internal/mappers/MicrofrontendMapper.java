@@ -22,7 +22,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
-    Microfrontend create(CreateMicrofrontendDTO dto);
+    Microfrontend create(CreateMicrofrontendRequestDTO dto);
 
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
@@ -33,7 +33,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
-    void update(UpdateMicrofrontendDTO dto, @MappingTarget Microfrontend data);
+    void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
     MicrofrontendSearchCriteria map(MicrofrontendSearchCriteriaDTO dto);
 

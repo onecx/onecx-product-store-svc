@@ -13,8 +13,8 @@ import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.operator.product.v1.OperatorProductApi;
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.RestExceptionDTOV1;
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.ProblemDetailResponsePDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestPDTOv1;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.operator.product.v1.mappers.OperatorProductExceptionMapperV1;
 import io.github.onecx.product.store.rs.operator.product.v1.mappers.OperatorProductMapperV1;
@@ -36,7 +36,7 @@ public class OperatorProductRestControllerV1 implements OperatorProductApi {
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public Response createOrUpdateProduct(String name, UpdateProductRequestDTOV1 dto) {
+    public Response createOrUpdateProduct(String name, UpdateProductRequestPDTOv1 dto) {
 
         var product = dao.findProductByName(name);
         if (product == null) {
@@ -59,7 +59,7 @@ public class OperatorProductRestControllerV1 implements OperatorProductApi {
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponsePDTOv1> constraint(ConstraintViolationException ex) {
         return exceptionMapper.constraint(ex);
     }
 }

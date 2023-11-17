@@ -23,7 +23,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
     @Test
     void createMicrofrontendTest() {
 
-        CreateMicrofrontendDTO createDto = new CreateMicrofrontendDTO();
+        CreateMicrofrontendRequestDTO createDto = new CreateMicrofrontendRequestDTO();
         createDto.setBasePath("basePath");
         createDto.setMfeId("mfeId");
         createDto.setExposedModule("exposed-module");
@@ -56,10 +56,10 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .post()
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         assertThat(exception.getErrorCode()).isEqualTo("CONSTRAINT_VIOLATIONS");
-        assertThat(exception.getMessage()).isEqualTo("createMicrofrontend.createMicrofrontendDTO: must not be null");
+        assertThat(exception.getDetail()).isEqualTo("createMicrofrontend.createMicrofrontendRequestDTO: must not be null");
 
         // create theme with existing name
         exception = given().when()
@@ -68,10 +68,10 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .post()
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
-        assertThat(exception.getMessage()).isEqualTo(
+        assertThat(exception.getDetail()).isEqualTo(
                 "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_unique'  Detail: Key (remote_entry, remote_base_url, exposed_module)=(remote-entry, remote-base-url, exposed-module) already exists.]");
 
     }
@@ -186,15 +186,15 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(RestExceptionDTO.class);
+                .as(ProblemDetailResponseDTO.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getMessage()).isEqualTo("searchMicrofrontends.microfrontendSearchCriteriaDTO: must not be null");
+        assertThat(data.getDetail()).isEqualTo("searchMicrofrontends.microfrontendSearchCriteriaDTO: must not be null");
     }
 
     @Test
     void updateMicrofrontendTest() {
-        UpdateMicrofrontendDTO updateDto = new UpdateMicrofrontendDTO();
+        UpdateMicrofrontendRequestDTO updateDto = new UpdateMicrofrontendRequestDTO();
         updateDto.setBasePath("basePath");
         updateDto.setMfeId("mfeId");
         updateDto.setExposedModule("exposed-module");
@@ -247,13 +247,13 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .put("{id}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .extract().as(RestExceptionDTO.class);
+                .extract().as(ProblemDetailResponseDTO.class);
 
         Assertions.assertNotNull(exception);
         Assertions.assertEquals("CONSTRAINT_VIOLATIONS", exception.getErrorCode());
-        Assertions.assertEquals("updateMicrofrontend.updateMicrofrontendDTO: must not be null",
-                exception.getMessage());
-        Assertions.assertNotNull(exception.getValidations());
-        Assertions.assertEquals(1, exception.getValidations().size());
+        Assertions.assertEquals("updateMicrofrontend.updateMicrofrontendRequestDTO: must not be null",
+                exception.getDetail());
+        Assertions.assertNotNull(exception.getInvalidParams());
+        Assertions.assertEquals(1, exception.getInvalidParams().size());
     }
 }

@@ -16,24 +16,24 @@ import io.github.onecx.product.store.domain.models.Product;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface ProductMapperV1 {
 
-    ProductSearchCriteria map(ProductSearchCriteriaDTOV1 data);
+    ProductSearchCriteria map(ProductSearchCriteriaDTOv1 data);
 
     @Mapping(target = "removeStreamItem", ignore = true)
-    ProductPageResultDTOV1 mapPageResult(PageResult<Product> page);
+    ProductPageResultDTOv1 mapPageResult(PageResult<Product> page);
 
-    ProductItemDTOV1 maPageItems(Product data);
+    ProductItemDTOv1 maPageItems(Product data);
 
     @Mapping(target = "removeMicrofrontendsItem", ignore = true)
     @Mapping(target = "microfrontends", ignore = true)
-    ProductDTOV1 map(Product data);
+    ProductDTOv1 map(Product data);
 
-    default ProductDTOV1 map(Product product, Stream<Microfrontend> microfrontends) {
+    default ProductDTOv1 map(Product product, Stream<Microfrontend> microfrontends) {
         var p = map(product);
         p.setMicrofrontends(items(microfrontends));
         return p;
     }
 
-    List<MicrofrontendDTOV1> items(Stream<Microfrontend> microfrontends);
+    List<MicrofrontendDTOv1> items(Stream<Microfrontend> microfrontends);
 
-    MicrofrontendDTOV1 map(Microfrontend data);
+    MicrofrontendDTOv1 map(Microfrontend data);
 }

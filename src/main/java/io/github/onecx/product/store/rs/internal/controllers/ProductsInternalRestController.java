@@ -40,7 +40,7 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     UriInfo uriInfo;
 
     @Override
-    public Response createProduct(CreateProductDTO createProductDTO) {
+    public Response createProduct(CreateProductRequestDTO createProductDTO) {
         var item = mapper.create(createProductDTO);
         item = dao.create(item);
         return Response
@@ -72,7 +72,7 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
-    public Response updateProduct(String id, UpdateProductDTO updateProductDTO) {
+    public Response updateProduct(String id, UpdateProductRequestDTO updateProductDTO) {
         Product item = dao.findById(id);
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -84,12 +84,12 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTO> exception(ConstraintException ex) {
+    public RestResponse<ProblemDetailResponseDTO> exception(ConstraintException ex) {
         return exceptionMapper.exception(ex);
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTO> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponseDTO> constraint(ConstraintViolationException ex) {
         return exceptionMapper.constraint(ex);
     }
 }
