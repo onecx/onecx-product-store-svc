@@ -1,6 +1,7 @@
 package io.github.onecx.product.store.rs.internal.mappers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jakarta.validation.ConstraintViolation;
@@ -23,40 +24,45 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class InternalExceptionMapper {
 
     @LogService(log = false)
-    public RestResponse<RestExceptionDTO> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponseDTO> constraint(ConstraintViolationException ex) {
         var dto = exception("CONSTRAINT_VIOLATIONS", ex.getMessage());
-        dto.setValidations(createErrorValidationResponse(ex.getConstraintViolations()));
+        dto.setInvalidParams(createErrorValidationResponse(ex.getConstraintViolations()));
         return RestResponse.status(Response.Status.BAD_REQUEST, dto);
     }
 
     @LogService(log = false)
-    public RestResponse<RestExceptionDTO> exception(ConstraintException ce) {
-        var e = exception(ce.getMessageKey().name(), ce.getConstraints(), ce.parameters);
-        e.setNamedParameters(ce.namedParameters);
+    public RestResponse<ProblemDetailResponseDTO> exception(ConstraintException ce) {
+        var e = exception(ce.getMessageKey().name(), ce.getConstraints());
+        e.setParams(map(ce.namedParameters));
         return RestResponse.status(Response.Status.BAD_REQUEST, e);
     }
 
-    @Mapping(target = "removeParametersItem", ignore = true)
-    @Mapping(target = "namedParameters", ignore = true)
-    @Mapping(target = "removeNamedParametersItem", ignore = true)
-    @Mapping(target = "parameters", ignore = true)
-    @Mapping(target = "validations", ignore = true)
-    @Mapping(target = "removeValidationsItem", ignore = true)
-    public abstract RestExceptionDTO exception(String errorCode, String message);
+    public List<ProblemDetailParamDTO> map(Map<String, Object> params) {
+        if (params == null) {
+            return null;
+        }
+        return params.entrySet().stream().map(e -> {
+            var item = new ProblemDetailParamDTO();
+            item.setKey(e.getKey());
+            if (e.getValue() != null) {
+                item.setValue(e.getValue().toString());
+            }
+            return item;
+        }).toList();
+    }
 
-    @Mapping(target = "removeParametersItem", ignore = true)
-    @Mapping(target = "namedParameters", ignore = true)
-    @Mapping(target = "removeNamedParametersItem", ignore = true)
-    @Mapping(target = "validations", ignore = true)
-    @Mapping(target = "removeValidationsItem", ignore = true)
-    public abstract RestExceptionDTO exception(String errorCode, String message, List<Object> parameters);
+    @Mapping(target = "invalidParams", ignore = true)
+    @Mapping(target = "removeInvalidParamsItem", ignore = true)
+    @Mapping(target = "removeParamsItem", ignore = true)
+    @Mapping(target = "params", ignore = true)
+    public abstract ProblemDetailResponseDTO exception(String errorCode, String detail);
 
-    public abstract List<ValidationConstraintDTO> createErrorValidationResponse(
+    public abstract List<ProblemDetailInvalidParamDTO> createErrorValidationResponse(
             Set<ConstraintViolation<?>> constraintViolation);
 
-    @Mapping(target = "parameter", source = "propertyPath")
+    @Mapping(target = "name", source = "propertyPath")
     @Mapping(target = "message", source = "message")
-    public abstract ValidationConstraintDTO createError(ConstraintViolation<?> constraintViolation);
+    public abstract ProblemDetailInvalidParamDTO createError(ConstraintViolation<?> constraintViolation);
 
     public String mapPath(Path path) {
         return path.toString();

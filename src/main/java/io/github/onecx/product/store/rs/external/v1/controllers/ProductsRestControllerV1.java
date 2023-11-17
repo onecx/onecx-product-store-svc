@@ -12,8 +12,8 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.external.v1.ProductsApi;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOV1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.RestExceptionDTOV1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
 import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
@@ -52,14 +52,14 @@ public class ProductsRestControllerV1 implements ProductsApi {
     }
 
     @Override
-    public Response searchProducts(ProductSearchCriteriaDTOV1 productSearchCriteriaDTOV1) {
+    public Response searchProducts(ProductSearchCriteriaDTOv1 productSearchCriteriaDTOV1) {
         var criteria = mapper.map(productSearchCriteriaDTOV1);
         var result = dao.findProductsByCriteria(criteria);
         return Response.ok(mapper.mapPageResult(result)).build();
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTOV1> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponseDTOv1> constraint(ConstraintViolationException ex) {
         return exceptionMapper.constraint(ex);
     }
 }

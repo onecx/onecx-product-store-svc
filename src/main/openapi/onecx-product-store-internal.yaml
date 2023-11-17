@@ -20,7 +20,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateMicrofrontend'
+              $ref: '#/components/schemas/CreateMicrofrontendRequest'
       responses:
         "201":
           description: New micro-frontend created
@@ -39,7 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microfrontends/search:
     post:
       tags:
@@ -64,7 +64,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microfrontends/{id}:
     get:
       tags:
@@ -102,7 +102,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMicrofrontend'
+              $ref: '#/components/schemas/UpdateMicrofrontendRequest'
       responses:
         "204":
           description: Microfrontend updated
@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
         "404":
           description: Microfrontend not found
     delete:
@@ -133,7 +133,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products:
     post:
       tags:
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateProduct'
+              $ref: '#/components/schemas/CreateProductRequest'
       responses:
         "201":
           description: New product created
@@ -164,7 +164,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products/search:
     post:
       tags:
@@ -189,7 +189,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products/{id}:
     get:
       tags:
@@ -214,7 +214,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
         "404":
           description: Not found
     put:
@@ -233,7 +233,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateProduct'
+              $ref: '#/components/schemas/UpdateProductRequest'
       responses:
         "204":
           description: Product updated
@@ -242,7 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
         "404":
           description: Product not found
     delete:
@@ -264,7 +264,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
     ProductPageResult:
@@ -302,7 +302,7 @@ components:
           description: The size of page
           default: 10
           type: integer
-    CreateProduct:
+    CreateProductRequest:
       type: object
       required:
         - name
@@ -316,7 +316,7 @@ components:
           type: string
         basePath:
           type: string
-    UpdateProduct:
+    UpdateProductRequest:
       type: object
       required:
         - name
@@ -398,7 +398,7 @@ components:
           description: The size of page
           default: 10
           type: integer
-    CreateMicrofrontend:
+    CreateMicrofrontendRequest:
       required:
         - remoteEntry
         - remoteName
@@ -450,7 +450,7 @@ components:
         remoteBaseUrl:
           minLength: 2
           type: string
-    UpdateMicrofrontend:
+    UpdateMicrofrontendRequest:
       required:
         - remoteEntry
         - remoteName
@@ -579,29 +579,32 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T12:15:50-04:00
-    RestException:
+    ProblemDetailResponse:
       type: object
       properties:
         errorCode:
           type: string
-        message:
+        detail:
           type: string
-        parameters:
+        params:
           type: array
           items:
-            type: object
-        namedParameters:
-          type: object
-          additionalProperties:
-            type: object
-        validations:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationConstraint'
-    ValidationConstraint:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+    ProblemDetailParam:
       type: object
       properties:
-        parameter:
+        key:
+          type: string
+        value:
+          type: string
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
           type: string
         message:
           type: string

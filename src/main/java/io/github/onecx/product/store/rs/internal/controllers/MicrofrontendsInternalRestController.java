@@ -15,10 +15,10 @@ import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.internal.MicrofrontendsInternalApi;
-import gen.io.github.onecx.product.store.rs.internal.model.CreateMicrofrontendDTO;
+import gen.io.github.onecx.product.store.rs.internal.model.CreateMicrofrontendRequestDTO;
 import gen.io.github.onecx.product.store.rs.internal.model.MicrofrontendSearchCriteriaDTO;
-import gen.io.github.onecx.product.store.rs.internal.model.RestExceptionDTO;
-import gen.io.github.onecx.product.store.rs.internal.model.UpdateMicrofrontendDTO;
+import gen.io.github.onecx.product.store.rs.internal.model.ProblemDetailResponseDTO;
+import gen.io.github.onecx.product.store.rs.internal.model.UpdateMicrofrontendRequestDTO;
 import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.domain.models.Microfrontend;
 import io.github.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
@@ -43,7 +43,7 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     UriInfo uriInfo;
 
     @Override
-    public Response createMicrofrontend(CreateMicrofrontendDTO createMicrofrontendDTO) {
+    public Response createMicrofrontend(CreateMicrofrontendRequestDTO createMicrofrontendDTO) {
         var item = mapper.create(createMicrofrontendDTO);
         item = dao.create(item);
         return Response
@@ -75,7 +75,7 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @Override
-    public Response updateMicrofrontend(String id, UpdateMicrofrontendDTO updateMicrofrontendDTO) {
+    public Response updateMicrofrontend(String id, UpdateMicrofrontendRequestDTO updateMicrofrontendDTO) {
         Microfrontend item = dao.findById(id);
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -87,12 +87,12 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTO> exception(ConstraintException ex) {
+    public RestResponse<ProblemDetailResponseDTO> exception(ConstraintException ex) {
         return exceptionMapper.exception(ex);
     }
 
     @ServerExceptionMapper
-    public RestResponse<RestExceptionDTO> constraint(ConstraintViolationException ex) {
+    public RestResponse<ProblemDetailResponseDTO> constraint(ConstraintViolationException ex) {
         return exceptionMapper.constraint(ex);
     }
 }

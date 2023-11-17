@@ -24,7 +24,7 @@ public interface ProductMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
-    Product create(CreateProductDTO dto);
+    Product create(CreateProductRequestDTO dto);
 
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
@@ -35,7 +35,7 @@ public interface ProductMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
-    void update(UpdateProductDTO dto, @MappingTarget Product product);
+    void update(UpdateProductRequestDTO dto, @MappingTarget Product product);
 
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductPageResultDTO mapPageResult(PageResult<Product> page);

@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ModuleTypeDTOV1;
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ModuleTypeMDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.quarkus.test.InjectMock;
@@ -35,12 +35,12 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
     @Test
     void exceptionTest() {
 
-        var dto = new UpdateMfeRequestDTOV1();
+        var dto = new UpdateMfeRequestMDTOv1();
         dto.setExposedModule("exposed-module");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeDTOV1.ANGULAR);
+        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
         dto.setDisplayName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");

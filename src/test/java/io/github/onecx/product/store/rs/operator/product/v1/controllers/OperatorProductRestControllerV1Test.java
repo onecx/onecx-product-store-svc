@@ -7,7 +7,7 @@ import static jakarta.ws.rs.core.Response.Status.*;
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestDTOV1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestPDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -20,7 +20,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateProductTest() {
 
-        var dto = new UpdateProductRequestDTOV1();
+        var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/new_product");
 
         given()
@@ -36,7 +36,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateProductUpdateTest() {
 
-        var dto = new UpdateProductRequestDTOV1();
+        var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/new_product");
 
         given()
@@ -52,7 +52,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateProductExistingBaseUrlTest() {
 
-        var dto = new UpdateProductRequestDTOV1();
+        var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/product1");
 
         given()

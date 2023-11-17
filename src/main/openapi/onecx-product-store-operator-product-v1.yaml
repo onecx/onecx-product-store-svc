@@ -37,32 +37,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RestException'
+                $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
-    RestException:
-       type: object
-       properties:
-         errorCode:
-           type: string
-         message:
-           type: string
-         parameters:
-           type: array
-           items:
-             type: object
-         namedParameters:
-           type: object
-           additionalProperties:
-             type: object
-         validations:
-           type: array
-           items:
-             $ref: '#/components/schemas/ValidationConstraint'
-    ValidationConstraint:
+    ProblemDetailResponse:
       type: object
       properties:
-        parameter:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
           type: string
         message:
           type: string

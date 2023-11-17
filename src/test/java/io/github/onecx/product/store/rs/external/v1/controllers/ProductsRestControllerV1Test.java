@@ -8,10 +8,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductDTOV1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductPageResultDTOV1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOV1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.RestExceptionDTOV1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductPageResultDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -31,7 +31,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(ProductDTOV1.class);
+                .as(ProductDTOv1.class);
 
         assertThat(dto).isNotNull();
         assertThat(dto.getName()).isEqualTo("product1");
@@ -49,7 +49,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
     @Test
     void searchProductsTest() {
 
-        var criteria = new ProductSearchCriteriaDTOV1();
+        var criteria = new ProductSearchCriteriaDTOv1();
 
         var data = given()
                 .contentType(APPLICATION_JSON)
@@ -59,7 +59,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(ProductPageResultDTOV1.class);
+                .as(ProductPageResultDTOv1.class);
 
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
@@ -75,9 +75,9 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(RestExceptionDTOV1.class);
+                .as(ProblemDetailResponseDTOv1.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getMessage()).isEqualTo("searchProducts.productSearchCriteriaDTOV1: must not be null");
+        assertThat(data.getDetail()).isEqualTo("searchProducts.productSearchCriteriaDTOv1: must not be null");
     }
 }
