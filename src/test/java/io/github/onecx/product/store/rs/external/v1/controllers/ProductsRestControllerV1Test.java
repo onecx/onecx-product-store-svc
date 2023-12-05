@@ -78,6 +78,6 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .as(ProblemDetailResponseDTOv1.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getDetail()).isEqualTo("searchProducts.productSearchCriteriaDTOv1: must not be null");
+        assertThat(data.getDetail()).isEqualTo("searchProductsByCriteria.productSearchCriteriaDTOv1: must not be null");
     }
 }

@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
@@ -21,7 +20,6 @@ import io.github.onecx.product.store.rs.operator.product.v1.mappers.OperatorProd
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
-@Path("/operator/product/v1/update/{name}")
 @LogService
 public class OperatorProductRestControllerV1 implements OperatorProductApi {
 

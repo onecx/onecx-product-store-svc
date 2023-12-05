@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
@@ -21,7 +20,6 @@ import io.github.onecx.product.store.rs.operator.mfe.v1.mappers.OperatorMfeMappe
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
-@Path("/operator/mfe/v1/{mfeId}")
 @LogService
 public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
 
