@@ -34,7 +34,7 @@ paths:
       tags:
         - products
       description: Search for products by search criteria
-      operationId: searchProducts
+      operationId: searchProductsByCriteria
       requestBody:
         required: true
         content:
