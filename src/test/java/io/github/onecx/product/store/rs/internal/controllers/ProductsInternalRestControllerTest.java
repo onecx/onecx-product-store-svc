@@ -16,7 +16,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(ProductsInternalRestController.class)
-@WithDBData(value = "data/testdata-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsInternalRestControllerTest extends AbstractTest {
 
     @Test
@@ -25,6 +25,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         // create product
         var createProductDTO = new CreateProductRequestDTO();
         createProductDTO.setName("test01");
+        createProductDTO.setVersion("test01");
         createProductDTO.setBasePath("basePath");
 
         var dto = given()
@@ -98,7 +99,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .get("{id}")
-                .then().statusCode(OK.getStatusCode())
+                .then().log().all()
+                .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
                 .body().as(ProductDTO.class);

@@ -7,7 +7,6 @@ import static jakarta.ws.rs.core.Response.Status.*;
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.ModuleTypeMDTOv1;
 import gen.io.github.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -15,25 +14,24 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
-@WithDBData(value = "data/testdata-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void createMfeTest() {
         var dto = new UpdateMfeRequestMDTOv1();
         dto.setExposedModule("exposed-module");
+        dto.appVersion("0.0.0");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
-        dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
-        dto.setDisplayName("display-name");
+        dto.setAppName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("mfeId", "new_mfe_id")
+                .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
                 .then()
@@ -43,19 +41,18 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
     @Test
     void createMfeUniqueErrorTest() {
         var dto = new UpdateMfeRequestMDTOv1();
+        dto.appVersion("0.0.0");
         dto.setExposedModule("exposed-module1");
         dto.setRemoteBaseUrl("remote_base_url1");
         dto.setRemoteEntry("remote-entry1");
-        dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
-        dto.setDisplayName("display-name");
+        dto.setAppName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote_base_url1");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("mfeId", "new_mfe_id")
+                .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
                 .then().log().all()
@@ -65,19 +62,18 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
     @Test
     void updateMfeTest() {
         var dto = new UpdateMfeRequestMDTOv1();
+        dto.appVersion("0.0.0");
         dto.setExposedModule("exposed-module");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
-        dto.setRemoteName("remote-name");
-        dto.setModuleType(ModuleTypeMDTOv1.ANGULAR);
-        dto.setDisplayName("display-name");
+        dto.setAppName("display-name");
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("mfeId", "mfe1")
+                .pathParam("appId", "mfe1")
                 .body(dto)
                 .put()
                 .then()
@@ -87,12 +83,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateMfeNotValidTest() {
         var dto = new UpdateMfeRequestMDTOv1();
-        dto.setBasePath("/base_new");
+        dto.setAppName("base_new");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("mfeId", "new_mfe_id")
+                .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
                 .then()
@@ -104,7 +100,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("mfeId", "new_mfe_id")
+                .pathParam("appId", "new_mfe_id")
                 .put()
                 .then().statusCode(BAD_REQUEST.getStatusCode());
 

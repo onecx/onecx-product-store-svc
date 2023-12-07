@@ -1,0 +1,103 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet author="dev (generated)" id="1701968331568-1">
+        <createTable tableName="ps_microfrontend">
+            <column name="operator" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="optlock" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="modificationdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="app_id" type="VARCHAR(255)"/>
+            <column name="app_name" type="VARCHAR(255)"/>
+            <column name="app_version" type="VARCHAR(255)"/>
+            <column name="contact" type="TEXT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="exposed_module" type="VARCHAR(255)"/>
+            <column name="guid" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ps_microfrontend_pkey"/>
+            </column>
+            <column name="icon_name" type="VARCHAR(255)"/>
+            <column name="note" type="TEXT"/>
+            <column name="product_name" type="VARCHAR(255)"/>
+            <column name="remote_base_url" type="VARCHAR(255)"/>
+            <column name="remote_entry" type="VARCHAR(255)"/>
+            <column name="technology" type="VARCHAR(255)"/>
+            <column name="creationuser" type="VARCHAR(255)"/>
+            <column name="modificationuser" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="ps_ui_endpoint">
+            <column name="guid" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ps_ui_endpoint_pkey"/>
+            </column>
+            <column name="microfrontend_id" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="path" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="ps_product">
+            <column name="operator" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="optlock" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creationdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="modificationdate" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="base_path" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="display_name" type="VARCHAR(255)"/>
+            <column name="guid" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ps_product_pkey"/>
+            </column>
+            <column name="icon_name" type="VARCHAR(255)"/>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="version" type="VARCHAR(255)"/>
+            <column name="creationuser" type="VARCHAR(255)"/>
+            <column name="modificationuser" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createIndex indexName="ps_microfrontend_product_name" tableName="ps_microfrontend">
+            <column name="product_name"/>
+        </createIndex>
+
+        <addUniqueConstraint columnNames="product_name, app_id" constraintName="ps_microfrontend_app_id" tableName="ps_microfrontend"/>
+        <addUniqueConstraint columnNames="remote_entry, remote_base_url, exposed_module" constraintName="ps_microfrontend_unique" tableName="ps_microfrontend"/>
+
+        <createIndex indexName="ps_ui_endpoint_microfrontend_id" tableName="ps_ui_endpoint">
+            <column name="microfrontend_id"/>
+        </createIndex>
+
+        <addUniqueConstraint columnNames="microfrontend_id, path" constraintName="ps_ui_endpoint_path" tableName="ps_ui_endpoint"/>
+        <addUniqueConstraint columnNames="base_path" constraintName="ui_ps_product_base_path" tableName="ps_product"/>
+        <addUniqueConstraint columnNames="name" constraintName="ui_ps_product_name" tableName="ps_product"/>
+
+        <createTable tableName="mfe_classifications">
+            <column name="classifications" type="VARCHAR(255)"/>
+            <column name="microfrontend_guid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="product_classifications">
+            <column name="classifications" type="VARCHAR(255)"/>
+            <column name="product_guid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ps_ui_endpoint" constraintName="fkf8whp1qfqxve2knq2xtpyk99q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="product_guid" baseTableName="product_classifications" constraintName="fkhtv7f64u4ie4gdbhvc5xfwssp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_product" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="microfrontend_guid" baseTableName="mfe_classifications" constraintName="fkj1vokw1dbiea602btrfdsm2r6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>

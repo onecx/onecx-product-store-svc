@@ -2,7 +2,6 @@ package io.github.onecx.product.store.domain.daos;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
@@ -15,7 +14,6 @@ import io.github.onecx.product.store.domain.models.Product;
 import io.github.onecx.product.store.domain.models.Product_;
 
 @ApplicationScoped
-@Transactional(Transactional.TxType.NOT_SUPPORTED)
 public class ProductDAO extends AbstractDAO<Product> {
 
     public PageResult<Product> findProductsByCriteria(ProductSearchCriteria criteria) {

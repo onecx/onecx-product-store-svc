@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <PS_MICROFRONTEND guid="m1" app_id="mfe1" product_name="p1" remote_entry="remote-entry1"
+                      exposed_module="exposed-module1" app_name="display_name1" remote_base_url="remote_base_url1"
+                      operator="false" optlock="0"/>
+    <PS_MICROFRONTEND guid="m2" app_id="mfe2" product_name="p2" remote_entry="remote-entry2"
+                      exposed_module="exposed-module2" app_name="display_name2" remote_base_url="remote_base_url2"
+                      operator="false" optlock="0"/>
+
+</dataset>

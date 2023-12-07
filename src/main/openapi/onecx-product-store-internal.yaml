@@ -286,7 +286,39 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            $ref: '#/components/schemas/ProductPageItem'
+    ProductPageItem:
+      type: object
+      properties:
+        id:
+          type: string
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        modificationCount:
+          format: int32
+          type: integer
+        name:
+          type: string
+        operator:
+          type: boolean
+        version:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
     ProductSearchCriteria:
       type: object
       properties:
@@ -306,9 +338,12 @@ components:
       type: object
       required:
         - name
+        - version
         - basePath
       properties:
         name:
+          type: string
+        version:
           type: string
         description:
           type: string
@@ -316,13 +351,25 @@ components:
           type: string
         basePath:
           type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     UpdateProductRequest:
       type: object
       required:
         - name
+        - version
         - basePath
       properties:
         name:
+          type: string
+        version:
           type: string
         description:
           type: string
@@ -330,19 +377,24 @@ components:
           type: string
         basePath:
           type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     Product:
       type: object
       required:
         - id
         - name
-        - operator
         - basePath
       properties:
         id:
           type: string
-        version:
-          format: int32
-          type: integer
         creationDate:
           $ref: '#/components/schemas/OffsetDateTime'
         creationUser:
@@ -351,16 +403,30 @@ components:
           $ref: '#/components/schemas/OffsetDateTime'
         modificationUser:
           type: string
+        modificationCount:
+          format: int32
+          type: integer
         name:
-          type: string
-        description:
           type: string
         operator:
           type: boolean
+        version:
+          type: string
+        description:
+          type: string
         imageUrl:
           type: string
         basePath:
           type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     MicrofrontendPageResult:
       type: object
       properties:
@@ -380,11 +446,60 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/Microfrontend'
+            $ref: '#/components/schemas/MicrofrontendPageItem'
+    MicrofrontendPageItem:
+      required:
+        - remoteEntry
+        - remoteBaseUrl
+        - productName
+        - appId
+        - appVersion
+        - appName
+      type: object
+      properties:
+        id:
+          type: string
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        modificationCount:
+          format: int32
+          type: integer
+        operator:
+          type: boolean
+        appId:
+          type: string
+        appVersion:
+          type: string
+        appName:
+          type: string
+        description:
+          type: string
+        technology:
+          type: string
+        remoteBaseUrl:
+          type: string
+        remoteEntry:
+          type: string
+        productName:
+          type: string
+        contact:
+          type: string
+        note:
+          type: string
+        exposedModule:
+          type: string
     MicrofrontendSearchCriteria:
       type: object
       properties:
-        displayName:
+        appId:
+          type: string
+        appName:
           type: string
         productName:
           type: string
@@ -401,135 +516,121 @@ components:
     CreateMicrofrontendRequest:
       required:
         - remoteEntry
-        - remoteName
-        - exposedModule
-        - displayName
-        - moduleType
         - remoteBaseUrl
         - productName
-        - basePath
-        - mfeId
+        - appId
+        - appVersion
+        - appName
       type: object
       properties:
-        mfeId:
-          minLength: 2
-          type: string
-        basePath:
-          minLength: 2
-          type: string
-        productName:
-          minLength: 2
-          type: string
-        remoteEntry:
-          minLength: 2
-          type: string
-        remoteName:
-          minLength: 2
-          type: string
-        exposedModule:
-          minLength: 2
-          type: string
-        displayName:
-          minLength: 2
-          type: string
-        moduleType:
-          $ref: '#/components/schemas/ModuleType'
-        i18nPath:
-          minLength: 2
-          type: string
-        wcTagName:
-          type: string
         appId:
           type: string
         appVersion:
           type: string
-        note:
+        appName:
           type: string
-        contact:
+        description:
           type: string
         remoteBaseUrl:
-          minLength: 2
+          type: string
+        remoteEntry:
+          type: string
+        technology:
+          type: string
+        productName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        contact:
+          type: string
+        iconName:
+          type: string
+        note:
+          type: string
+        exposedModule:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateUIEndpoint"
+    CreateUIEndpoint:
+      required:
+        - path
+        - name
+      type: object
+      properties:
+        path:
+          type: string
+        name:
           type: string
     UpdateMicrofrontendRequest:
       required:
         - remoteEntry
-        - remoteName
-        - exposedModule
-        - displayName
-        - moduleType
         - remoteBaseUrl
         - productName
-        - basePath
-        - mfeId
+        - appId
+        - appVersion
+        - appName
       type: object
       properties:
-        mfeId:
-          minLength: 2
-          type: string
-        basePath:
-          minLength: 2
-          type: string
-        productName:
-          minLength: 2
-          type: string
-        remoteEntry:
-          minLength: 2
-          type: string
-        remoteName:
-          minLength: 2
-          type: string
-        exposedModule:
-          minLength: 2
-          type: string
-        displayName:
-          minLength: 2
-          type: string
-        moduleType:
-          $ref: '#/components/schemas/ModuleType'
-        i18nPath:
-          minLength: 2
-          type: string
-        wcTagName:
-          type: string
         appId:
           type: string
         appVersion:
           type: string
-        note:
+        appName:
           type: string
-        contact:
+        description:
           type: string
         remoteBaseUrl:
-          minLength: 2
+          type: string
+        remoteEntry:
+          type: string
+        productName:
+          type: string
+        technology:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        contact:
+          type: string
+        iconName:
+          type: string
+        note:
+          type: string
+        exposedModule:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/UpdateUIEndpoint"
+    UpdateUIEndpoint:
+      required:
+        - path
+        - name
+      type: object
+      properties:
+        path:
+          type: string
+        name:
           type: string
     Microfrontend:
       required:
         - remoteEntry
-        - remoteName
-        - exposedModule
-        - displayName
-        - moduleType
         - remoteBaseUrl
         - productName
-        - mfeId
-        - operator
-        - basePath
+        - appId
+        - appVersion
+        - appName
       type: object
       properties:
-        mfeId:
-          minLength: 2
+        id:
           type: string
-        basePath:
-          minLength: 2
-          type: string
-        operator:
-          type: boolean
-        productName:
-          minLength: 2
-          type: string
-        version:
-          format: int32
-          type: integer
         creationDate:
           $ref: '#/components/schemas/OffsetDateTime'
         creationUser:
@@ -538,43 +639,54 @@ components:
           $ref: '#/components/schemas/OffsetDateTime'
         modificationUser:
           type: string
-        id:
-          type: string
-        remoteEntry:
-          minLength: 2
-          type: string
-        remoteName:
-          minLength: 2
-          type: string
-        exposedModule:
-          minLength: 2
-          type: string
-        displayName:
-          minLength: 2
-          type: string
-        moduleType:
-          $ref: '#/components/schemas/ModuleType'
-        i18nPath:
-          minLength: 2
-          type: string
-        wcTagName:
-          type: string
+        modificationCount:
+          format: int32
+          type: integer
+        operator:
+          type: boolean
         appId:
           type: string
         appVersion:
           type: string
-        note:
+        appName:
           type: string
-        contact:
+        description:
+          type: string
+        technology:
           type: string
         remoteBaseUrl:
-          minLength: 2
           type: string
-    ModuleType:
-      enum:
-        - ANGULAR
-        - WEBCOMPONENT
-      type: string
+        remoteEntry:
+          type: string
+        productName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        contact:
+          type: string
+        iconName:
+          type: string
+        note:
+          type: string
+        exposedModule:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/UIEndpoint"
+    UIEndpoint:
+      required:
+        - path
+        - name
+      type: object
+      properties:
+        path:
+          type: string
+        name:
+          type: string
     OffsetDateTime:
       format: date-time
       type: string

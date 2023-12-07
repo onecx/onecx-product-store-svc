@@ -36,6 +36,7 @@ class OperatorProductRestControllerV1ExceptionTest extends AbstractTest {
 
         var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/new_product");
+        dto.setVersion("0.0.0");
 
         given()
                 .contentType(APPLICATION_JSON)

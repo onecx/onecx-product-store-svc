@@ -40,14 +40,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductSearchCriteria'
+              $ref: '#/components/schemas/ProductItemSearchCriteria'
       responses:
         "200":
           description: Corresponding products
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductPageResult'
+                $ref: '#/components/schemas/ProductItemPageResult'
         "400":
           description: Bad request
           content:
@@ -56,7 +56,7 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
-    ProductPageResult:
+    ProductItemPageResult:
       type: object
       properties:
         totalElements:
@@ -76,7 +76,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductItem'
-    ProductSearchCriteria:
+    ProductItemSearchCriteria:
       type: object
       properties:
         name:
@@ -99,12 +99,23 @@ components:
       properties:
         name:
           type: string
+        version:
+          type: string
         description:
           type: string
         imageUrl:
           type: string
         basePath:
           type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
         microfrontends:
           type: array
           items:
@@ -112,15 +123,46 @@ components:
     Microfrontend:
       type: object
       properties:
-        mfeId:
-          type: string
-        basePath:
-          type: string
-        displayName:
-          type: string
         appId:
           type: string
         appVersion:
+          type: string
+        appName:
+          type: string
+        description:
+          type: string
+        remoteBaseUrl:
+          type: string
+        remoteEntry:
+          type: string
+        technology:
+          type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        contact:
+          type: string
+        iconName:
+          type: string
+        note:
+          type: string
+        exposedModule:
+          type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/UIEndpoint"
+    UIEndpoint:
+      required:
+        - path
+        - name
+      type: object
+      properties:
+        path:
+          type: string
+        name:
           type: string
     ProductItem:
       type: object

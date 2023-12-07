@@ -1,14 +1,13 @@
 package io.github.onecx.product.store.rs.internal.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
 import gen.io.github.onecx.product.store.rs.internal.model.*;
 import io.github.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import io.github.onecx.product.store.domain.models.Microfrontend;
+import io.github.onecx.product.store.domain.models.UIEndpoint;
 
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface MicrofrontendMapper {
@@ -24,6 +23,9 @@ public interface MicrofrontendMapper {
     @Mapping(target = "operator", constant = "false")
     Microfrontend create(CreateMicrofrontendRequestDTO dto);
 
+    @Mapping(target = "id", ignore = true)
+    UIEndpoint map(CreateUIEndpointDTO dto);
+
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
@@ -35,11 +37,17 @@ public interface MicrofrontendMapper {
     @Mapping(target = "operator", constant = "false")
     void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
+    @Mapping(target = "id", ignore = true)
+    UIEndpoint map(UpdateUIEndpointDTO dto);
+
     MicrofrontendSearchCriteria map(MicrofrontendSearchCriteriaDTO dto);
 
     @Mapping(target = "removeStreamItem", ignore = true)
     MicrofrontendPageResultDTO mapPageResult(PageResult<Microfrontend> page);
 
-    @Mapping(target = "version", source = "modificationCount")
+    MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
+
+    @Mapping(target = "removeClassificationsItem", ignore = true)
+    @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTO map(Microfrontend data);
 }

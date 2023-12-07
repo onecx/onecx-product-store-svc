@@ -72,12 +72,23 @@ components:
     UpdateProductRequest:
        required:
          - basePath
+         - version
        type: object
        properties:
-         basePath:
-           minLength: 2
+         version:
            type: string
          description:
            type: string
-         image-url:
+         imageUrl:
            type: string
+         basePath:
+           type: string
+         displayName:
+           type: string
+         iconName:
+           type: string
+         classifications:
+           type: array
+           uniqueItems: true
+           items:
+             type: string

@@ -14,13 +14,14 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorProductRestControllerV1.class)
-@WithDBData(value = "data/testdata-operator-product.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-operator-product.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class OperatorProductRestControllerV1Test extends AbstractTest {
 
     @Test
     void createOrUpdateProductTest() {
 
         var dto = new UpdateProductRequestPDTOv1();
+        dto.setVersion("0.0.0");
         dto.basePath("/new_product");
 
         given()
@@ -38,6 +39,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
 
         var dto = new UpdateProductRequestPDTOv1();
         dto.basePath("/new_product");
+        dto.setVersion("0.0.0");
 
         given()
                 .when()

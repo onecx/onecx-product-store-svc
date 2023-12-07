@@ -15,6 +15,6 @@ public class OperatorMfeLogParam implements LogParam {
     public List<Item> getClasses() {
         return List.of(
                 item(10, UpdateMfeRequestMDTOv1.class,
-                        x -> x.getClass().getSimpleName() + ":" + ((UpdateMfeRequestMDTOv1) x).getAppId()));
+                        x -> x.getClass().getSimpleName() + ":" + ((UpdateMfeRequestMDTOv1) x).getAppName()));
     }
 }

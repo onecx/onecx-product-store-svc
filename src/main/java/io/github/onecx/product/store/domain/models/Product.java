@@ -1,5 +1,9 @@
 package io.github.onecx.product.store.domain.models;
 
+import static jakarta.persistence.FetchType.LAZY;
+
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 import org.tkit.quarkus.jpa.models.TraceableEntity;
@@ -20,6 +24,9 @@ public class Product extends TraceableEntity {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "VERSION")
+    private String version;
+
     @Column(name = "DESCRIPTION")
     private String description;
 
@@ -31,4 +38,16 @@ public class Product extends TraceableEntity {
 
     @Column(name = "OPERATOR", nullable = false)
     private boolean operator;
+
+    @Column(name = "DISPLAY_NAME")
+    private String displayName;
+
+    @Column(name = "ICON_NAME")
+    private String iconName;
+
+    @Column(name = "CLASSIFICATIONS")
+    @ElementCollection(fetch = LAZY)
+    @CollectionTable(name = "PRODUCT_CLASSIFICATIONS")
+    private Set<String> classifications;
+
 }

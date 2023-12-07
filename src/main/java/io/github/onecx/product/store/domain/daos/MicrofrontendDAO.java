@@ -4,7 +4,6 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
@@ -17,7 +16,6 @@ import io.github.onecx.product.store.domain.models.Microfrontend;
 import io.github.onecx.product.store.domain.models.Microfrontend_;
 
 @ApplicationScoped
-@Transactional(Transactional.TxType.NOT_SUPPORTED)
 public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
 
     public PageResult<Microfrontend> findMicrofrontendsByCriteria(MicrofrontendSearchCriteria criteria) {
@@ -30,8 +28,12 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
                 cq.where(cb.like(root.get(Microfrontend_.PRODUCT_NAME), QueryCriteriaUtil.wildcard(criteria.getProductName())));
             }
 
-            if (criteria.getDisplayName() != null && !criteria.getDisplayName().isBlank()) {
-                cq.where(cb.like(root.get(Microfrontend_.DISPLAY_NAME), QueryCriteriaUtil.wildcard(criteria.getDisplayName())));
+            if (criteria.getAppName() != null && !criteria.getAppName().isBlank()) {
+                cq.where(cb.like(root.get(Microfrontend_.APP_NAME), QueryCriteriaUtil.wildcard(criteria.getAppName())));
+            }
+
+            if (criteria.getAppId() != null && !criteria.getAppId().isBlank()) {
+                cq.where(cb.like(root.get(Microfrontend_.APP_ID), QueryCriteriaUtil.wildcard(criteria.getAppId())));
             }
 
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
@@ -40,36 +42,39 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
-    public Microfrontend findByMfeId(String mfeId) {
+    public Microfrontend findByAppId(String appId) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
-            cq.where(cb.equal(root.get(Microfrontend_.MFE_ID), mfeId));
+            cq.where(cb.equal(root.get(Microfrontend_.APP_ID), appId));
             return this.getEntityManager().createQuery(cq).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_MFE_BY_ID, ex, mfeId);
+            throw new DAOException(ErrorKeys.ERROR_FIND_APP_ID, ex, appId);
         }
     }
 
-    public Stream<Microfrontend> findByProductName(String productName) {
+    public Stream<Microfrontend> loadByProductName(String productName) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
             cq.where(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
-            return this.getEntityManager().createQuery(cq).getResultStream();
+            return this.getEntityManager()
+                    .createQuery(cq)
+                    .setHint(HINT_LOAD_GRAPH, this.getEntityManager().getEntityGraph(Microfrontend.MICROFRONTEND_LOAD))
+                    .getResultStream();
         } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_MFES_BY_PRODUCT_NAME, ex, productName);
+            throw new DAOException(ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME, ex, productName);
         }
     }
 
     public enum ErrorKeys {
 
         ERROR_FIND_MFE_BY_CRITERIA,
-        ERROR_FIND_MFES_BY_PRODUCT_NAME,
-        ERROR_FIND_MFE_BY_ID;
+        ERROR_LOAD_MFE_BY_PRODUCT_NAME,
+        ERROR_FIND_APP_ID;
     }
 }

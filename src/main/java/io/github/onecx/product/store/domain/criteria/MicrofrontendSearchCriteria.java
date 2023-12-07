@@ -9,7 +9,9 @@ import lombok.Setter;
 @RegisterForReflection
 public class MicrofrontendSearchCriteria {
 
-    private String displayName;
+    private String appId;
+
+    private String appName;
 
     private String productName;
 
