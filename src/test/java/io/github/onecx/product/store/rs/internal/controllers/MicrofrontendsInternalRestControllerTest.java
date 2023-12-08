@@ -140,6 +140,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(2);
 
         criteria.setProductName("product1");
+        criteria.setAppId("mfe1");
         criteria.setAppName("display_name1");
 
         data = given()
@@ -157,6 +158,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(1);
 
         criteria.setProductName(" ");
+        criteria.setAppId(" ");
         criteria.setAppName(" ");
 
         data = given()
@@ -172,6 +174,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
+
     }
 
     @Test
