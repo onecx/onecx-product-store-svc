@@ -1,5 +1,9 @@
 package io.github.onecx.product.store.rs.internal.mappers;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.mapstruct.*;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -35,10 +39,24 @@ public interface MicrofrontendMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
+    @Mapping(target = "endpoints", qualifiedByName = "updateList")
     void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
     @Mapping(target = "id", ignore = true)
     UIEndpoint map(UpdateUIEndpointDTO dto);
+
+    @Named("updateList")
+    default Set<UIEndpoint> updateList(List<UpdateUIEndpointDTO> listToUpdate) {
+        var list = new HashSet<UIEndpoint>();
+
+        if (listToUpdate != null) {
+            for (var mf : listToUpdate) {
+                list.add(map(mf));
+            }
+        }
+
+        return list;
+    }
 
     MicrofrontendSearchCriteria map(MicrofrontendSearchCriteriaDTO dto);
 

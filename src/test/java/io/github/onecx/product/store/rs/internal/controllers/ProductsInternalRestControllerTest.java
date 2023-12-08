@@ -186,6 +186,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void updateProductTest() {
         var updateDto = new UpdateProductRequestDTO();
         updateDto.setName("test01");
+        updateDto.setVersion("0.0.0");
         updateDto.setDescription("description-update");
         updateDto.setBasePath("basePath");
 
