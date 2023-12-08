@@ -43,7 +43,7 @@ class OperatorProductRestControllerV1ExceptionTest extends AbstractTest {
                 .body(dto)
                 .pathParam("name", "new_product_name")
                 .put()
-                .then().log().all()
+                .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
         given()

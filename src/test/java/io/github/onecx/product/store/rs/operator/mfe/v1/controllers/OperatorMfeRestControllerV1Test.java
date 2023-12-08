@@ -57,7 +57,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
                 .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
-                .then().log().all()
+                .then()
                 .statusCode(BAD_REQUEST.getStatusCode());
     }
 
@@ -91,7 +91,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
                 .pathParam("appId", "mfe2")
                 .body(dto)
                 .put()
-                .then().log().all()
+                .then()
                 .statusCode(OK.getStatusCode());
     }
 

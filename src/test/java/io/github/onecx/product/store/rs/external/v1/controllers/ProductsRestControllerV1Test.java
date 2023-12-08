@@ -27,7 +27,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParams("name", "product1")
                 .get("{name}")
-                .then().log().all()
+                .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()

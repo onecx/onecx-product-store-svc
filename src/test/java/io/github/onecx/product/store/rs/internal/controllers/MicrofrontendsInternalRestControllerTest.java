@@ -38,7 +38,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .body(createDto)
                 .post()
-                .then().log().all()
+                .then()
                 .statusCode(CREATED.getStatusCode())
                 .extract()
                 .body().as(MicrofrontendDTO.class);
@@ -210,7 +210,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .when()
                 .pathParam("id", "does-not-exists")
                 .put("{id}")
-                .then().log().all()
+                .then()
                 .statusCode(NOT_FOUND.getStatusCode());
 
         given()
