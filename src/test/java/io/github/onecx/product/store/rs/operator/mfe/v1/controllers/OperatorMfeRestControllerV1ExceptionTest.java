@@ -48,7 +48,7 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
                 .body(dto)
                 .pathParam("appId", "mfe1")
                 .put()
-                .then().log().all()
+                .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
         given()

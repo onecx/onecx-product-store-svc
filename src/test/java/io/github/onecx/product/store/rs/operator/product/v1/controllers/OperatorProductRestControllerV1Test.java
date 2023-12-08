@@ -63,7 +63,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
                 .pathParam("name", "new_product_name")
                 .body(dto)
                 .put()
-                .then().log().all()
+                .then()
                 .statusCode(BAD_REQUEST.getStatusCode());
 
     }

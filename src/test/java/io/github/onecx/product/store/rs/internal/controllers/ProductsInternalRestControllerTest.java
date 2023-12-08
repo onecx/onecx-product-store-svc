@@ -33,7 +33,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
                 .post()
-                .then().log().all()
+                .then()
                 .statusCode(CREATED.getStatusCode())
                 .extract()
                 .body().as(ProductDTO.class);
@@ -99,7 +99,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .get("{id}")
-                .then().log().all()
+                .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
@@ -196,7 +196,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .when()
                 .pathParam("id", "does-not-exists")
                 .put("{id}")
-                .then().log().all()
+                .then()
                 .statusCode(NOT_FOUND.getStatusCode());
 
         given()
