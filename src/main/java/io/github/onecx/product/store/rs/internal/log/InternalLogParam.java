@@ -24,9 +24,9 @@ public class InternalLogParam implements LogParam {
                             + "]";
                 }),
                 item(10, CreateMicrofrontendRequestDTO.class,
-                        x -> x.getClass().getSimpleName() + ":" + ((CreateMicrofrontendRequestDTO) x).getMfeId()),
+                        x -> x.getClass().getSimpleName() + ":" + ((CreateMicrofrontendRequestDTO) x).getAppId()),
                 item(10, UpdateMicrofrontendRequestDTO.class,
-                        x -> x.getClass().getSimpleName() + ":" + ((UpdateMicrofrontendRequestDTO) x).getMfeId()),
+                        x -> x.getClass().getSimpleName() + ":" + ((UpdateMicrofrontendRequestDTO) x).getAppId()),
                 item(10, MicrofrontendSearchCriteriaDTO.class, x -> {
                     MicrofrontendSearchCriteriaDTO d = (MicrofrontendSearchCriteriaDTO) x;
                     return MicrofrontendSearchCriteriaDTO.class.getSimpleName() + "[" + d.getPageNumber() + ","

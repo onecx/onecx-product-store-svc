@@ -28,12 +28,12 @@ class MicrofrontendDAOTest {
 
     @Test
     void methodExceptionTests() {
-        methodExceptionTests(() -> dao.findByProductName(null),
-                MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFES_BY_PRODUCT_NAME);
+        methodExceptionTests(() -> dao.loadByProductName(null),
+                MicrofrontendDAO.ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.findMicrofrontendsByCriteria(null),
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
-        methodExceptionTests(() -> dao.findByMfeId("test"),
-                MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_ID);
+        methodExceptionTests(() -> dao.findByAppId("test"),
+                MicrofrontendDAO.ErrorKeys.ERROR_FIND_APP_ID);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

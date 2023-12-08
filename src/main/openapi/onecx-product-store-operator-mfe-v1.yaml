@@ -8,16 +8,16 @@ servers:
 tags:
   - name: operatorMfe
 paths:
-  /operator/mfe/v1/{mfeId}:
+  /operator/mfe/v1/{appId}:
      put:
       tags:
         - operatorMfe
       description: Creates or updates a product micro-frontend.
       operationId: createOrUpdateMfe
       parameters:
-        - name: mfeId
+        - name: appId
           in: path
-          description: Mfe ID
+          description: App ID
           required: true
           schema:
             type: string
@@ -72,49 +72,57 @@ components:
     UpdateMfeRequest:
       required:
         - remoteEntry
-        - remoteName
         - exposedModule
-        - displayName
-        - moduleType
+        - appName
         - remoteBaseUrl
         - productName
       type: object
       properties:
-        basePath:
-          minLength: 2
+        appVersion:
           type: string
-        productName:
-          minLength: 2
+        appName:
+          type: string
+        description:
+          type: string
+        remoteBaseUrl:
           type: string
         remoteEntry:
-          minLength: 2
           type: string
-        remoteName:
-          minLength: 2
+        productName:
           type: string
-        exposedModule:
-          minLength: 2
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
+        contact:
           type: string
-        displayName:
-          minLength: 2
-          type: string
-        moduleType:
-          $ref: '#/components/schemas/ModuleType'
-        wcTagName:
-          type: string
-        appId:
-          type: string
-        appVersion:
+        iconName:
           type: string
         note:
           type: string
-        contact:
+        exposedModule:
           type: string
-        remoteBaseUrl:
-          minLength: 2
+        technology:
           type: string
-    ModuleType:
-      enum:
-        - ANGULAR
-        - WEBCOMPONENT
-      type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/UpdateMfeUIEndpointRequest"
+    UpdateMfeUIEndpointRequest:
+      required:
+        - path
+        - name
+      type: object
+      properties:
+        path:
+          type: string
+        name:
+          type: string
+
+
+
+
+
+
+

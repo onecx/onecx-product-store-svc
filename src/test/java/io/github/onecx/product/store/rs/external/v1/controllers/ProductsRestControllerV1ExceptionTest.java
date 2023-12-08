@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.quarkus.test.InjectMock;
@@ -36,14 +36,14 @@ class ProductsRestControllerV1ExceptionTest extends AbstractTest {
 
         given()
                 .contentType(APPLICATION_JSON)
-                .body(new ProductSearchCriteriaDTOv1())
+                .body(new ProductItemSearchCriteriaDTOv1())
                 .post("/search")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
         var exception = given()
                 .contentType(APPLICATION_JSON)
-                .body(new ProductSearchCriteriaDTOv1())
+                .body(new ProductItemSearchCriteriaDTOv1())
                 .post("/search")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());

@@ -17,21 +17,19 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(MicrofrontendsInternalRestController.class)
-@WithDBData(value = "data/testdata-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
     @Test
     void createMicrofrontendTest() {
 
         CreateMicrofrontendRequestDTO createDto = new CreateMicrofrontendRequestDTO();
-        createDto.setBasePath("basePath");
-        createDto.setMfeId("mfeId");
+        createDto.setAppId("mfeId");
+        createDto.setAppVersion("0.0.0");
         createDto.setExposedModule("exposed-module");
         createDto.setRemoteBaseUrl("remote-base-url");
         createDto.setRemoteEntry("remote-entry");
-        createDto.setRemoteName("remote-name");
-        createDto.setModuleType(ModuleTypeDTO.ANGULAR);
-        createDto.setDisplayName("display-name");
+        createDto.setAppName("display-name");
         createDto.setProductName("product-name");
         createDto.setRemoteBaseUrl("remote-base-url");
 
@@ -46,8 +44,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .body().as(MicrofrontendDTO.class);
 
         assertThat(dto).isNotNull();
-        assertThat(dto.getDisplayName()).isNotNull().isEqualTo(createDto.getDisplayName());
-        assertThat(dto.getBasePath()).isNotNull().isEqualTo(createDto.getBasePath());
+        assertThat(dto.getAppName()).isNotNull().isEqualTo(createDto.getAppName());
 
         // create theme without body
         var exception = given()
@@ -72,7 +69,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(exception.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_unique'  Detail: Key (remote_entry, remote_base_url, exposed_module)=(remote-entry, remote-base-url, exposed-module) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_app_id'  Detail: Key (product_name, app_id)=(product-name, mfeId) already exists.]");
 
     }
 
@@ -115,7 +112,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getProductName()).isEqualTo("product1");
-        assertThat(dto.getDisplayName()).isEqualTo("display_name1");
+        assertThat(dto.getAppName()).isEqualTo("display_name1");
 
         given()
                 .contentType(APPLICATION_JSON)
@@ -143,7 +140,8 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(2);
 
         criteria.setProductName("product1");
-        criteria.setDisplayName("display_name1");
+        criteria.setAppId("mfe1");
+        criteria.setAppName("display_name1");
 
         data = given()
                 .contentType(APPLICATION_JSON)
@@ -160,7 +158,8 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(1);
 
         criteria.setProductName(" ");
-        criteria.setDisplayName(" ");
+        criteria.setAppId(" ");
+        criteria.setAppName(" ");
 
         data = given()
                 .contentType(APPLICATION_JSON)
@@ -175,6 +174,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
+
     }
 
     @Test
@@ -195,14 +195,12 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
     @Test
     void updateMicrofrontendTest() {
         UpdateMicrofrontendRequestDTO updateDto = new UpdateMicrofrontendRequestDTO();
-        updateDto.setBasePath("basePath");
-        updateDto.setMfeId("mfeId");
+        updateDto.setAppId("mfeId");
+        updateDto.setAppVersion("0.0.0");
         updateDto.setExposedModule("exposed-module");
         updateDto.setRemoteBaseUrl("remote-base-url");
         updateDto.setRemoteEntry("remote-entry");
-        updateDto.setRemoteName("remote-name");
-        updateDto.setModuleType(ModuleTypeDTO.ANGULAR);
-        updateDto.setDisplayName("display-name");
+        updateDto.setAppName("display-name");
         updateDto.setProductName("product-name");
         updateDto.setRemoteBaseUrl("remote-base-url");
 

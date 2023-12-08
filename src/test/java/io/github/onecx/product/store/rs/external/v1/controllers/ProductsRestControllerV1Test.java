@@ -10,15 +10,15 @@ import org.tkit.quarkus.test.WithDBData;
 
 import gen.io.github.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
 import gen.io.github.onecx.product.store.rs.external.v1.model.ProductDTOv1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductPageResultDTOv1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductItemPageResultDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(ProductsRestControllerV1.class)
-@WithDBData(value = "data/testdata-v1.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-v1.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
@@ -49,7 +49,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
     @Test
     void searchProductsTest() {
 
-        var criteria = new ProductSearchCriteriaDTOv1();
+        var criteria = new ProductItemSearchCriteriaDTOv1();
 
         var data = given()
                 .contentType(APPLICATION_JSON)
@@ -59,7 +59,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(ProductPageResultDTOv1.class);
+                .as(ProductItemPageResultDTOv1.class);
 
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
@@ -78,6 +78,6 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .as(ProblemDetailResponseDTOv1.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getDetail()).isEqualTo("searchProductsByCriteria.productSearchCriteriaDTOv1: must not be null");
+        assertThat(data.getDetail()).isEqualTo("searchProductsByCriteria.productItemSearchCriteriaDTOv1: must not be null");
     }
 }

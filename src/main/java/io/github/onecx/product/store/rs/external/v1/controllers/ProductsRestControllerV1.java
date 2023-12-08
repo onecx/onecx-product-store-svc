@@ -12,7 +12,7 @@ import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.external.v1.ProductsApi;
 import gen.io.github.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
 import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
 import io.github.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
@@ -42,7 +42,7 @@ public class ProductsRestControllerV1 implements ProductsApi {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        var microfrontends = microfrontendDAO.findByProductName(product.getName());
+        var microfrontends = microfrontendDAO.loadByProductName(product.getName());
 
         var dto = mapper.map(product, microfrontends);
 
@@ -50,7 +50,7 @@ public class ProductsRestControllerV1 implements ProductsApi {
     }
 
     @Override
-    public Response searchProductsByCriteria(ProductSearchCriteriaDTOv1 productSearchCriteriaDTOV1) {
+    public Response searchProductsByCriteria(ProductItemSearchCriteriaDTOv1 productSearchCriteriaDTOV1) {
         var criteria = mapper.map(productSearchCriteriaDTOV1);
         var result = dao.findProductsByCriteria(criteria);
         return Response.ok(mapper.mapPageResult(result)).build();

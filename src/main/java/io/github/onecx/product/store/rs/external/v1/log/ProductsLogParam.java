@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import org.tkit.quarkus.log.cdi.LogParam;
 
-import gen.io.github.onecx.product.store.rs.external.v1.model.ProductSearchCriteriaDTOv1;
+import gen.io.github.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
 
 @ApplicationScoped
 public class ProductsLogParam implements LogParam {
@@ -14,9 +14,10 @@ public class ProductsLogParam implements LogParam {
     @Override
     public List<Item> getClasses() {
         return List.of(
-                item(10, ProductSearchCriteriaDTOv1.class, x -> {
-                    ProductSearchCriteriaDTOv1 d = (ProductSearchCriteriaDTOv1) x;
-                    return ProductSearchCriteriaDTOv1.class.getSimpleName() + "[" + d.getPageNumber() + "," + d.getPageSize()
+                item(10, ProductItemSearchCriteriaDTOv1.class, x -> {
+                    ProductItemSearchCriteriaDTOv1 d = (ProductItemSearchCriteriaDTOv1) x;
+                    return ProductItemSearchCriteriaDTOv1.class.getSimpleName() + "[" + d.getPageNumber() + ","
+                            + d.getPageSize()
                             + "]";
                 }));
     }

@@ -33,12 +33,12 @@ public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
     OperatorMfeExceptionMapperV1 exceptionMapper;
 
     @Override
-    public Response createOrUpdateMfe(String mfeId, UpdateMfeRequestMDTOv1 dto) {
+    public Response createOrUpdateMfe(String appId, UpdateMfeRequestMDTOv1 dto) {
 
-        var mfe = dao.findByMfeId(mfeId);
+        var mfe = dao.findByAppId(appId);
         if (mfe == null) {
             mfe = mapper.create(dto);
-            mfe.setMfeId(mfeId);
+            mfe.setAppId(appId);
             dao.create(mfe);
             return Response.status(Response.Status.CREATED).build();
         }
