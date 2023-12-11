@@ -183,7 +183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductPageResult'
+                $ref: '#/components/schemas/Product'
         "400":
           description: Bad request
           content:
