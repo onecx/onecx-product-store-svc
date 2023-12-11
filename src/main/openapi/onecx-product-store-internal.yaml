@@ -183,7 +183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductPageResult'
         "400":
           description: Bad request
           content:
@@ -286,39 +286,7 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/ProductPageItem'
-    ProductPageItem:
-      type: object
-      properties:
-        id:
-          type: string
-        creationDate:
-          $ref: '#/components/schemas/OffsetDateTime'
-        creationUser:
-          type: string
-        modificationDate:
-          $ref: '#/components/schemas/OffsetDateTime'
-        modificationUser:
-          type: string
-        modificationCount:
-          format: int32
-          type: integer
-        name:
-          type: string
-        operator:
-          type: boolean
-        version:
-          type: string
-        description:
-          type: string
-        imageUrl:
-          type: string
-        basePath:
-          type: string
-        displayName:
-          type: string
-        iconName:
-          type: string
+            $ref: '#/components/schemas/Product'
     ProductSearchCriteria:
       type: object
       properties:
