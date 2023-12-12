@@ -286,8 +286,8 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/ProductPageItem'
-    ProductPageItem:
+            $ref: '#/components/schemas/ProductAbstract'
+    ProductAbstract:
       type: object
       properties:
         id:

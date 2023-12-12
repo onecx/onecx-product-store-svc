@@ -40,7 +40,7 @@ public interface ProductMapper {
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductPageResultDTO mapPageResult(PageResult<Product> page);
 
-    ProductPageItemDTO mapPageItem(Product data);
+    ProductAbstractDTO mapProductAbstract(Product data);
 
     @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductDTO map(Product data);
