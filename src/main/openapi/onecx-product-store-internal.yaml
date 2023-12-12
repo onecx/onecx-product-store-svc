@@ -183,7 +183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductPageResult'
         "400":
           description: Bad request
           content:
@@ -286,8 +286,8 @@ components:
         stream:
           type: array
           items:
-            $ref: '#/components/schemas/ProductPageItem'
-    ProductPageItem:
+            $ref: '#/components/schemas/ProductAbstract'
+    ProductAbstract:
       type: object
       properties:
         id:
