@@ -1,7 +1,6 @@
 package io.github.onecx.product.store.domain.models;
 
-import static jakarta.persistence.CascadeType.REFRESH;
-import static jakarta.persistence.CascadeType.REMOVE;
+import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.LAZY;
 
 import java.util.HashSet;
@@ -73,7 +72,7 @@ public class Microfrontend extends TraceableEntity {
     @Column(name = "TECHNOLOGY")
     private String technology;
 
-    @OneToMany(cascade = { REMOVE, REFRESH }, fetch = LAZY, orphanRemoval = true)
+    @OneToMany(cascade = { REMOVE, REFRESH, PERSIST, MERGE }, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "MICROFRONTEND_ID")
     private Set<UIEndpoint> endpoints = new HashSet<>();
 }
