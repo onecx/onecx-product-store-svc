@@ -13,6 +13,12 @@
                       exposed_module="exposed-module2" app_name="display_name2" remote_base_url="remote_base_url2"
                       operator="false" optlock="0"/>
 
+    <PS_MICROFRONTEND guid="mfe1" app_id="mfeOne" product_name="productOne" remote_entry="https://localhost/mfe/core/ah-mgmtv5/remoteEntry.js"
+                      exposed_module="/AnnouncementManagementModule" app_name="display_name2" remote_base_url="https://localhost/mfe/core/ah-mgmt/"
+                      operator="false" optlock="0" app_version="1.0.0" contact="developers@1000kit.org" description="some text" icon_name="sun" note="some notes" technology="Angular" creationDate="2024-01-11 12:21:38.914993" modificationDate="2024-01-11 12:21:38.914993" />
+
     <PS_UI_ENDPOINT guid="ui1" microfrontend_id="m1" name="e1" path="p1" />
     <PS_UI_ENDPOINT guid="ui2" microfrontend_id="m1" name="e2" path="p2" />
+    <PS_UI_ENDPOINT guid="mfe-uie-1" microfrontend_id="mfe1" name="search" path="/search" />
+    <MFE_CLASSIFICATIONS microfrontend_guid="mfe1" classifications="searching" />
 </dataset>

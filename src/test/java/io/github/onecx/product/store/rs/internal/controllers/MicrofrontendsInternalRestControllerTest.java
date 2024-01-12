@@ -210,29 +210,122 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getParams()).isNull();
     }
 
+    /**
+     * Scenario: Delete microfrontend (mfe) by existing mfe id.
+     * Given
+     * When I try to delete a mfe by existing mfe id
+     * Then I get a 'No Content' response code back
+     */
     @Test
-    void deleteMicrofrontendTest() {
-        // delete micro-frontend
+    void deleteMicrofrontend_shouldDeleteMicrofrontend() {
+        // ensure mfe exists
         given()
                 .contentType(APPLICATION_JSON)
-                .pathParam("id", "p1")
+                .pathParam("id", "m1")
+                .get("{id}")
+                .then().statusCode(OK.getStatusCode());
+
+        // delete existing mfe
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("id", "m1")
                 .delete("{id}")
                 .then().statusCode(NO_CONTENT.getStatusCode());
 
-        // check if micro-frontend exists
+        // verify successful deletion by GET call
         given()
                 .contentType(APPLICATION_JSON)
-                .pathParam("id", "p1")
+                .pathParam("id", "m1")
                 .get("{id}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
 
-        // delete micro-frontend
+    }
+
+    /**
+     * Scenario: Delete microfrontend (mfe) by non-existing mfe id.
+     * Given
+     * When I try to delete a mfe by non-existing mfe id
+     * Then I get a 'No Content' response code back
+     */
+    @Test
+    void deleteMicrofrontend_shouldReturnNoContent_whenMFEIdDoesNotExist() {
+
         given()
                 .contentType(APPLICATION_JSON)
-                .pathParam("id", "p1")
+                .pathParam("id", "notExistingMFEId")
                 .delete("{id}")
                 .then()
                 .statusCode(NO_CONTENT.getStatusCode());
+    }
+
+
+
+    /**
+     * Scenario: Receives microfrontend (mfe) by mfe-id successfully.
+     * Given
+     * When I query GET endpoint with an existing id
+     * Then I get a 'OK' response code back
+     * AND associated mfe is returned
+     */
+    @Test
+    void getMicrofrontend_shouldReturnMicrofrontend() {
+        var responseGetRequest = given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("id", "mfe1")
+                .get("{id}")
+                .then().statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .body().as(MicrofrontendDTO.class);
+
+        assertThat(responseGetRequest).isNotNull();
+        assertThat(responseGetRequest.getId()).isNotNull();
+        assertThat(responseGetRequest.getCreationDate()).isNotNull();
+        assertThat(responseGetRequest.getModificationDate()).isNotNull();
+
+        assertThat(responseGetRequest.getModificationCount()).isNotNull()
+                .isEqualTo(0);
+        assertThat(responseGetRequest.getAppId()).isNotNull()
+                .isEqualTo("mfeOne");
+        assertThat(responseGetRequest.getAppVersion()).isNotNull()
+                .isEqualTo("1.0.0");
+        assertThat(responseGetRequest.getAppName()).isNotNull()
+                .isEqualTo("display_name2");
+        assertThat(responseGetRequest.getDescription()).isNotNull()
+                .isEqualTo("some text");
+        assertThat(responseGetRequest.getTechnology()).isNotNull()
+                .isEqualTo("Angular");
+        assertThat(responseGetRequest.getRemoteBaseUrl()).isNotNull()
+                .isEqualTo("https://localhost/mfe/core/ah-mgmt/");
+        assertThat(responseGetRequest.getRemoteEntry()).isNotNull()
+                .isEqualTo("https://localhost/mfe/core/ah-mgmtv5/remoteEntry.js");
+        assertThat(responseGetRequest.getProductName()).isNotNull()
+                .isEqualTo("productOne");
+        assertThat(responseGetRequest.getContact()).isNotNull()
+                .isEqualTo("developers@1000kit.org");
+        assertThat(responseGetRequest.getIconName()).isNotNull()
+                .isEqualTo("sun");
+        assertThat(responseGetRequest.getNote()).isNotNull()
+                .isEqualTo("some notes");
+        assertThat(responseGetRequest.getExposedModule()).isNotNull()
+                .isEqualTo("/AnnouncementManagementModule");
+
+        //classifications
+        assertThat(responseGetRequest.getClassifications().size())
+                .isEqualTo(1);
+        assertThat(responseGetRequest.getClassifications()).contains("searching");
+
+        // endpoints
+        List<UIEndpointDTO> endpointsResponse = responseGetRequest.getEndpoints();
+        Optional<UIEndpointDTO> endpointsResponseItem = endpointsResponse.stream()
+                .filter(e -> e.getName().equals("search")).findFirst();
+        assertThat(endpointsResponseItem).isPresent();
+        assertThat(responseGetRequest.getEndpoints().get(0).getName()).isNotNull()
+                .isEqualTo(endpointsResponseItem.get().getName());
+        assertThat(responseGetRequest.getEndpoints().get(0).getPath()).isNotNull()
+                .isEqualTo(endpointsResponseItem.get().getPath());
+
+
     }
 
     @Test
