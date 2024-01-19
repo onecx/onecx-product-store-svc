@@ -95,9 +95,9 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ps_ui_endpoint" constraintName="fkf8whp1qfqxve2knq2xtpyk99q" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="product_guid" baseTableName="product_classifications" constraintName="fkhtv7f64u4ie4gdbhvc5xfwssp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_product" validate="true"/>
-        <addForeignKeyConstraint baseColumnNames="microfrontend_guid" baseTableName="mfe_classifications" constraintName="fkj1vokw1dbiea602btrfdsm2r6" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ps_ui_endpoint" constraintName="fkf8whp1qfqxve2knq2xtpyk99q" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="product_guid" baseTableName="product_classifications" constraintName="fkhtv7f64u4ie4gdbhvc5xfwssp" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_product" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="microfrontend_guid" baseTableName="mfe_classifications" constraintName="fkj1vokw1dbiea602btrfdsm2r6" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="ps_microfrontend" validate="true"/>
     </changeSet>
 
 </databaseChangeLog>
