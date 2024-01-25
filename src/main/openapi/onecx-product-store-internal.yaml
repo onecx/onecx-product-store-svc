@@ -265,6 +265,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/products/{name}:
+    get:
+      tags:
+        - productsInternal
+      description: Return product by name (unique)
+      operationId: getProductByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        "404":
+          description: Not found
 components:
   schemas:
     ProductPageResult:
@@ -319,6 +346,11 @@ components:
           type: string
         iconName:
           type: string
+        classifications:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
     ProductSearchCriteria:
       type: object
       properties:
