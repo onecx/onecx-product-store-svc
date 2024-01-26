@@ -347,10 +347,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     ProductSearchCriteria:
       type: object
       properties:
@@ -388,10 +385,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     UpdateProductRequest:
       type: object
       required:
@@ -414,10 +408,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     Product:
       type: object
       required:
@@ -455,10 +446,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     MicrofrontendPageResult:
       type: object
       properties:
@@ -526,6 +514,8 @@ components:
           type: string
         exposedModule:
           type: string
+        classifications:
+          type: string
     MicrofrontendSearchCriteria:
       type: object
       properties:
@@ -572,10 +562,7 @@ components:
         productName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:
@@ -625,10 +612,7 @@ components:
         technology:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:
@@ -693,10 +677,7 @@ components:
         productName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:

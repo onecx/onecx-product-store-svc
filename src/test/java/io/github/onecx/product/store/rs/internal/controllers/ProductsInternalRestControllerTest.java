@@ -5,9 +5,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
@@ -122,33 +119,35 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
 
-     /*   var createProductDTO = new CreateProductRequestDTO();
-        createProductDTO.setName("testFullAttributes01");
-        createProductDTO.setVersion("1.0.0");
-        createProductDTO.setBasePath("/app3");
-        createProductDTO
-                .setImageUrl("https://prod.ucwe.capgemini.com/wp-content/uploads/2023/11/world-cloud-report-banner1_2023.jpg");
-        createProductDTO.setDescription("some text");
-        createProductDTO.setDisplayName("display me");
-        createProductDTO.setIconName("sun");
-        Set<String> classificationSet = new HashSet<>();
-        classificationSet.add("Themes");
-        classificationSet.add("Menu");
-        createProductDTO.setClassifications(classificationSet);
-
-        var dto = given()
-                .when()
-                .contentType(APPLICATION_JSON)
-                .body(createProductDTO)
-                .post()
-                .then()
-                .statusCode(CREATED.getStatusCode())
-                .extract()
-                .body().as(ProductDTO.class);
-
-        assertThat(dto).isNotNull();
-        assertThat(dto.getName()).isNotNull().isEqualTo(createProductDTO.getName());
-        assertThat(dto.getBasePath()).isNotNull().isEqualTo(createProductDTO.getBasePath());*/
+        /*
+         * var createProductDTO = new CreateProductRequestDTO();
+         * createProductDTO.setName("testFullAttributes01");
+         * createProductDTO.setVersion("1.0.0");
+         * createProductDTO.setBasePath("/app3");
+         * createProductDTO
+         * .setImageUrl("https://prod.ucwe.capgemini.com/wp-content/uploads/2023/11/world-cloud-report-banner1_2023.jpg");
+         * createProductDTO.setDescription("some text");
+         * createProductDTO.setDisplayName("display me");
+         * createProductDTO.setIconName("sun");
+         * Set<String> classificationSet = new HashSet<>();
+         * classificationSet.add("Themes");
+         * classificationSet.add("Menu");
+         * createProductDTO.setClassifications(classificationSet);
+         *
+         * var dto = given()
+         * .when()
+         * .contentType(APPLICATION_JSON)
+         * .body(createProductDTO)
+         * .post()
+         * .then()
+         * .statusCode(CREATED.getStatusCode())
+         * .extract()
+         * .body().as(ProductDTO.class);
+         *
+         * assertThat(dto).isNotNull();
+         * assertThat(dto.getName()).isNotNull().isEqualTo(createProductDTO.getName());
+         * assertThat(dto.getBasePath()).isNotNull().isEqualTo(createProductDTO.getBasePath());
+         */
 
         var criteria = new ProductSearchCriteriaDTO();
         criteria.setName("product1");

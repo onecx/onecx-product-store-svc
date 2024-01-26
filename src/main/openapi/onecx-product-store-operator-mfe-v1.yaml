@@ -9,7 +9,7 @@ tags:
   - name: operatorMfe
 paths:
   /operator/mfe/v1/{appId}:
-     put:
+    put:
       tags:
         - operatorMfe
       description: Creates or updates a product micro-frontend.
@@ -91,10 +91,7 @@ components:
         productName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:

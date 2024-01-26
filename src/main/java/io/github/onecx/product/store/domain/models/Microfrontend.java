@@ -16,12 +16,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "PS_MICROFRONTEND", uniqueConstraints = {
-        @UniqueConstraint(name = "PS_MICROFRONTEND_UNIQUE", columnNames = { "REMOTE_ENTRY", "REMOTE_BASE_URL",
+@Table(name = "MICROFRONTEND", uniqueConstraints = {
+        @UniqueConstraint(name = "MICROFRONTEND_UNIQUE", columnNames = { "REMOTE_ENTRY", "REMOTE_BASE_URL",
                 "EXPOSED_MODULE" }),
-        @UniqueConstraint(name = "PS_MICROFRONTEND_APP_ID", columnNames = { "PRODUCT_NAME", "APP_ID" })
+        @UniqueConstraint(name = "MICROFRONTEND_APP_ID", columnNames = { "PRODUCT_NAME", "APP_ID" })
 }, indexes = {
-        @Index(name = "PS_MICROFRONTEND_PRODUCT_NAME", columnList = "PRODUCT_NAME")
+        @Index(name = "MICROFRONTEND_PRODUCT_NAME", columnList = "PRODUCT_NAME")
 })
 @NamedEntityGraph(name = Microfrontend.MICROFRONTEND_LOAD, includeAllAttributes = true)
 @SuppressWarnings("java:S2160")
@@ -49,10 +49,8 @@ public class Microfrontend extends TraceableEntity {
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
-    @Column(name = "CLASSIFICATIONS")
-    @ElementCollection(fetch = LAZY)
-    @CollectionTable(name = "MFE_CLASSIFICATIONS")
-    private Set<String> classifications;
+    @Column(name = "CLASSIFICATION")
+    private String classifications;
 
     @Column(name = "CONTACT", columnDefinition = "TEXT")
     private String contact;

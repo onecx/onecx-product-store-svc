@@ -25,7 +25,6 @@ public interface ProductMapperV1 {
 
     @Mapping(target = "removeMicrofrontendsItem", ignore = true)
     @Mapping(target = "microfrontends", ignore = true)
-    @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductDTOv1 map(Product data);
 
     default ProductDTOv1 map(Product product, Stream<Microfrontend> microfrontends) {
@@ -36,7 +35,6 @@ public interface ProductMapperV1 {
 
     List<MicrofrontendDTOv1> items(Stream<Microfrontend> microfrontends);
 
-    @Mapping(target = "removeClassificationsItem", ignore = true)
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTOv1 map(Microfrontend data);
 }

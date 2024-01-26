@@ -4,8 +4,6 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 
-import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
@@ -72,7 +70,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
-        dto.setClassifications(Set.of("a", "b"));
+        dto.setClassifications("a,b");
         given()
                 .when()
                 .contentType(APPLICATION_JSON)

@@ -9,7 +9,7 @@ tags:
   - name: operatorProduct
 paths:
   /operator/product/v1/update/{name}:
-     put:
+    put:
       tags:
         - operatorProduct
       description: Creates or updates a product registration.
@@ -70,25 +70,22 @@ components:
         message:
           type: string
     UpdateProductRequest:
-       required:
-         - basePath
-         - version
-       type: object
-       properties:
-         version:
-           type: string
-         description:
-           type: string
-         imageUrl:
-           type: string
-         basePath:
-           type: string
-         displayName:
-           type: string
-         iconName:
-           type: string
-         classifications:
-           type: array
-           uniqueItems: true
-           items:
-             type: string
+      required:
+        - basePath
+        - version
+      type: object
+      properties:
+        version:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+        displayName:
+          type: string
+        iconName:
+          type: string
+        classifications:
+          type: string

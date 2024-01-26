@@ -72,7 +72,6 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
-    // @Transactional // TODO CSO remove
     public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
         var criteria = mapper.map(productSearchCriteriaDTO);
         var result = dao.findProductsByCriteria(criteria);

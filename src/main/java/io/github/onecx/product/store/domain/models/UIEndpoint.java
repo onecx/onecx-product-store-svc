@@ -11,10 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "PS_UI_ENDPOINT", indexes = {
-        @Index(columnList = "MICROFRONTEND_ID", name = "PS_UI_ENDPOINT_MICROFRONTEND_ID")
+@Table(name = "UI_ENDPOINT", indexes = {
+        @Index(columnList = "MICROFRONTEND_ID", name = "UI_ENDPOINT_MICROFRONTEND_ID")
 }, uniqueConstraints = {
-        @UniqueConstraint(name = "PS_UI_ENDPOINT_PATH", columnNames = { "MICROFRONTEND_ID", "PATH" })
+        @UniqueConstraint(name = "UI_ENDPOINT_PATH", columnNames = { "MICROFRONTEND_ID", "PATH" })
 })
 public class UIEndpoint implements Serializable {
 

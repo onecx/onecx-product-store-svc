@@ -65,7 +65,6 @@ public interface MicrofrontendMapper {
 
     MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
 
-    @Mapping(target = "removeClassificationsItem", ignore = true)
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTO map(Microfrontend data);
 }
