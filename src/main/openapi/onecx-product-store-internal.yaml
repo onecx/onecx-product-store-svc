@@ -265,6 +265,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/products/name/{name}:
+    get:
+      tags:
+        - productsInternal
+      description: Return product by name (unique)
+      operationId: getProductByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        "400":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        "404":
+          description: Not found
 components:
   schemas:
     ProductPageResult:
@@ -319,6 +346,8 @@ components:
           type: string
         iconName:
           type: string
+        classifications:
+          type: string
     ProductSearchCriteria:
       type: object
       properties:
@@ -356,10 +385,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     UpdateProductRequest:
       type: object
       required:
@@ -382,10 +408,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     Product:
       type: object
       required:
@@ -423,10 +446,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
     MicrofrontendPageResult:
       type: object
       properties:
@@ -494,6 +514,8 @@ components:
           type: string
         exposedModule:
           type: string
+        classifications:
+          type: string
     MicrofrontendSearchCriteria:
       type: object
       properties:
@@ -540,10 +562,7 @@ components:
         productName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:
@@ -593,10 +612,7 @@ components:
         technology:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:
@@ -661,10 +677,7 @@ components:
         productName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:

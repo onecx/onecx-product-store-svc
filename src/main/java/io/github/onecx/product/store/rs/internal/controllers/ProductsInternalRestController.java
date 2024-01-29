@@ -63,6 +63,15 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
+    public Response getProductByName(String name) {
+        var item = dao.findProductByName(name);
+        if (item == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(mapper.map(item)).build();
+    }
+
+    @Override
     public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
         var criteria = mapper.map(productSearchCriteriaDTO);
         var result = dao.findProductsByCriteria(criteria);

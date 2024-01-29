@@ -42,6 +42,5 @@ public interface ProductMapper {
 
     ProductAbstractDTO mapProductAbstract(Product data);
 
-    @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductDTO map(Product data);
 }

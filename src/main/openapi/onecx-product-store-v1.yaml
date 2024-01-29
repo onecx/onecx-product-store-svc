@@ -112,10 +112,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         microfrontends:
           type: array
           items:
@@ -138,10 +135,7 @@ components:
         technology:
           type: string
         classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
+          type: string
         contact:
           type: string
         iconName:

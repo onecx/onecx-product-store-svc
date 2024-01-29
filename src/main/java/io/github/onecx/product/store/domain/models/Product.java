@@ -1,8 +1,6 @@
 package io.github.onecx.product.store.domain.models;
 
-import static jakarta.persistence.FetchType.LAZY;
-
-import java.util.Set;
+import static jakarta.persistence.CascadeType.*;
 
 import jakarta.persistence.*;
 
@@ -14,12 +12,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "PS_PRODUCT", uniqueConstraints = {
-        @UniqueConstraint(name = "UI_PS_PRODUCT_NAME", columnNames = { "NAME" }),
-        @UniqueConstraint(name = "UI_PS_PRODUCT_BASE_PATH", columnNames = { "BASE_PATH" })
+@Table(name = "PRODUCT", uniqueConstraints = {
+        @UniqueConstraint(name = "UI_PRODUCT_NAME", columnNames = { "NAME" }),
+        @UniqueConstraint(name = "UI_PRODUCT_BASE_PATH", columnNames = { "BASE_PATH" })
 })
-@SuppressWarnings("squid:S2160")
 public class Product extends TraceableEntity {
+    public static final String PRODUCT_LOAD = "PRODUCT_LOAD";
 
     @Column(name = "NAME")
     private String name;
@@ -45,9 +43,7 @@ public class Product extends TraceableEntity {
     @Column(name = "ICON_NAME")
     private String iconName;
 
-    @Column(name = "CLASSIFICATIONS")
-    @ElementCollection(fetch = LAZY)
-    @CollectionTable(name = "PRODUCT_CLASSIFICATIONS")
-    private Set<String> classifications;
+    @Column(name = "CLASSIFICATION")
+    private String classifications;
 
 }
