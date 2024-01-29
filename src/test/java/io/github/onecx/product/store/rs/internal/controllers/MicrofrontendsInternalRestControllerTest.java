@@ -163,7 +163,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraintName).isPresent();
         assertThat(responseCreationRequest.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(responseCreationRequest.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_app_id'  Detail: Key (product_name, app_id)=(ProductName, mfeId) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(ProductName, mfeId) already exists.]");
 
     }
 
@@ -303,9 +303,8 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .isEqualTo("/AnnouncementManagementModule");
 
         //classifications
-        assertThat(responseGetRequest.getClassifications())
-                .hasSize(1);
-        assertThat(responseGetRequest.getClassifications()).contains("searching");
+        assertThat(responseGetRequest.getClassifications()).isNotNull()
+                .isEqualTo("searching");
 
         // endpoints
         List<UIEndpointDTO> endpointsResponse = responseGetRequest.getEndpoints();
@@ -675,11 +674,11 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraintName).isPresent();
         assertThat(response.getErrorCode()).isEqualTo("MERGE_ENTITY_FAILED");
         assertThat(response.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
         assertThat(paramConstraint.get().getValue()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ps_microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
         assertThat(paramConstraint.get().getKey()).isEqualTo("constraint");
-        assertThat(paramConstraintName.get().getValue()).isEqualTo("ps_microfrontend_app_id");
+        assertThat(paramConstraintName.get().getValue()).isEqualTo("microfrontend_app_id");
         assertThat(paramConstraintName.get().getKey()).isEqualTo("constraintName");
         assertThat(response.getInvalidParams()).isNull();
     }
