@@ -265,7 +265,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
-  /internal/products/{name}:
+  /internal/products/name/{name}:
     get:
       tags:
         - productsInternal

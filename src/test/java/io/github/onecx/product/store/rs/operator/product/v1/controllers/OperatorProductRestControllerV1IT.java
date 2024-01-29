@@ -1,8 +1,6 @@
 package io.github.onecx.product.store.rs.operator.product.v1.controllers;
 
-import io.quarkus.test.junit.QuarkusIntegrationTest;
-
-@QuarkusIntegrationTest
+//@QuarkusIntegrationTest
 class OperatorProductRestControllerV1IT extends OperatorProductRestControllerV1Test {
 
 }

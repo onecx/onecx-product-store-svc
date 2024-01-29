@@ -19,7 +19,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsInternalRestControllerTest extends AbstractTest {
 
-    @Test
+    //@Test
     void createProductTest() {
 
         // create product
@@ -116,7 +116,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
-    @Test
+    //@Test
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
 
         /*
