@@ -7,11 +7,11 @@ import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
-import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 import io.github.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import io.github.onecx.product.store.domain.models.Product;
 import io.github.onecx.product.store.domain.models.Product_;
+import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
 public class ProductDAO extends AbstractDAO<Product> {
@@ -23,9 +23,9 @@ public class ProductDAO extends AbstractDAO<Product> {
             var root = cq.from(Product.class);
 
             if (criteria.getName() != null && !criteria.getName().isBlank()) {
-                cq.where(cb.like(root.get(Product_.NAME), QueryCriteriaUtil.wildcard(criteria.getName())));
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Product_.NAME),
+                        criteria.getName()));
             }
-
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA, ex);

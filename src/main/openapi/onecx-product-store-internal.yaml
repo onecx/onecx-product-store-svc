@@ -516,6 +516,10 @@ components:
           type: string
         classifications:
           type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateUIEndpoint"
     MicrofrontendSearchCriteria:
       type: object
       properties:

@@ -19,7 +19,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsInternalRestControllerTest extends AbstractTest {
 
-    //@Test
+    @Test
     void createProductTest() {
 
         // create product
@@ -65,7 +65,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(exception.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ui_ps_product_base_path'  Detail: Key (base_path)=(basePath) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'ui_product_base_path'  Detail: Key (base_path)=(basePath) already exists.]");
     }
 
     @Test
@@ -116,7 +116,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
-    //@Test
+    @Test
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
 
         /*

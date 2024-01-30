@@ -66,6 +66,7 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @Override
+    @Transactional
     public Response searchMicrofrontends(MicrofrontendSearchCriteriaDTO microfrontendSearchCriteriaDTO) {
         var criteria = mapper.map(microfrontendSearchCriteriaDTO);
         var result = dao.findMicrofrontendsByCriteria(criteria);

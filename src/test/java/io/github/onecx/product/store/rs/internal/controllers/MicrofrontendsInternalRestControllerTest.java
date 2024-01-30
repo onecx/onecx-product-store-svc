@@ -30,7 +30,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
      * Then I get a 'OK' response code back
      * AND created mfe is returned
      */
-    //@Test
+    @Test
     void createMicrofrontend_shouldAddNewMicrofrontend_whenProductnameAndAppIdAreUnique() {
         List<CreateUIEndpointDTO> uiEndpointSetForRequest = new ArrayList<>();
         CreateUIEndpointDTO uiEndpointItemForRequest = new CreateUIEndpointDTO();
@@ -259,7 +259,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
      * Then I get a 'OK' response code back
      * AND associated mfe is returned
      */
-    //@Test
+    @Test
     void getMicrofrontend_shouldReturnMicrofrontend() {
         var responseGetRequest = given()
                 .contentType(APPLICATION_JSON)
