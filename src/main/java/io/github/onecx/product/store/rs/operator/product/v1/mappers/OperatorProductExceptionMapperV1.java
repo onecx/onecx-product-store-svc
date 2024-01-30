@@ -16,7 +16,9 @@ import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
-import gen.io.github.onecx.product.store.rs.operator.product.v1.model.*;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.ProblemDetailInvalidParamPDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.ProblemDetailParamPDTOv1;
+import gen.io.github.onecx.product.store.rs.operator.product.v1.model.ProblemDetailResponsePDTOv1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,10 +33,10 @@ public abstract class OperatorProductExceptionMapperV1 {
     }
 
     @LogService(log = false)
-    public Response exception(ConstraintException ce) {
+    public RestResponse<ProblemDetailResponsePDTOv1> exception(ConstraintException ce) {
         var e = exception(ce.getMessageKey().name(), ce.getConstraints());
         e.setParams(map(ce.namedParameters));
-        return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+        return RestResponse.status(Response.Status.BAD_REQUEST, e);
     }
 
     public List<ProblemDetailParamPDTOv1> map(Map<String, Object> params) {

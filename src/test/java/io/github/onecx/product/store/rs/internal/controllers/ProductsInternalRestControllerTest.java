@@ -118,37 +118,6 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
     @Test
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
-
-        /*
-         * var createProductDTO = new CreateProductRequestDTO();
-         * createProductDTO.setName("testFullAttributes01");
-         * createProductDTO.setVersion("1.0.0");
-         * createProductDTO.setBasePath("/app3");
-         * createProductDTO
-         * .setImageUrl("https://prod.ucwe.capgemini.com/wp-content/uploads/2023/11/world-cloud-report-banner1_2023.jpg");
-         * createProductDTO.setDescription("some text");
-         * createProductDTO.setDisplayName("display me");
-         * createProductDTO.setIconName("sun");
-         * Set<String> classificationSet = new HashSet<>();
-         * classificationSet.add("Themes");
-         * classificationSet.add("Menu");
-         * createProductDTO.setClassifications(classificationSet);
-         *
-         * var dto = given()
-         * .when()
-         * .contentType(APPLICATION_JSON)
-         * .body(createProductDTO)
-         * .post()
-         * .then()
-         * .statusCode(CREATED.getStatusCode())
-         * .extract()
-         * .body().as(ProductDTO.class);
-         *
-         * assertThat(dto).isNotNull();
-         * assertThat(dto.getName()).isNotNull().isEqualTo(createProductDTO.getName());
-         * assertThat(dto.getBasePath()).isNotNull().isEqualTo(createProductDTO.getBasePath());
-         */
-
         var criteria = new ProductSearchCriteriaDTO();
         criteria.setName("product1");
         criteria.setPageNumber(0);
@@ -207,40 +176,6 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
-
-        /*
-         * criteria.setName("product1");
-         *
-         * data = given()
-         * .contentType(APPLICATION_JSON)
-         * .body(criteria)
-         * .post("/search")
-         * .then()
-         * .statusCode(OK.getStatusCode())
-         * .contentType(APPLICATION_JSON)
-         * .extract()
-         * .as(ProductPageResultDTO.class);
-         *
-         * assertThat(data).isNotNull();
-         * assertThat(data.getTotalElements()).isEqualTo(1);
-         * assertThat(data.getStream()).isNotNull().hasSize(1);
-         *
-         * criteria.setName(" ");
-         *
-         * data = given()
-         * .contentType(APPLICATION_JSON)
-         * .body(criteria)
-         * .post("/search")
-         * .then()
-         * .statusCode(OK.getStatusCode())
-         * .contentType(APPLICATION_JSON)
-         * .extract()
-         * .as(ProductPageResultDTO.class);
-         *
-         * assertThat(data).isNotNull();
-         * assertThat(data.getTotalElements()).isEqualTo(2);
-         * assertThat(data.getStream()).isNotNull().hasSize(2);
-         */
     }
 
     @Test
@@ -256,6 +191,38 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(data).isNotNull();
         assertThat(data.getDetail()).isEqualTo("searchProducts.productSearchCriteriaDTO: must not be null");
+    }
+
+    @Test
+    void searchProductsNoProductNameCriteriaTest() {
+        ProductSearchCriteriaDTO criteriaDTO = new ProductSearchCriteriaDTO();
+        var data = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(2);
+
+        ProductSearchCriteriaDTO criteriaDTO2 = new ProductSearchCriteriaDTO();
+        criteriaDTO2.setName("");
+        var data2 = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO2)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data2).isNotNull();
+        assertThat(data2.getStream()).hasSize(2);
     }
 
     @Test
@@ -315,5 +282,28 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 exception.getDetail());
         Assertions.assertNotNull(exception.getInvalidParams());
         Assertions.assertEquals(1, exception.getInvalidParams().size());
+    }
+
+    @Test
+    void getProductByNameTest() {
+        var dto = given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("name", "product1")
+                .get("/name/{name}")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .body().as(ProductDTO.class);
+
+        assertThat(dto).isNotNull();
+        assertThat(dto.getName()).isEqualTo("product1");
+        assertThat(dto.getDescription()).isEqualTo("description");
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("name", "___")
+                .get("/name/{name}")
+                .then().statusCode(NOT_FOUND.getStatusCode());
     }
 }

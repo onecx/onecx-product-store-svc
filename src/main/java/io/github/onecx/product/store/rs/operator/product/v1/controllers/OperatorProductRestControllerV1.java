@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.operator.product.v1.OperatorProductApi;
@@ -49,11 +48,6 @@ public class OperatorProductRestControllerV1 implements OperatorProductApi {
         mapper.update(product, dto);
         dao.update(product);
         return Response.status(Response.Status.OK).build();
-    }
-
-    @ServerExceptionMapper
-    public Response exception(ConstraintException ex) {
-        return exceptionMapper.exception(ex);
     }
 
     @ServerExceptionMapper

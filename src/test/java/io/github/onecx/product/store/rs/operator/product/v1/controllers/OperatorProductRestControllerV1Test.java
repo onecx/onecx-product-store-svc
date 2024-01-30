@@ -69,6 +69,23 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
     }
 
     @Test
+    void updateProductExistingBaseUrlTest() {
+
+        var dto = new UpdateProductRequestPDTOv1();
+        dto.basePath("/product1");
+
+        given()
+                .when()
+                .contentType(APPLICATION_JSON)
+                .pathParam("name", "product2")
+                .body(dto)
+                .put()
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode());
+
+    }
+
+    @Test
     void createOrUpdateProductEmptyBodyTest() {
         given()
                 .when()

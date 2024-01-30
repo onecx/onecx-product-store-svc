@@ -360,6 +360,42 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getStream()).isNotNull().isEmpty();
     }
 
+    @Test
+    void searchMicrofrontends_missing_and_blank_criteria_Test() {
+        var criteriaBlank = new MicrofrontendSearchCriteriaDTO();
+        criteriaBlank.setAppId("");
+        criteriaBlank.setAppName("");
+        criteriaBlank.setProductName("");
+
+        var response = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaBlank)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStream()).isNotNull().hasSize(3);
+
+        var criteriaMissing = new MicrofrontendSearchCriteriaDTO();
+
+        var response2 = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaMissing)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response2).isNotNull();
+        assertThat(response2.getStream()).isNotNull().hasSize(3);
+    }
+
     /**
      * Scenario: Search request with matching criteria results into response with a single microfrontend (mfe) in list matching
      * the
