@@ -4,18 +4,20 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 
+import org.junit.jupiter.api.Test;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.io.github.onecx.product.store.rs.operator.product.v1.model.UpdateProductRequestPDTOv1;
 import io.github.onecx.product.store.AbstractTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
+import io.quarkus.test.junit.QuarkusTest;
 
-//@QuarkusTest
+@QuarkusTest
 @TestHTTPEndpoint(OperatorProductRestControllerV1.class)
 @WithDBData(value = "data/test-operator-product.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class OperatorProductRestControllerV1Test extends AbstractTest {
 
-    //@Test
+    @Test
     void createOrUpdateProductTest() {
 
         var dto = new UpdateProductRequestPDTOv1();
@@ -32,7 +34,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
 
     }
 
-    //@Test
+    @Test
     void createOrUpdateProductUpdateTest() {
 
         var dto = new UpdateProductRequestPDTOv1();
@@ -49,7 +51,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
 
     }
 
-    //@Test
+    @Test
     void createOrUpdateProductExistingBaseUrlTest() {
 
         var dto = new UpdateProductRequestPDTOv1();
@@ -66,7 +68,7 @@ class OperatorProductRestControllerV1Test extends AbstractTest {
 
     }
 
-    //@Test
+    @Test
     void createOrUpdateProductEmptyBodyTest() {
         given()
                 .when()

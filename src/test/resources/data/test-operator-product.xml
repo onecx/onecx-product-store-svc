@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <PS_PRODUCT guid="p1" name="product1" description="description" image_url="/image" base_path="/product1" operator="false" optlock="0"/>
-    <PS_PRODUCT guid="p2" name="product2" description="description" image_url="/image" base_path="/product2" operator="false" optlock="0"/>
+    <PRODUCT guid="p1" name="product1" description="description" image_url="/image" base_path="/product1" operator="false" optlock="0" classification="searching"/>
+    <PRODUCT guid="p2" name="product2" description="description" image_url="/image" base_path="/product2" operator="false" optlock="0" classification="searching"/>
 </dataset>
