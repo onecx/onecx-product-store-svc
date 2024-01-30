@@ -1,5 +1,8 @@
 package io.github.onecx.product.store.rs.internal.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -15,7 +18,10 @@ import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.io.github.onecx.product.store.rs.internal.ProductsInternalApi;
 import gen.io.github.onecx.product.store.rs.internal.model.*;
+import io.github.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
+import io.github.onecx.product.store.domain.daos.MicrofrontendDAO;
 import io.github.onecx.product.store.domain.daos.ProductDAO;
+import io.github.onecx.product.store.domain.models.Microfrontend;
 import io.github.onecx.product.store.domain.models.Product;
 import io.github.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import io.github.onecx.product.store.rs.internal.mappers.ProductMapper;
@@ -37,6 +43,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     @Context
     UriInfo uriInfo;
 
+    @Inject
+    MicrofrontendDAO microfrontendDAO;
+
     @Override
     public Response createProduct(CreateProductRequestDTO createProductDTO) {
         var item = mapper.create(createProductDTO);
@@ -48,8 +57,20 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
+    @Transactional
     public Response deleteProduct(String id) {
-        dao.deleteQueryById(id);
+        var product = dao.findById(id);
+        if (product != null) {
+            MicrofrontendSearchCriteria criteria = new MicrofrontendSearchCriteria();
+            criteria.setProductName(product.getName());
+            criteria.setPageNumber(0);
+            criteria.setPageSize(1);
+            List<Microfrontend> productRelatedMfes = microfrontendDAO.findMicrofrontendsByCriteria(criteria).getStream()
+                    .collect(Collectors.toList());
+
+            microfrontendDAO.delete(productRelatedMfes);
+            dao.deleteQueryById(id);
+        }
         return Response.noContent().build();
     }
 

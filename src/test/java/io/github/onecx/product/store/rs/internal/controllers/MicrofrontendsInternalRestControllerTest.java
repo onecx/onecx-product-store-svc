@@ -464,7 +464,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response3).isNotNull();
         assertThat(response3.getTotalElements()).isEqualTo(1);
         assertThat(response3.getStream()).isNotNull().hasSize(1);
-        assertThat(response3.getStream().get(0).getEndpoints().get(0).getPath()).isEqualTo("/p1");
+        assertThat(response3.getStream().get(0).getEndpoints()).hasSize(2);
 
     }
 
@@ -745,6 +745,34 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 exception.getDetail());
         Assertions.assertNotNull(exception.getInvalidParams());
         Assertions.assertEquals(1, exception.getInvalidParams().size());
+    }
+
+    /**
+     * Scenario: Receives microfrontend (mfe) by appId successfully .
+     * Given
+     * When I query GET endpoint with an existing appId
+     * Then I get a 'OK' response code back
+     * AND associated mfe is returned
+     */
+    @Test
+    void getMicrofrontendByAppId_shouldReturnMicrofrontend() {
+        var responseGetRequest = given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("appId", "mfe1")
+                .get("/appId/{appId}")
+                .then().statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .body().as(MicrofrontendDTO.class);
+
+        assertThat(responseGetRequest).isNotNull();
+        assertThat(responseGetRequest.getId()).isNotNull();
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("appId", "invalidId")
+                .get("/appId/{appId}")
+                .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
     /**

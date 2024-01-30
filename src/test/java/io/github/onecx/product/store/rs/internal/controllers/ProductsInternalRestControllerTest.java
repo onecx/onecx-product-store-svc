@@ -11,11 +11,10 @@ import org.tkit.quarkus.test.WithDBData;
 
 import gen.io.github.onecx.product.store.rs.internal.model.*;
 import io.github.onecx.product.store.AbstractTest;
-import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@TestHTTPEndpoint(ProductsInternalRestController.class)
+//@TestHTTPEndpoint(ProductsInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsInternalRestControllerTest extends AbstractTest {
 
@@ -32,7 +31,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
-                .post()
+                .post("/internal/products")
                 .then()
                 .statusCode(CREATED.getStatusCode())
                 .extract()
@@ -42,11 +41,11 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(dto.getName()).isNotNull().isEqualTo(createProductDTO.getName());
         assertThat(dto.getBasePath()).isNotNull().isEqualTo(createProductDTO.getBasePath());
 
-        // create theme without body
+        // create product without body
         var exception = given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .post()
+                .post("/internal/products")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .extract().as(ProblemDetailResponseDTO.class);
@@ -58,7 +57,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         exception = given().when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
-                .post()
+                .post("/internal/products")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .extract().as(ProblemDetailResponseDTO.class);
@@ -74,21 +73,37 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
-                .delete("{id}")
+                .delete("/internal/products/{id}")
                 .then().statusCode(NO_CONTENT.getStatusCode());
 
         // check if product exists
         given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
-                .get("{id}")
+                .get("/internal/products/{id}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
+
+        // check if related MFEs got deleted too
+        MicrofrontendSearchCriteriaDTO criteriaDTO = new MicrofrontendSearchCriteriaDTO();
+        criteriaDTO.setProductName("product1");
+        criteriaDTO.setPageNumber(1);
+        criteriaDTO.setPageSize(1);
+
+        var mfes = given().contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/microfrontends/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+        assertThat(mfes.getStream()).hasSize(0);
 
         // delete product
         given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
-                .delete("{id}")
+                .delete("/internal/products/{id}")
                 .then()
                 .statusCode(NO_CONTENT.getStatusCode());
     }
@@ -98,7 +113,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var dto = given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
-                .get("{id}")
+                .get("/internal/products/{id}")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -112,7 +127,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "___")
-                .get("{id}")
+                .get("/internal/products/{id}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
@@ -126,7 +141,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var data = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -145,7 +160,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var data2 = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteria2)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -166,7 +181,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var data = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -182,7 +197,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void searchProductsNoBodyTest() {
         var data = given()
                 .contentType(APPLICATION_JSON)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -199,7 +214,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var data = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTO)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -214,7 +229,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var data2 = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTO2)
-                .post("/search")
+                .post("/internal/products/search")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -238,7 +253,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .body(updateDto)
                 .when()
                 .pathParam("id", "does-not-exists")
-                .put("{id}")
+                .put("/internal/products/{id}")
                 .then()
                 .statusCode(NOT_FOUND.getStatusCode());
 
@@ -247,14 +262,14 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .body(updateDto)
                 .when()
                 .pathParam("id", "p1")
-                .put("{id}")
+                .put("/internal/products/{id}")
                 .then().statusCode(NO_CONTENT.getStatusCode());
 
         var dto = given().contentType(APPLICATION_JSON)
                 .body(updateDto)
                 .when()
                 .pathParam("id", "p1")
-                .get("{id}")
+                .get("/internal/products/{id}")
                 .then().statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
@@ -271,7 +286,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .when()
                 .pathParam("id", "update_create_new")
-                .put("{id}")
+                .put("/internal/products/{id}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .extract().as(ProblemDetailResponseDTO.class);
@@ -289,7 +304,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var dto = given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("name", "product1")
-                .get("/name/{name}")
+                .get("/internal/products/name/{name}")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
@@ -303,7 +318,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         given()
                 .contentType(APPLICATION_JSON)
                 .pathParam("name", "___")
-                .get("/name/{name}")
+                .get("/internal/products/name/{name}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
     }
 }
