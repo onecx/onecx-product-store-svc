@@ -464,6 +464,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response3).isNotNull();
         assertThat(response3.getTotalElements()).isEqualTo(1);
         assertThat(response3.getStream()).isNotNull().hasSize(1);
+        assertThat(response3.getStream().get(0).getEndpoints().get(0).getPath()).isEqualTo("/p1");
 
     }
 
