@@ -186,7 +186,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data2).isNotNull();
         assertThat(data2.getTotalElements()).isEqualTo(1);
         assertThat(data2.getStream()).isNotNull().hasSize(1);
-        assertThat(data2.getStream().get(0).getClassifications()).isNotNull().hasSize(2);
+        assertThat(data2.getStream().get(0).getClassifications()).isNotBlank().isEqualTo("searching");
 
     }
 

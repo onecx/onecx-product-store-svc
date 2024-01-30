@@ -7,11 +7,11 @@ import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 import io.github.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import io.github.onecx.product.store.domain.models.Product;
 import io.github.onecx.product.store.domain.models.Product_;
-import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
 public class ProductDAO extends AbstractDAO<Product> {

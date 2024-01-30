@@ -1,12 +1,9 @@
 package io.github.onecx.product.store.domain.daos;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.criteria.Predicate;
 
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
