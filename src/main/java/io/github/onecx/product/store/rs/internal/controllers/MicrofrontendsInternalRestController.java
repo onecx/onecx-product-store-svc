@@ -51,8 +51,12 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @Override
+    @Transactional
     public Response deleteMicrofrontend(String id) {
-        dao.deleteQueryById(id);
+        var mfe = dao.findById(id);
+        if (mfe != null) {
+            dao.delete(mfe);
+        }
         return Response.noContent().build();
     }
 
@@ -66,6 +70,16 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @Override
+    public Response getMicrofrontendByAppId(String appId) {
+        var item = dao.findByAppId(appId);
+        if (item == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(mapper.map(item)).build();
+    }
+
+    @Override
+    @Transactional
     public Response searchMicrofrontends(MicrofrontendSearchCriteriaDTO microfrontendSearchCriteriaDTO) {
         var criteria = mapper.map(microfrontendSearchCriteriaDTO);
         var result = dao.findMicrofrontendsByCriteria(criteria);

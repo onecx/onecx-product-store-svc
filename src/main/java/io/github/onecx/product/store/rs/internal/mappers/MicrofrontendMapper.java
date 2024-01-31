@@ -63,6 +63,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "removeStreamItem", ignore = true)
     MicrofrontendPageResultDTO mapPageResult(PageResult<Microfrontend> page);
 
+    @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
 
     @Mapping(target = "removeEndpointsItem", ignore = true)

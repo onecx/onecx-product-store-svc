@@ -23,9 +23,9 @@ public class ProductDAO extends AbstractDAO<Product> {
             var root = cq.from(Product.class);
 
             if (criteria.getName() != null && !criteria.getName().isBlank()) {
-                cq.where(cb.like(root.get(Product_.NAME), QueryCriteriaUtil.wildcard(criteria.getName())));
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Product_.NAME),
+                        criteria.getName()));
             }
-
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA, ex);

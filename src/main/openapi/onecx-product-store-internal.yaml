@@ -134,6 +134,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/microfrontends/appId/{appId}:
+    get:
+      tags:
+        - microfrontendsInternal
+      description: Return micro-frontend by its appId
+      operationId: getMicrofrontendByAppId
+      parameters:
+        - name: appId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microfrontend'
+        "404":
+          description: Not found
   /internal/products:
     post:
       tags:
@@ -516,6 +537,10 @@ components:
           type: string
         classifications:
           type: string
+        endpoints:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateUIEndpoint"
     MicrofrontendSearchCriteria:
       type: object
       properties:

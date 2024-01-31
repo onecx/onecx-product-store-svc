@@ -50,7 +50,6 @@ class ProductsRestControllerV1Test extends AbstractTest {
     void searchProductsTest() {
 
         var criteria = new ProductItemSearchCriteriaDTOv1();
-
         var data = given()
                 .contentType(APPLICATION_JSON)
                 .body(criteria)

@@ -25,15 +25,18 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             var root = cq.from(Microfrontend.class);
 
             if (criteria.getProductName() != null && !criteria.getProductName().isBlank()) {
-                cq.where(cb.like(root.get(Microfrontend_.PRODUCT_NAME), QueryCriteriaUtil.wildcard(criteria.getProductName())));
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.PRODUCT_NAME),
+                        criteria.getProductName()));
             }
 
             if (criteria.getAppName() != null && !criteria.getAppName().isBlank()) {
-                cq.where(cb.like(root.get(Microfrontend_.APP_NAME), QueryCriteriaUtil.wildcard(criteria.getAppName())));
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),
+                        criteria.getAppName()));
             }
 
             if (criteria.getAppId() != null && !criteria.getAppId().isBlank()) {
-                cq.where(cb.like(root.get(Microfrontend_.APP_ID), QueryCriteriaUtil.wildcard(criteria.getAppId())));
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
+                        criteria.getAppId()));
             }
 
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();

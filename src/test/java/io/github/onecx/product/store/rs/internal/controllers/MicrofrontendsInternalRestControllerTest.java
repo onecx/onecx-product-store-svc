@@ -30,7 +30,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
      * Then I get a 'OK' response code back
      * AND created mfe is returned
      */
-    //@Test
+    @Test
     void createMicrofrontend_shouldAddNewMicrofrontend_whenProductnameAndAppIdAreUnique() {
         List<CreateUIEndpointDTO> uiEndpointSetForRequest = new ArrayList<>();
         CreateUIEndpointDTO uiEndpointItemForRequest = new CreateUIEndpointDTO();
@@ -259,7 +259,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
      * Then I get a 'OK' response code back
      * AND associated mfe is returned
      */
-    //@Test
+    @Test
     void getMicrofrontend_shouldReturnMicrofrontend() {
         var responseGetRequest = given()
                 .contentType(APPLICATION_JSON)
@@ -360,6 +360,42 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getStream()).isNotNull().isEmpty();
     }
 
+    @Test
+    void searchMicrofrontends_missing_and_blank_criteria_Test() {
+        var criteriaBlank = new MicrofrontendSearchCriteriaDTO();
+        criteriaBlank.setAppId("");
+        criteriaBlank.setAppName("");
+        criteriaBlank.setProductName("");
+
+        var response = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaBlank)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStream()).isNotNull().hasSize(3);
+
+        var criteriaMissing = new MicrofrontendSearchCriteriaDTO();
+
+        var response2 = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaMissing)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response2).isNotNull();
+        assertThat(response2.getStream()).isNotNull().hasSize(3);
+    }
+
     /**
      * Scenario: Search request with matching criteria results into response with a single microfrontend (mfe) in list matching
      * the
@@ -428,6 +464,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response3).isNotNull();
         assertThat(response3.getTotalElements()).isEqualTo(1);
         assertThat(response3.getStream()).isNotNull().hasSize(1);
+        assertThat(response3.getStream().get(0).getEndpoints()).hasSize(2);
 
     }
 
@@ -708,6 +745,34 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 exception.getDetail());
         Assertions.assertNotNull(exception.getInvalidParams());
         Assertions.assertEquals(1, exception.getInvalidParams().size());
+    }
+
+    /**
+     * Scenario: Receives microfrontend (mfe) by appId successfully .
+     * Given
+     * When I query GET endpoint with an existing appId
+     * Then I get a 'OK' response code back
+     * AND associated mfe is returned
+     */
+    @Test
+    void getMicrofrontendByAppId_shouldReturnMicrofrontend() {
+        var responseGetRequest = given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("appId", "mfe1")
+                .get("/appId/{appId}")
+                .then().statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .body().as(MicrofrontendDTO.class);
+
+        assertThat(responseGetRequest).isNotNull();
+        assertThat(responseGetRequest.getId()).isNotNull();
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("appId", "invalidId")
+                .get("/appId/{appId}")
+                .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
     /**
