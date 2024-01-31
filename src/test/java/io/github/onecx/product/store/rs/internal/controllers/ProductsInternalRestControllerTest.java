@@ -97,7 +97,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .extract()
                 .as(MicrofrontendPageResultDTO.class);
-        assertThat(mfes.getStream()).hasSize(0);
+        assertThat(mfes.getStream()).isEmpty();
 
         // delete product
         given()

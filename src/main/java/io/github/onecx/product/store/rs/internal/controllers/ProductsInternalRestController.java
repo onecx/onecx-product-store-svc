@@ -1,7 +1,6 @@
 package io.github.onecx.product.store.rs.internal.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -66,7 +65,7 @@ public class ProductsInternalRestController implements ProductsInternalApi {
             criteria.setPageNumber(0);
             criteria.setPageSize(1);
             List<Microfrontend> productRelatedMfes = microfrontendDAO.findMicrofrontendsByCriteria(criteria).getStream()
-                    .collect(Collectors.toList());
+                    .toList();
 
             microfrontendDAO.delete(productRelatedMfes);
             dao.deleteQueryById(id);
