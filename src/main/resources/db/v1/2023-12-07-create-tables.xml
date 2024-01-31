@@ -84,8 +84,7 @@
         <addUniqueConstraint columnNames="name" constraintName="ui_product_name" tableName="product"/>
 
 
-      <!-- <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ui_endpoint" constraintName="fk_ui_endpoint_microfrontend_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="microfrontend" validate="true"/> -->
-        <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ui_endpoint" constraintName="fka18ko5pk9mqhrh96jfuwswjf6" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="microfrontend"/>
+        <addForeignKeyConstraint baseColumnNames="microfrontend_id" baseTableName="ui_endpoint" constraintName="microfrontends_ui_endpoints" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="microfrontend"/>
 
     </changeSet>
 </databaseChangeLog>

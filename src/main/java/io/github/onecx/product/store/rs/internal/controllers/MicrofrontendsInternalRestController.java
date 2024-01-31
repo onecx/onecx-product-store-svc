@@ -51,8 +51,12 @@ public class MicrofrontendsInternalRestController implements MicrofrontendsInter
     }
 
     @Override
+    @Transactional
     public Response deleteMicrofrontend(String id) {
-        dao.deleteQueryById(id);
+        var mfe = dao.findById(id);
+        if (mfe != null) {
+            dao.delete(mfe);
+        }
         return Response.noContent().build();
     }
 
