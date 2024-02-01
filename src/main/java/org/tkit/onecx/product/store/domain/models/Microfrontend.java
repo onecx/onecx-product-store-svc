@@ -73,4 +73,10 @@ public class Microfrontend extends TraceableEntity {
     @OneToMany(cascade = { REMOVE, REFRESH, PERSIST, MERGE }, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "MICROFRONTEND_ID")
     private Set<UIEndpoint> endpoints = new HashSet<>();
+
+    @Column(name = "REMOTE_NAME")
+    private String remoteName;
+
+    @Column(name = "TAG_NAME")
+    private String tagName;
 }

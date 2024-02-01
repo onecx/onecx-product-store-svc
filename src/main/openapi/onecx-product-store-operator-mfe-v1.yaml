@@ -78,6 +78,10 @@ components:
         - productName
       type: object
       properties:
+        remoteName:
+          type: string
+        tagName:
+          type: string
         appVersion:
           type: string
         appName:

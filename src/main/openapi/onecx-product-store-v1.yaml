@@ -120,6 +120,10 @@ components:
     Microfrontend:
       type: object
       properties:
+        remoteName:
+          type: string
+        tagName:
+          type: string
         appId:
           type: string
         appVersion:
