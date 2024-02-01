@@ -91,7 +91,10 @@ components:
         productName:
           type: string
         classifications:
-          type: string
+          type: array
+          uniqueItems: true
+          items:
+            type: string
         contact:
           type: string
         iconName:

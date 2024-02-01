@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.github.onecx</groupId>
+        <groupId>org.tkit.onecx</groupId>
         <artifactId>onecx-quarkus3-parent</artifactId>
-        <version>0.29.0</version>
+        <version>0.31.0</version>
     </parent>
 
     <artifactId>onecx-product-store-svc</artifactId>
@@ -34,6 +34,10 @@
         <dependency>
             <groupId>org.tkit.quarkus.lib</groupId>
             <artifactId>tkit-quarkus-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.tkit.quarkus.lib</groupId>
+            <artifactId>tkit-quarkus-rest-context</artifactId>
         </dependency>
 
         <!-- QUARKUS -->
@@ -163,8 +167,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>src/main/openapi/onecx-product-store-operator-product-v1.yaml</inputSpec>
-                            <apiPackage>gen.io.github.onecx.product.store.rs.operator.product.v1</apiPackage>
-                            <modelPackage>gen.io.github.onecx.product.store.rs.operator.product.v1.model</modelPackage>
+                            <apiPackage>gen.org.tkit.onecx.product.store.rs.operator.product.v1</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.product.store.rs.operator.product.v1.model</modelPackage>
                             <modelNameSuffix>PDTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
@@ -175,8 +179,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>src/main/openapi/onecx-product-store-operator-mfe-v1.yaml</inputSpec>
-                            <apiPackage>gen.io.github.onecx.product.store.rs.operator.mfe.v1</apiPackage>
-                            <modelPackage>gen.io.github.onecx.product.store.rs.operator.mfe.v1.model</modelPackage>
+                            <apiPackage>gen.org.tkit.onecx.product.store.rs.operator.mfe.v1</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.product.store.rs.operator.mfe.v1.model</modelPackage>
                             <modelNameSuffix>MDTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
@@ -187,8 +191,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>src/main/openapi/onecx-product-store-internal.yaml</inputSpec>
-                            <apiPackage>gen.io.github.onecx.product.store.rs.internal</apiPackage>
-                            <modelPackage>gen.io.github.onecx.product.store.rs.internal.model</modelPackage>
+                            <apiPackage>gen.org.tkit.onecx.product.store.rs.internal</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.product.store.rs.internal.model</modelPackage>
                             <modelNameSuffix>DTO</modelNameSuffix>
                         </configuration>
                     </execution>
@@ -199,8 +203,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>src/main/openapi/onecx-product-store-v1.yaml</inputSpec>
-                            <apiPackage>gen.io.github.onecx.product.store.rs.external.v1</apiPackage>
-                            <modelPackage>gen.io.github.onecx.product.store.rs.external.v1.model</modelPackage>
+                            <apiPackage>gen.org.tkit.onecx.product.store.rs.external.v1</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.product.store.rs.external.v1.model</modelPackage>
                             <modelNameSuffix>DTOv1</modelNameSuffix>
                         </configuration>
                     </execution>
