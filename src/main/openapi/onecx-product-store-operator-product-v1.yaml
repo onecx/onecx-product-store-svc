@@ -88,4 +88,7 @@ components:
         iconName:
           type: string
         classifications:
-          type: string
+          type: array
+          uniqueItems: true
+          items:
+            type: string
