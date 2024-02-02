@@ -73,7 +73,7 @@
         </createIndex>
 
         <addUniqueConstraint columnNames="product_name, app_id" constraintName="microfrontend_app_id" tableName="microfrontend"/>
-        <addUniqueConstraint columnNames="remote_entry, remote_base_url, exposed_module" constraintName="microfrontend_unique" tableName="microfrontend"/>
+        <addUniqueConstraint columnNames="product_name, remote_base_url, exposed_module" constraintName="microfrontend_remote_module" tableName="microfrontend"/>
 
         <createIndex indexName="ui_endpoint_microfrontend_id" tableName="ui_endpoint">
             <column name="microfrontend_id"/>
