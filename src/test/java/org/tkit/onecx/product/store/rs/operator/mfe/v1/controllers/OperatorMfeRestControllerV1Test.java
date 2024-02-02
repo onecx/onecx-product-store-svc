@@ -48,7 +48,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote_base_url1");
         dto.setRemoteEntry("remote-entry1");
         dto.setAppName("display-name");
-        dto.setProductName("product-name");
+        dto.setProductName("p1");
         dto.setRemoteBaseUrl("remote_base_url1");
 
         given()

@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "MICROFRONTEND", uniqueConstraints = {
-        @UniqueConstraint(name = "MICROFRONTEND_UNIQUE", columnNames = { "REMOTE_ENTRY", "REMOTE_BASE_URL",
+        @UniqueConstraint(name = "MICROFRONTEND_REMOTE_MODULE", columnNames = { "PRODUCT_NAME", "REMOTE_BASE_URL",
                 "EXPOSED_MODULE" }),
         @UniqueConstraint(name = "MICROFRONTEND_APP_ID", columnNames = { "PRODUCT_NAME", "APP_ID" })
 }, indexes = {
