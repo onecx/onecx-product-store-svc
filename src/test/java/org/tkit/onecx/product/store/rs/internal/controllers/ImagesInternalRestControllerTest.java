@@ -37,7 +37,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void uploadImage() {
         given()
-                .pathParam("refId", "themeName")
+                .pathParam("refId", "productName")
                 .pathParam("refType", RefTypeDTO.LOGO.toString())
                 .when()
                 .body(FILE)
@@ -54,7 +54,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     void uploadImageEmptyBody() {
 
         var exception = given()
-                .pathParam("refId", "themeName")
+                .pathParam("refId", "productName")
                 .pathParam("refType", RefTypeDTO.LOGO.toString())
                 .when()
                 .contentType(MEDIA_TYPE_IMAGE_PNG)
@@ -70,7 +70,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void uploadImage_shouldReturnBadRequest_whenImageIs() {
 
-        var refId = "themeNameUpload";
+        var refId = "productNameUpload";
         var refType = RefTypeDTO.LOGO;
 
         given()
@@ -96,7 +96,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
 
         assertThat(exception.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(exception.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'image_constraints'  Detail: Key (ref_id, ref_type)=(themeNameUpload, logo) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'image_constraints'  Detail: Key (ref_id, ref_type)=(productNameUpload, logo) already exists.]");
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void getImageTest_shouldReturnNotFound_whenImagesDoesNotExist() {
 
-        var refId = "themeNameGetTest";
+        var refId = "productNameGetTest";
         var refType = RefTypeDTO.FAVICON;
 
         given()
@@ -185,7 +185,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void updateImage() {
 
-        var refId = "themeUpdateTest";
+        var refId = "productUpdateTest";
         var refType = RefTypeDTO.LOGO;
 
         given()
@@ -228,7 +228,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void updateImage_returnNotFound_whenEntryNotExists() {
 
-        var refId = "themeNameUpdateFailed";
+        var refId = "productNameUpdateFailed";
         var refType = RefTypeDTO.LOGO;
 
         given()
@@ -259,7 +259,7 @@ public class ImagesInternalRestControllerTest extends AbstractTest {
     @Test
     void testMaxUploadSize() {
 
-        var refId = "themeMaxUpload";
+        var refId = "productMaxUpload";
 
         byte[] body = new byte[20001];
         new Random().nextBytes(body);
