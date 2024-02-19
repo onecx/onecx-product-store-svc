@@ -1,19 +1,19 @@
 ---
 openapi: 3.0.3
 info:
-  title: onecx-product-store mfe operator service
+  title: onecx-product-store ms operator service
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store:8080"
 tags:
-  - name: operatorMfe
+  - name: operatorMs
 paths:
-  /operator/mfe/v1/{productName}/{appId}:
+  /operator/ms/v1/{productName}/{appId}:
     put:
       tags:
-        - operatorMfe
-      description: Creates or updates a product micro-frontend.
-      operationId: createOrUpdateMfe
+        - operatorMs
+      description: Creates or updates a product micro-service.
+      operationId: createOrUpdateMs
       parameters:
         - name: productName
           in: path
@@ -32,12 +32,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMfeRequest'
+              $ref: '#/components/schemas/UpdateMsRequest'
       responses:
         "201":
-          description: Create new micro-frontend
+          description: Create new micro-service
         "204":
-          description: Update existing micro-frontend
+          description: Update existing micro-service
         "400":
           description: Bad request
           content:
@@ -75,58 +75,17 @@ components:
           type: string
         message:
           type: string
-    UpdateMfeRequest:
-      required:
-        - remoteEntry
-        - exposedModule
-        - appName
-        - remoteBaseUrl
+    UpdateMsRequest:
       type: object
       properties:
-        remoteName:
-          type: string
-        tagName:
-          type: string
-        appVersion:
-          type: string
-        appName:
+        version:
           type: string
         description:
           type: string
-        remoteBaseUrl:
-          type: string
-        remoteEntry:
-          type: string
-        classifications:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
-        contact:
-          type: string
-        iconName:
-          type: string
-        note:
-          type: string
-        exposedModule:
-          type: string
-        technology:
-          type: string
-        endpoints:
-          type: array
-          items:
-            $ref: "#/components/schemas/UpdateMfeUIEndpointRequest"
-    UpdateMfeUIEndpointRequest:
-      required:
-        - path
-        - name
-      type: object
-      properties:
-        path:
-          type: string
         name:
           type: string
-
+        type:
+          type: string
 
 
 

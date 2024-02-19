@@ -117,6 +117,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Microfrontend'
+        microservices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Microservice'
     Microfrontend:
       type: object
       properties:
@@ -152,6 +156,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UIEndpoint"
+    Microservice:
+      type: object
+      properties:
+        name:
+          type: string
+        appId:
+          type: string
+        version:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
     UIEndpoint:
       required:
         - path

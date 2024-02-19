@@ -17,7 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
 @WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
-class OperatorMfeRestControllerV1Test extends AbstractTest {
+class OperatorMsRestControllerV1Test extends AbstractTest {
 
     @Test
     void createMfeTest() {
@@ -27,12 +27,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setAppName("display-name");
-        dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
@@ -48,12 +48,12 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote_base_url1");
         dto.setRemoteEntry("remote-entry1");
         dto.setAppName("display-name");
-        dto.setProductName("p1");
         dto.setRemoteBaseUrl("remote_base_url1");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "p1")
                 .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
@@ -69,13 +69,13 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setAppName("display-name");
-        dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
         dto.setClassifications(Set.of("a", "b"));
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "mfe1")
                 .body(dto)
                 .put()
@@ -88,6 +88,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "mfe2")
                 .body(dto)
                 .put()
@@ -103,6 +104,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "new_mfe_id")
                 .body(dto)
                 .put()
@@ -115,6 +117,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "new_mfe_id")
                 .put()
                 .then().statusCode(BAD_REQUEST.getStatusCode());
