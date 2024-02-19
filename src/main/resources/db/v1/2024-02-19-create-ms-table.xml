@@ -25,7 +25,9 @@
             <column name="modificationuser" type="VARCHAR(255)"/>
         </createTable>
         <addUniqueConstraint columnNames="product_name, app_id" constraintName="microservice_app_id" tableName="microservice"/>
-
+        <createIndex indexName="microservice_product_name" tableName="microservice">
+            <column name="product_name"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>
