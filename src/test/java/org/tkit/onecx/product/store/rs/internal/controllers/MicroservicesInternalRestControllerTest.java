@@ -21,7 +21,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(MicroservicesInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
-public class MicroservicesInternalRestControllerTest extends AbstractTest {
+class MicroservicesInternalRestControllerTest extends AbstractTest {
 
     /**
      * Scenario: Create new microservice (ms) in case product name and app-id path are unique (not yet existing). Full
