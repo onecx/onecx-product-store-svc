@@ -15,6 +15,7 @@ import lombok.Setter;
 }, indexes = {
         @Index(name = "MICROSERVICE_PRODUCT_NAME", columnList = "PRODUCT_NAME")
 })
+@SuppressWarnings("java:S2160")
 public class Microservice extends TraceableEntity {
 
     @Column(name = "APP_ID")
