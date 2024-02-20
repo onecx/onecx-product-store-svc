@@ -8,6 +8,7 @@ servers:
 tags:
   - name: microfrontendsInternal
   - name: productsInternal
+  - name: microservicesInternal
 paths:
   /internal/microfrontends:
     post:
@@ -153,6 +154,152 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Microfrontend'
+        "404":
+          description: Not found
+  /internal/microservices:
+    post:
+      tags:
+        - microservicesInternal
+      description: Create microservice
+      operationId: createMicroservice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMicroserviceRequest'
+      responses:
+        "201":
+          description: New microservice created
+          headers:
+            Location:
+              required: true
+              schema:
+                type: string
+                format: url
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microservice'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/microservices/search:
+    post:
+      tags:
+        - microservicesInternal
+      description: Search for microservices by search criteria
+      operationId: searchMicroservice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MicroserviceSearchCriteria'
+      responses:
+        "200":
+          description: Corresponding micro-services
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MicroservicePageResult'
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/microservices/{id}:
+    get:
+      tags:
+        - microservicesInternal
+      description: Return microservices by ID
+      operationId: getMicroservice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microservice'
+        "404":
+          description: Not found
+    put:
+      tags:
+        - microservicesInternal
+      description: Update microservice by ID
+      operationId: updateMicroservice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMicroserviceRequest'
+      responses:
+        "204":
+          description: microservice updated
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+        "404":
+          description: microservice not found
+    delete:
+      tags:
+        - microservicesInternal
+      description: Delete microservice by ID
+      operationId: deleteMicroservice
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+  /internal/microservices/appId/{appId}:
+    get:
+      tags:
+        - microservicesInternal
+      description: Return microservice by its appId
+      operationId: getMicroserviceByAppId
+      parameters:
+        - name: appId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Microservice'
         "404":
           description: Not found
   /internal/products:
@@ -488,6 +635,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MicrofrontendPageItem'
+    MicroservicePageResult:
+      type: object
+      properties:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
+          type: array
+          items:
+            $ref: '#/components/schemas/MicroservicePageItem'
     MicrofrontendPageItem:
       required:
         - remoteEntry
@@ -545,12 +712,60 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateUIEndpoint"
+    MicroservicePageItem:
+      required:
+        - productName
+        - appId
+      type: object
+      properties:
+        id:
+          type: string
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        modificationCount:
+          format: int32
+          type: integer
+        appId:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        productName:
+          type: string
     MicrofrontendSearchCriteria:
       type: object
       properties:
         appId:
           type: string
         appName:
+          type: string
+        productName:
+          type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 10
+          type: integer
+    MicroserviceSearchCriteria:
+      type: object
+      properties:
+        appId:
+          type: string
+        name:
           type: string
         productName:
           type: string
@@ -608,6 +823,24 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateUIEndpoint"
+    CreateMicroserviceRequest:
+      required:
+        - productName
+        - appId
+      type: object
+      properties:
+        appId:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        productName:
+          type: string
+        type:
+          type: string
     CreateUIEndpoint:
       required:
         - path
@@ -662,6 +895,21 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UpdateUIEndpoint"
+    UpdateMicroserviceRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        productName:
+          type: string
+        type:
+          type: string
     UpdateUIEndpoint:
       required:
         - path
@@ -731,6 +979,32 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UIEndpoint"
+    Microservice:
+      type: object
+      properties:
+        id:
+          type: string
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        modificationCount:
+          format: int32
+          type: integer
+        appId:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        productName:
+          type: string
     UIEndpoint:
       required:
         - path

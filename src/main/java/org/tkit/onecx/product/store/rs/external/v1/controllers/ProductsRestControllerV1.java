@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
+import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
@@ -35,6 +36,9 @@ public class ProductsRestControllerV1 implements ProductsApi {
     @Inject
     MicrofrontendDAO microfrontendDAO;
 
+    @Inject
+    MicroserviceDAO microserviceDAO;
+
     @Override
     public Response getProductByName(String name) {
         var product = dao.findProductByName(name);
@@ -43,8 +47,9 @@ public class ProductsRestControllerV1 implements ProductsApi {
         }
 
         var microfrontends = microfrontendDAO.loadByProductName(product.getName());
+        var microservices = microserviceDAO.loadByProductName(product.getName());
 
-        var dto = mapper.map(product, microfrontends);
+        var dto = mapper.map(product, microfrontends, microservices);
 
         return Response.ok(dto).build();
     }
