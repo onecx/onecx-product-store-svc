@@ -11,11 +11,8 @@ import gen.org.tkit.onecx.product.store.rs.operator.ms.v1.model.UpdateMsRequestM
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface OperatorMsMapperV1 {
 
-    @Mapping(target = "version", ignore = true)
-    @Mapping(target = "type", ignore = true)
     @Mapping(target = "productName", ignore = true)
     @Mapping(target = "persisted", ignore = true)
-    @Mapping(target = "name", ignore = true)
     @Mapping(target = "modificationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
     @Mapping(target = "modificationCount", ignore = true)
@@ -26,11 +23,8 @@ public interface OperatorMsMapperV1 {
     @Mapping(target = "appId", ignore = true)
     Microservice create(UpdateMsRequestMsDTOv1 dto);
 
-    @Mapping(target = "version", ignore = true)
-    @Mapping(target = "type", ignore = true)
     @Mapping(target = "productName", ignore = true)
     @Mapping(target = "persisted", ignore = true)
-    @Mapping(target = "name", ignore = true)
     @Mapping(target = "modificationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
     @Mapping(target = "modificationCount", ignore = true)
