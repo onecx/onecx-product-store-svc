@@ -29,6 +29,28 @@ paths:
                 $ref: '#/components/schemas/Product'
         "404":
           description: Product not found
+  /v1/products/appIds:
+    post:
+      tags:
+        - products
+      description: find appIds by list of productNames
+      operationId: getAppIdsByProductNames
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        "200":
+          description: appIds related to given products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsAppIdsResponse'
+        "404":
+          description: Product not found
   /v1/products/search:
     post:
       tags:
@@ -195,6 +217,22 @@ components:
           type: string
         classifications:
           type: string
+    ProductsAppIdsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductsAppIds'
+    ProductsAppIds:
+      type: object
+      properties:
+        productName:
+          type: string
+        appIds:
+          type: array
+          items:
+            type: string
     OffsetDateTime:
       format: date-time
       type: string

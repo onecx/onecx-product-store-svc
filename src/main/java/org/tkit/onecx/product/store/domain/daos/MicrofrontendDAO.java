@@ -4,6 +4,8 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import org.tkit.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
@@ -70,6 +72,24 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
                     .getResultStream();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME, ex, productName);
+        }
+    }
+
+    public PageResult<String> getAllAppIdsByProductName(String productName) {
+        try {
+            var cb = getEntityManager().getCriteriaBuilder();
+            CriteriaQuery<String> cq = cb.createQuery(String.class);
+            Root<Microfrontend> root = cq.from(Microfrontend.class);
+            cq.select(root.get(Microfrontend_.APP_ID)).distinct(true);
+
+            if (productName != null && !productName.isEmpty()) {
+                cq.where(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
+            }
+
+            var results = getEntityManager().createQuery(cq).getResultList();
+            return new PageResult<>(results.size(), results.stream(), Page.of(0, 1));
+        } catch (Exception exception) {
+            throw new DAOException(ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME, exception);
         }
     }
 

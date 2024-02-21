@@ -1,5 +1,8 @@
 package org.tkit.onecx.product.store.rs.external.v1.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -18,6 +21,8 @@ import org.tkit.quarkus.log.cdi.LogService;
 import gen.org.tkit.onecx.product.store.rs.external.v1.ProductsApi;
 import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
 import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
+import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductsAppIdsDTOv1;
+import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductsAppIdsResponseDTOv1;
 
 @LogService
 @ApplicationScoped
@@ -38,6 +43,24 @@ public class ProductsRestControllerV1 implements ProductsApi {
 
     @Inject
     MicroserviceDAO microserviceDAO;
+
+    @Override
+    @Transactional
+    public Response getAppIdsByProductNames(List<String> requestBody) {
+        ProductsAppIdsResponseDTOv1 responseDTOv1 = new ProductsAppIdsResponseDTOv1();
+        List<ProductsAppIdsDTOv1> listOfProducts = new ArrayList<>();
+        requestBody.forEach(s -> {
+            ProductsAppIdsDTOv1 dto = new ProductsAppIdsDTOv1();
+            dto.setProductName(s);
+            List<String> appIds = new ArrayList<>();
+            appIds.addAll(microfrontendDAO.getAllAppIdsByProductName(s).getStream().toList());
+            appIds.addAll(microserviceDAO.getAllAppIdsByProductName(s).getStream().toList());
+            dto.setAppIds(appIds);
+            listOfProducts.add(dto);
+        });
+        responseDTOv1.setProducts(listOfProducts);
+        return Response.ok(responseDTOv1).build();
+    }
 
     @Override
     public Response getProductByName(String name) {
