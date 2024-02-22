@@ -19,6 +19,7 @@ public interface MicroserviceMapper {
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "operator", constant = "false")
     Microservice create(CreateMicroserviceRequestDTO dto);
 
     @Mapping(target = "persisted", ignore = true)
@@ -29,6 +30,7 @@ public interface MicroserviceMapper {
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "operator", constant = "false")
     void update(UpdateMicroserviceRequestDTO dto, @MappingTarget Microservice data);
 
     MicroserviceSearchCriteria map(MicroserviceSearchCriteriaDTO dto);
