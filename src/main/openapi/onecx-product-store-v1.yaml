@@ -39,7 +39,7 @@ paths:
         content:
           application/json:
             schema:
-             $ref: '#/components/schemas/ProductItemSearchCriteria'
+             $ref: '#/components/schemas/ProductItemLoadSearchCriteria'
       responses:
         "200":
           description: Pageresult matching given criteria
@@ -99,12 +99,25 @@ components:
     ProductItemSearchCriteria:
       type: object
       properties:
+        name:
+          type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 10
+          type: integer
+    ProductItemLoadSearchCriteria:
+      type: object
+      properties:
         productNames:
           type: array
           items:
             type: string
-        name:
-          type: string
         pageNumber:
           format: int32
           description: The number of page.

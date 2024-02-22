@@ -19,7 +19,11 @@ import gen.org.tkit.onecx.product.store.rs.external.v1.model.*;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface ProductMapperV1 {
 
-    ProductSearchCriteria map(ProductItemSearchCriteriaDTOv1 data);
+    @Mapping(target = "name", ignore = true)
+    ProductSearchCriteria map(ProductItemLoadSearchCriteriaDTOv1 data);
+
+    @Mapping(target = "productNames", ignore = true)
+    ProductSearchCriteria map(ProductItemSearchCriteriaDTOv1 productSearchCriteriaDTOV1);
 
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductItemPageResultDTOv1 mapPageResult(PageResult<Product> page);

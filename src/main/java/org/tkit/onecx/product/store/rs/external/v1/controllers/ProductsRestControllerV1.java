@@ -40,8 +40,8 @@ public class ProductsRestControllerV1 implements ProductsApi {
     MicroserviceDAO microserviceDAO;
 
     @Override
-    public Response loadProductsByCriteria(ProductItemSearchCriteriaDTOv1 productItemSearchCriteriaDTOv1) {
-        var criteria = mapper.map(productItemSearchCriteriaDTOv1);
+    public Response loadProductsByCriteria(ProductItemLoadSearchCriteriaDTOv1 productItemLoadSearchCriteriaDTOv1) {
+        var criteria = mapper.map(productItemLoadSearchCriteriaDTOv1);
 
         ProductLoadResultWrapper wrapper = new ProductLoadResultWrapper();
 
