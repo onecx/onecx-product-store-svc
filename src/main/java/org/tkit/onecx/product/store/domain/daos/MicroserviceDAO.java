@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 
 import org.tkit.onecx.product.store.domain.criteria.MicroserviceSearchCriteria;
-import org.tkit.onecx.product.store.domain.criteria.ProductLoadCriteria;
+import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Microservice_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
@@ -72,7 +72,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
-    public PageResult<Microservice> loadByCriteria(ProductLoadCriteria criteria) {
+    public PageResult<Microservice> loadByCriteria(ProductSearchCriteria criteria) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microservice.class);

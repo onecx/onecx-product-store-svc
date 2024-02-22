@@ -32,8 +32,6 @@ class ProductDAOTest {
                 ProductDAO.ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA);
         methodExceptionTests(() -> dao.findProductByName("test"),
                 ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME);
-        methodExceptionTests(() -> dao.loadByCriteria(null),
-                ProductDAO.ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.tkit.onecx.product.store.domain.criteria.ProductLoadCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
@@ -48,8 +47,6 @@ public interface ProductMapperV1 {
     MicrofrontendDTOv1 map(Microfrontend data);
 
     MicroserviceDTOv1 map(Microservice data);
-
-    ProductLoadCriteria map(ProductsLoadCriteriaDTOv1 productsLoadCriteriaDTOv1);
 
     MicrofrontendAbstractDTOv1 mapAbstract(Microfrontend mfe);
 

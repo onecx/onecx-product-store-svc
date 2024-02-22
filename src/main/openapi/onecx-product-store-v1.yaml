@@ -39,7 +39,7 @@ paths:
         content:
           application/json:
             schema:
-             $ref: '#/components/schemas/ProductsLoadCriteria'
+             $ref: '#/components/schemas/ProductItemSearchCriteria'
       responses:
         "200":
           description: Pageresult matching given criteria
@@ -99,6 +99,10 @@ components:
     ProductItemSearchCriteria:
       type: object
       properties:
+        productNames:
+          type: array
+          items:
+            type: string
         name:
           type: string
         pageNumber:
@@ -235,23 +239,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProductsAbstract'
-    ProductsLoadCriteria:
-      type: object
-      properties:
-        productNames:
-          type: array
-          items:
-            type: string
-        pageNumber:
-          format: int32
-          description: The number of page.
-          default: 0
-          type: integer
-        pageSize:
-          format: int32
-          description: The size of page
-          default: 10
-          type: integer
     ProductsAbstract:
       type: object
       properties:
@@ -279,22 +266,6 @@ components:
           type: string
         appName:
           type: string
-    ProductsAppIdsResponse:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductsAppIds'
-    ProductsAppIds:
-      type: object
-      properties:
-        productName:
-          type: string
-        appIds:
-          type: array
-          items:
-            type: string
     OffsetDateTime:
       format: date-time
       type: string

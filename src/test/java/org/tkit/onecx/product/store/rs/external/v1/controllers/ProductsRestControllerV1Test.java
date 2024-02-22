@@ -83,7 +83,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
     void loadProductsByCriteriaTest() {
-        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        ProductItemSearchCriteriaDTOv1 criteriaDTOv1 = new ProductItemSearchCriteriaDTOv1();
         criteriaDTOv1.setProductNames(List.of("product1"));
 
         var data = given()
@@ -105,7 +105,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
     void loadProductsByCriteriaEmptyProductNameTest() {
-        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        ProductItemSearchCriteriaDTOv1 criteriaDTOv1 = new ProductItemSearchCriteriaDTOv1();
         criteriaDTOv1.setProductNames(List.of(""));
 
         var data = given()
@@ -124,7 +124,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
     void loadProductsByEmptyCriteriaTest() {
-        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        ProductItemSearchCriteriaDTOv1 criteriaDTOv1 = new ProductItemSearchCriteriaDTOv1();
 
         var data = given()
                 .contentType(APPLICATION_JSON)
@@ -142,7 +142,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
     void loadProductsByCriteriaEmptyListTest() {
-        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        ProductItemSearchCriteriaDTOv1 criteriaDTOv1 = new ProductItemSearchCriteriaDTOv1();
         List<String> emptyList = new ArrayList<>();
         criteriaDTOv1.setProductNames(emptyList);
         var data = given()

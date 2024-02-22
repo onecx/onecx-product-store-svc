@@ -40,12 +40,12 @@ public class ProductsRestControllerV1 implements ProductsApi {
     MicroserviceDAO microserviceDAO;
 
     @Override
-    public Response loadProductsByCriteria(ProductsLoadCriteriaDTOv1 productsLoadCriteriaDTOv1) {
-        var criteria = mapper.map(productsLoadCriteriaDTOv1);
+    public Response loadProductsByCriteria(ProductItemSearchCriteriaDTOv1 productItemSearchCriteriaDTOv1) {
+        var criteria = mapper.map(productItemSearchCriteriaDTOv1);
 
         ProductLoadResultWrapper wrapper = new ProductLoadResultWrapper();
 
-        var products = dao.loadByCriteria(criteria);
+        var products = dao.findProductsByCriteria(criteria);
         var microservices = microserviceDAO.loadByCriteria(criteria).getStream().toList();
         var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().toList();
         wrapper.setProducts(products.getStream().toList());
