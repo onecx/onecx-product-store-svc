@@ -29,6 +29,26 @@ paths:
                 $ref: '#/components/schemas/Product'
         "404":
           description: Product not found
+  /v1/products/load:
+    post:
+      tags:
+        - products
+      description: load products by criteria
+      operationId: loadProductsByCriteria
+      requestBody:
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/ProductItemLoadSearchCriteria'
+      responses:
+        "200":
+          description: Pageresult matching given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsLoadResult'
+        "404":
+          description: Product not found
   /v1/products/search:
     post:
       tags:
@@ -81,6 +101,23 @@ components:
       properties:
         name:
           type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 10
+          type: integer
+    ProductItemLoadSearchCriteria:
+      type: object
+      properties:
+        productNames:
+          type: array
+          items:
+            type: string
         pageNumber:
           format: int32
           description: The number of page.
@@ -194,6 +231,53 @@ components:
         basePath:
           type: string
         classifications:
+          type: string
+    ProductsLoadResult:
+      type: object
+      properties:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductsAbstract'
+    ProductsAbstract:
+      type: object
+      properties:
+        name:
+          type: string
+        microfrontends:
+          type: array
+          items:
+            $ref: '#/components/schemas/MicrofrontendAbstract'
+        microservices:
+          type: array
+          items:
+            $ref: '#/components/schemas/MicroserviceAbstract'
+    MicrofrontendAbstract:
+      type: object
+      properties:
+        appId:
+          type: string
+        appName:
+          type: string
+    MicroserviceAbstract:
+      type: object
+      properties:
+        appId:
+          type: string
+        appName:
           type: string
     OffsetDateTime:
       format: date-time

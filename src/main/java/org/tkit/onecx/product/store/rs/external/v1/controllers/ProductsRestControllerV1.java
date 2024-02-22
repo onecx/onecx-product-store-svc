@@ -11,13 +11,13 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.org.tkit.onecx.product.store.rs.external.v1.ProductsApi;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
+import gen.org.tkit.onecx.product.store.rs.external.v1.model.*;
 
 @LogService
 @ApplicationScoped
@@ -38,6 +38,27 @@ public class ProductsRestControllerV1 implements ProductsApi {
 
     @Inject
     MicroserviceDAO microserviceDAO;
+
+    @Override
+    public Response loadProductsByCriteria(ProductItemLoadSearchCriteriaDTOv1 productItemLoadSearchCriteriaDTOv1) {
+        var criteria = mapper.map(productItemLoadSearchCriteriaDTOv1);
+
+        ProductLoadResultWrapper wrapper = new ProductLoadResultWrapper();
+
+        var products = dao.findProductsByCriteria(criteria);
+        var microservices = microserviceDAO.loadByCriteria(criteria).getStream().toList();
+        var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().toList();
+        wrapper.setProducts(products.getStream().toList());
+        wrapper.setMicrofrontends(microfrontends);
+        wrapper.setMicroservices(microservices);
+        wrapper.setTotalPages(products.getTotalPages());
+        wrapper.setNumber(products.getNumber());
+        wrapper.setSize(products.getSize());
+        wrapper.setTotalElements(products.getTotalElements());
+
+        ProductsLoadResultDTOv1 resultDTOv1 = mapper.map(wrapper);
+        return Response.ok(resultDTOv1).build();
+    }
 
     @Override
     public Response getProductByName(String name) {

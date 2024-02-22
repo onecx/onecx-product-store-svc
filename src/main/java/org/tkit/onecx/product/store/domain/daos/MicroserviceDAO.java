@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 
 import org.tkit.onecx.product.store.domain.criteria.MicroserviceSearchCriteria;
+import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Microservice_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
@@ -68,6 +69,21 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
                     .getResultStream();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_LOAD_MS_BY_PRODUCT_NAME, ex, productName);
+        }
+    }
+
+    public PageResult<Microservice> loadByCriteria(ProductSearchCriteria criteria) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microservice.class);
+            var root = cq.from(Microservice.class);
+
+            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+                cq.where(root.get(Microservice_.PRODUCT_NAME).in(criteria.getProductNames()));
+            }
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+        } catch (Exception exception) {
+            throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, exception);
         }
     }
 
