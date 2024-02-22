@@ -5,6 +5,6 @@
 
         <include relativeToChangelogFile="true" file="v1/2023-12-07-create-tables.xml"/>
         <include relativeToChangelogFile="true" file="v1/2024-02-01-mfe-attrs.xml"/>
+        <include relativeToChangelogFile="true" file="v1/2023-12-07-create-tables-image.xml"/>
         <include relativeToChangelogFile="true" file="v1/2024-02-19-create-ms-table.xml"/>
-
 </databaseChangeLog>
