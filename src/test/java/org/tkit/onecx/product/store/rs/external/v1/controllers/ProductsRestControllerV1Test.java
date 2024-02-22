@@ -119,7 +119,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
                 .as(ProductsLoadResultDTOv1.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getStream()).hasSize(0);
+        assertThat(data.getStream()).isEmpty();
     }
 
     @Test
