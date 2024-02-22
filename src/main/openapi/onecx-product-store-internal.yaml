@@ -692,6 +692,8 @@ components:
           type: string
         description:
           type: string
+        iconName:
+          type: string
         technology:
           type: string
         remoteBaseUrl:
@@ -741,6 +743,8 @@ components:
           type: string
         productName:
           type: string
+        operator:
+          type: boolean
     MicrofrontendSearchCriteria:
       type: object
       properties:
@@ -1005,6 +1009,8 @@ components:
           type: string
         productName:
           type: string
+        operator:
+          type: boolean
     UIEndpoint:
       required:
         - path

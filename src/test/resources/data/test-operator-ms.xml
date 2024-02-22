@@ -3,8 +3,8 @@
 
     <MICROSERVICE guid="m1" app_id="ms1" product_name="p1" name="display_name1" optlock="0"
                    version="1.0.0" description="some text" creationDate="2024-01-11 12:21:38.914993" modificationDate="2024-01-11 12:21:38.914993"
-                   />
+                  operator="false"/>
 
     <MICROSERVICE guid="m2" app_id="ms2" product_name="p2" name="display_name2" optlock="0" version="1.0.0" description="some text" creationDate="2024-01-11 12:21:38.914993" modificationDate="2024-01-11 12:21:38.914993"
-                   />
+                  operator="false"/>
 </dataset>

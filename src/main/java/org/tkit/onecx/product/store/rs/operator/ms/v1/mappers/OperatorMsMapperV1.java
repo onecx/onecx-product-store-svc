@@ -20,6 +20,7 @@ public interface OperatorMsMapperV1 {
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "operator", constant = "true")
     @Mapping(target = "appId", ignore = true)
     Microservice create(UpdateMsRequestMsDTOv1 dto);
 
@@ -32,6 +33,7 @@ public interface OperatorMsMapperV1 {
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
+    @Mapping(target = "operator", constant = "true")
     @Mapping(target = "appId", ignore = true)
     void update(@MappingTarget Microservice ms, UpdateMsRequestMsDTOv1 dto);
 }

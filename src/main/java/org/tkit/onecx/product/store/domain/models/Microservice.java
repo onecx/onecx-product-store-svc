@@ -36,4 +36,7 @@ public class Microservice extends TraceableEntity {
     @Column(name = "PRODUCT_NAME")
     private String productName;
 
+    @Column(name = "OPERATOR", nullable = false)
+    private boolean operator;
+
 }
