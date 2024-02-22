@@ -29,26 +29,24 @@ paths:
                 $ref: '#/components/schemas/Product'
         "404":
           description: Product not found
-  /v1/products/appIds:
+  /v1/products/load:
     post:
       tags:
         - products
-      description: find appIds by list of productNames
-      operationId: getAppIdsByProductNames
+      description: load products by criteria
+      operationId: loadProductsByCriteria
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+             $ref: '#/components/schemas/ProductsLoadCriteria'
       responses:
         "200":
-          description: appIds related to given products
+          description: Pageresult matching given criteria
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductsAppIdsResponse'
+                $ref: '#/components/schemas/ProductsLoadResult'
         "404":
           description: Product not found
   /v1/products/search:
@@ -216,6 +214,70 @@ components:
         basePath:
           type: string
         classifications:
+          type: string
+    ProductsLoadResult:
+      type: object
+      properties:
+        totalElements:
+          format: int64
+          description: The total elements in the resource.
+          type: integer
+        number:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        totalPages:
+          format: int64
+          type: integer
+        stream:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductsAbstract'
+    ProductsLoadCriteria:
+      type: object
+      properties:
+        productNames:
+          type: array
+          items:
+            type: string
+        pageNumber:
+          format: int32
+          description: The number of page.
+          default: 0
+          type: integer
+        pageSize:
+          format: int32
+          description: The size of page
+          default: 10
+          type: integer
+    ProductsAbstract:
+      type: object
+      properties:
+        name:
+          type: string
+        microfrontends:
+          type: array
+          items:
+            $ref: '#/components/schemas/MicrofrontendAbstract'
+        microservices:
+          type: array
+          items:
+            $ref: '#/components/schemas/MicroserviceAbstract'
+    MicrofrontendAbstract:
+      type: object
+      properties:
+        appId:
+          type: string
+        appName:
+          type: string
+    MicroserviceAbstract:
+      type: object
+      properties:
+        appId:
+          type: string
+        appName:
           type: string
     ProductsAppIdsResponse:
       type: object

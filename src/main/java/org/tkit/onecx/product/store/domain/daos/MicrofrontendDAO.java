@@ -4,10 +4,9 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 
 import org.tkit.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
+import org.tkit.onecx.product.store.domain.criteria.ProductLoadCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microfrontend_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
@@ -75,21 +74,18 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
-    public PageResult<String> getAllAppIdsByProductName(String productName) {
+    public PageResult<Microfrontend> loadByCriteria(ProductLoadCriteria criteria) {
         try {
-            var cb = getEntityManager().getCriteriaBuilder();
-            CriteriaQuery<String> cq = cb.createQuery(String.class);
-            Root<Microfrontend> root = cq.from(Microfrontend.class);
-            cq.select(root.get(Microfrontend_.APP_ID)).distinct(true);
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microfrontend.class);
+            var root = cq.from(Microfrontend.class);
 
-            if (productName != null && !productName.isEmpty()) {
-                cq.where(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
+            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+                cq.where(root.get(Microfrontend_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
-
-            var results = getEntityManager().createQuery(cq).getResultList();
-            return new PageResult<>(results.size(), results.stream(), Page.of(0, 1));
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception exception) {
-            throw new DAOException(ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME, exception);
+            throw new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA, exception);
         }
     }
 

@@ -1,8 +1,5 @@
 package org.tkit.onecx.product.store.rs.external.v1.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -14,15 +11,13 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.org.tkit.onecx.product.store.rs.external.v1.ProductsApi;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProblemDetailResponseDTOv1;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductItemSearchCriteriaDTOv1;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductsAppIdsDTOv1;
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductsAppIdsResponseDTOv1;
+import gen.org.tkit.onecx.product.store.rs.external.v1.model.*;
 
 @LogService
 @ApplicationScoped
@@ -45,21 +40,24 @@ public class ProductsRestControllerV1 implements ProductsApi {
     MicroserviceDAO microserviceDAO;
 
     @Override
-    @Transactional
-    public Response getAppIdsByProductNames(List<String> requestBody) {
-        ProductsAppIdsResponseDTOv1 responseDTOv1 = new ProductsAppIdsResponseDTOv1();
-        List<ProductsAppIdsDTOv1> listOfProducts = new ArrayList<>();
-        requestBody.forEach(s -> {
-            ProductsAppIdsDTOv1 dto = new ProductsAppIdsDTOv1();
-            dto.setProductName(s);
-            List<String> appIds = new ArrayList<>();
-            appIds.addAll(microfrontendDAO.getAllAppIdsByProductName(s).getStream().toList());
-            appIds.addAll(microserviceDAO.getAllAppIdsByProductName(s).getStream().toList());
-            dto.setAppIds(appIds);
-            listOfProducts.add(dto);
-        });
-        responseDTOv1.setProducts(listOfProducts);
-        return Response.ok(responseDTOv1).build();
+    public Response loadProductsByCriteria(ProductsLoadCriteriaDTOv1 productsLoadCriteriaDTOv1) {
+        var criteria = mapper.map(productsLoadCriteriaDTOv1);
+
+        ProductLoadResultWrapper wrapper = new ProductLoadResultWrapper();
+
+        var products = dao.loadByCriteria(criteria);
+        var microservices = microserviceDAO.loadByCriteria(criteria).getStream().toList();
+        var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().toList();
+        wrapper.setProducts(products.getStream().toList());
+        wrapper.setMicrofrontends(microfrontends);
+        wrapper.setMicroservices(microservices);
+        wrapper.setTotalPages(products.getTotalPages());
+        wrapper.setNumber(products.getNumber());
+        wrapper.setSize(products.getSize());
+        wrapper.setTotalElements(products.getTotalElements());
+
+        ProductsLoadResultDTOv1 resultDTOv1 = mapper.map(wrapper);
+        return Response.ok(resultDTOv1).build();
     }
 
     @Override

@@ -12,8 +12,10 @@ import lombok.Setter;
 @Setter
 @Table(name = "PRODUCT", uniqueConstraints = {
         @UniqueConstraint(name = "UI_PRODUCT_NAME", columnNames = { "NAME" }),
-        @UniqueConstraint(name = "UI_PRODUCT_BASE_PATH", columnNames = { "BASE_PATH" })
+        @UniqueConstraint(name = "UI_PRODUCT_BASE_PATH", columnNames = { "BASE_PATH" }),
+
 })
+
 @SuppressWarnings("java:S2160")
 public class Product extends TraceableEntity {
     public static final String PRODUCT_LOAD = "PRODUCT_LOAD";

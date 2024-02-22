@@ -5,7 +5,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -82,21 +81,24 @@ class ProductsRestControllerV1Test extends AbstractTest {
     }
 
     @Test
-    void getAppIdsByProductNamesTest() {
-        List<String> body = new ArrayList<>();
-        body.add("product1");
-        body.add("product2");
+    void loadProductsByCriteriaTest() {
+        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        criteriaDTOv1.setProductNames(List.of("product1"));
+
         var data = given()
                 .contentType(APPLICATION_JSON)
-                .body(body)
-                .post("/appIds")
+                .body(criteriaDTOv1)
+                .post("/load")
                 .then()
                 .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
-                .as(ProductsAppIdsResponseDTOv1.class);
+                .as(ProductsLoadResultDTOv1.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getProducts()).hasSize(2);
+        assertThat(data.getStream()).hasSize(1);
+        assertThat(data.getStream().get(0).getMicrofrontends()).hasSize(2);
+        assertThat(data.getStream().get(0).getMicroservices()).hasSize(2);
+
     }
 }

@@ -4,10 +4,9 @@ import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 
 import org.tkit.onecx.product.store.domain.criteria.MicroserviceSearchCriteria;
+import org.tkit.onecx.product.store.domain.criteria.ProductLoadCriteria;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Microservice_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
@@ -73,20 +72,18 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
-    public PageResult<String> getAllAppIdsByProductName(String productName) {
+    public PageResult<Microservice> loadByCriteria(ProductLoadCriteria criteria) {
         try {
-            var cb = getEntityManager().getCriteriaBuilder();
-            CriteriaQuery<String> cq = cb.createQuery(String.class);
-            Root<Microservice> root = cq.from(Microservice.class);
-            cq.select(root.get(Microservice_.APP_ID)).distinct(true);
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microservice.class);
+            var root = cq.from(Microservice.class);
 
-            if (productName != null && !productName.isEmpty()) {
-                cq.where(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+                cq.where(root.get(Microservice_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
-            var results = getEntityManager().createQuery(cq).getResultList();
-            return new PageResult<>(results.size(), results.stream(), Page.of(0, 1));
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception exception) {
-            throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_LOAD_MS_BY_PRODUCT_NAME, exception);
+            throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, exception);
         }
     }
 

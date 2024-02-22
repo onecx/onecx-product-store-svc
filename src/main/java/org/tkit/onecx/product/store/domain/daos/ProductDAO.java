@@ -3,9 +3,9 @@ package org.tkit.onecx.product.store.domain.daos;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 
+import org.tkit.onecx.product.store.domain.criteria.ProductLoadCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
-import org.tkit.onecx.product.store.domain.models.Product;
-import org.tkit.onecx.product.store.domain.models.Product_;
+import org.tkit.onecx.product.store.domain.models.*;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
@@ -42,6 +42,21 @@ public class ProductDAO extends AbstractDAO<Product> {
             return null;
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME, ex, productName);
+        }
+    }
+
+    public PageResult<Product> loadByCriteria(ProductLoadCriteria criteria) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Product.class);
+            var root = cq.from(Product.class);
+
+            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+                cq.where(root.get(Product_.NAME).in(criteria.getProductNames()));
+            }
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+        } catch (Exception exception) {
+            throw new DAOException(ProductDAO.ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA, exception);
         }
     }
 
