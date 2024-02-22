@@ -19,7 +19,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
-class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
+class OperatorMsRestControllerV1ExceptionTest extends AbstractTest {
 
     @InjectMock
     MicrofrontendDAO dao;
@@ -40,12 +40,12 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
         dto.setRemoteEntry("remote-entry");
         dto.setTechnology("angular");
         dto.setAppName("display-name");
-        dto.setProductName("product-name");
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
                 .contentType(APPLICATION_JSON)
                 .body(dto)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "mfe1")
                 .put()
                 .then()
@@ -54,6 +54,7 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
         given()
                 .contentType(APPLICATION_JSON)
                 .body(dto)
+                .pathParam("productName", "product-name")
                 .pathParam("appId", "mfe1")
                 .put()
                 .then()

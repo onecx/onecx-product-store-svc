@@ -28,6 +28,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "appId", ignore = true)
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "toString")
+    @Mapping(target = "productName", ignore = true)
     Microfrontend create(UpdateMfeRequestMDTOv1 dto);
 
     @Mapping(target = "id", ignore = true)
@@ -45,6 +46,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "endpoints", qualifiedByName = "updateList")
     @Mapping(target = "classifications", qualifiedByName = "toString")
+    @Mapping(target = "productName", ignore = true)
     void update(@MappingTarget Microfrontend mfe, UpdateMfeRequestMDTOv1 dto);
 
     @Named("updateList")

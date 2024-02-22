@@ -63,6 +63,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
+        assertThat(data.getStream().get(0).getClassifications()).isEqualTo("search");
     }
 
     @Test

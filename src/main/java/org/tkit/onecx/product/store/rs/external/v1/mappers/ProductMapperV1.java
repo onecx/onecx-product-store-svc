@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
+import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -25,16 +26,23 @@ public interface ProductMapperV1 {
 
     @Mapping(target = "removeMicrofrontendsItem", ignore = true)
     @Mapping(target = "microfrontends", ignore = true)
+    @Mapping(target = "removeMicroservicesItem", ignore = true)
+    @Mapping(target = "microservices", ignore = true)
     ProductDTOv1 map(Product data);
 
-    default ProductDTOv1 map(Product product, Stream<Microfrontend> microfrontends) {
+    default ProductDTOv1 map(Product product, Stream<Microfrontend> microfrontends, Stream<Microservice> microservices) {
         var p = map(product);
         p.setMicrofrontends(items(microfrontends));
+        p.setMicroservices(microservices(microservices));
         return p;
     }
 
     List<MicrofrontendDTOv1> items(Stream<Microfrontend> microfrontends);
 
+    List<MicroserviceDTOv1> microservices(Stream<Microservice> microservices);
+
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTOv1 map(Microfrontend data);
+
+    MicroserviceDTOv1 map(Microservice data);
 }
