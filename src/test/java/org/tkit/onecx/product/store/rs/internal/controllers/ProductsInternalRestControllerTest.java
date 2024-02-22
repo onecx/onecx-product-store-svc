@@ -53,7 +53,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(exception.getErrorCode()).isEqualTo("CONSTRAINT_VIOLATIONS");
         assertThat(exception.getDetail()).isEqualTo("createProduct.createProductRequestDTO: must not be null");
 
-        // create theme with existing name
+        // create product with existing name
         exception = given().when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
