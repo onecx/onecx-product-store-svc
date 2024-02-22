@@ -5,6 +5,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -101,4 +102,61 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(data.getStream().get(0).getMicroservices()).hasSize(2);
 
     }
+
+    @Test
+    void loadProductsByCriteriaEmptyProductNameTest() {
+        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        criteriaDTOv1.setProductNames(List.of(""));
+
+        var data = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTOv1)
+                .post("/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTOv1.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(0);
+    }
+
+    @Test
+    void loadProductsByEmptyCriteriaTest() {
+        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+
+        var data = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTOv1)
+                .post("/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTOv1.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(2);
+    }
+
+    @Test
+    void loadProductsByCriteriaEmptyListTest() {
+        ProductsLoadCriteriaDTOv1 criteriaDTOv1 = new ProductsLoadCriteriaDTOv1();
+        List<String> emptyList = new ArrayList<>();
+        criteriaDTOv1.setProductNames(emptyList);
+        var data = given()
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTOv1)
+                .post("/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTOv1.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(2);
+    }
+
 }

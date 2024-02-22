@@ -2,7 +2,6 @@ package org.tkit.onecx.product.store.rs.external.v1.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.mapstruct.Mapper;

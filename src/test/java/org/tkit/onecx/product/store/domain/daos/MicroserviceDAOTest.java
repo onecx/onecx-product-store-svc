@@ -34,6 +34,8 @@ class MicroserviceDAOTest {
                 MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA);
         methodExceptionTests(() -> dao.findByAppId("test"),
                 MicroserviceDAO.ErrorKeys.ERROR_FIND_APP_ID);
+        methodExceptionTests(() -> dao.loadByCriteria(null),
+                MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

@@ -34,6 +34,8 @@ class MicrofrontendDAOTest {
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
         methodExceptionTests(() -> dao.findByAppId("test"),
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_APP_ID);
+        methodExceptionTests(() -> dao.loadByCriteria(null),
+                MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {
