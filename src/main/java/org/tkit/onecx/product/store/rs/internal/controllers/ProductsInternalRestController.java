@@ -16,10 +16,10 @@ import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
-import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
+import org.tkit.onecx.product.store.rs.internal.services.ProductService;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
@@ -49,6 +49,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     @Inject
     MicroserviceDAO microserviceDAO;
 
+    @Inject
+    ProductService productService;
+
     @Override
     public Response createProduct(CreateProductRequestDTO createProductDTO) {
         var item = mapper.create(createProductDTO);
@@ -65,10 +68,8 @@ public class ProductsInternalRestController implements ProductsInternalApi {
         var product = dao.findById(id);
         if (product != null) {
             List<Microfrontend> productRelatedMfes = microfrontendDAO.loadByProductName(product.getName()).toList();
-            List<Microservice> productRelatedMs = microserviceDAO.loadByProductName(product.getName()).toList();
-
             microfrontendDAO.delete(productRelatedMfes);
-            microserviceDAO.delete(productRelatedMs);
+            microserviceDAO.deleteByProductName(product.getName());
             dao.deleteQueryById(id);
         }
         return Response.noContent().build();
@@ -100,25 +101,15 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
-    @Transactional
     public Response updateProduct(String id, UpdateProductRequestDTO updateProductDTO) {
         Product item = dao.findById(id);
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        //mfe update
-        List<Microfrontend> mfes = microfrontendDAO.loadByProductName(item.getName()).toList();
-        mfes.forEach(microfrontend -> microfrontend.setProductName(updateProductDTO.getName()));
-        microfrontendDAO.update(mfes);
-
-        //ms update
-        List<Microservice> ms = microserviceDAO.loadByProductName(item.getName()).toList();
-        ms.forEach(microservice -> microservice.setProductName(updateProductDTO.getName()));
-        microserviceDAO.update(ms);
+        String oldProductName = item.getName();
 
         mapper.update(updateProductDTO, item);
-        dao.update(item);
-
+        productService.updateProductAndRelatedMfeAndMs(oldProductName, item);
         return Response.noContent().build();
     }
 

@@ -1,9 +1,12 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.Predicate;
 
 import org.tkit.onecx.product.store.domain.criteria.MicroserviceSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
@@ -85,6 +88,35 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         } catch (Exception exception) {
             throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, exception);
         }
+    }
+
+    public void updateByProductName(String productName, String updatedProductName) {
+        var cb = getEntityManager().getCriteriaBuilder();
+        var uq = this.updateQuery();
+        var root = uq.from(Microservice.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+
+        uq.set(Microservice_.PRODUCT_NAME, updatedProductName)
+                .set(Microservice_.MODIFICATION_COUNT, cb.sum(root.get(Microservice_.MODIFICATION_COUNT), 1))
+                .set(Microservice_.MODIFICATION_DATE, cb.currentTimestamp())
+                .where(cb.and(predicates.toArray(new Predicate[0])));
+
+        this.getEntityManager().createQuery(uq).executeUpdate();
+    }
+
+    public void deleteByProductName(String productName) {
+        var cb = getEntityManager().getCriteriaBuilder();
+        var dq = this.deleteQuery();
+        var root = dq.from(Microservice.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+
+        dq.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        this.getEntityManager().createQuery(dq).executeUpdate();
     }
 
     public enum ErrorKeys {

@@ -1,9 +1,12 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.Predicate;
 
 import org.tkit.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
@@ -87,6 +90,22 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         } catch (Exception exception) {
             throw new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA, exception);
         }
+    }
+
+    public void updateByProductName(String productName, String updatedProductName) {
+        var cb = getEntityManager().getCriteriaBuilder();
+        var uq = this.updateQuery();
+        var root = uq.from(Microfrontend.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
+
+        uq.set(Microfrontend_.PRODUCT_NAME, updatedProductName)
+                .set(Microfrontend_.MODIFICATION_COUNT, cb.sum(root.get(Microfrontend_.MODIFICATION_COUNT), 1))
+                .set(Microfrontend_.MODIFICATION_DATE, cb.currentTimestamp())
+                .where(cb.and(predicates.toArray(new Predicate[0])));
+
+        this.getEntityManager().createQuery(uq).executeUpdate();
     }
 
     public enum ErrorKeys {
