@@ -1,5 +1,6 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -16,6 +17,7 @@ import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.jpa.models.AbstractTraceableEntity_;
 import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
@@ -99,8 +101,9 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
 
         uq.set(Microservice_.PRODUCT_NAME, updatedProductName)
-                .set(Microservice_.MODIFICATION_COUNT, cb.sum(root.get(Microservice_.MODIFICATION_COUNT), 1))
-                .set(Microservice_.MODIFICATION_DATE, cb.currentTimestamp())
+                .set(AbstractTraceableEntity_.modificationCount,
+                        cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
+                .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
                 .where(cb.and(predicates.toArray(new Predicate[0])));
 
         this.getEntityManager().createQuery(uq).executeUpdate();
