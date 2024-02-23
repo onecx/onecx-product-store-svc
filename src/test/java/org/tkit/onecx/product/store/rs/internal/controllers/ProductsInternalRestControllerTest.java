@@ -86,7 +86,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         // check if related MFEs got deleted too
         MicrofrontendSearchCriteriaDTO criteriaDTO = new MicrofrontendSearchCriteriaDTO();
         criteriaDTO.setProductName("product1");
-        criteriaDTO.setPageNumber(1);
+        criteriaDTO.setPageNumber(0);
         criteriaDTO.setPageSize(1);
 
         var mfes = given().contentType(APPLICATION_JSON)
@@ -98,6 +98,21 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .extract()
                 .as(MicrofrontendPageResultDTO.class);
         assertThat(mfes.getStream()).isEmpty();
+
+        MicroserviceSearchCriteriaDTO msSearchCriteria = new MicroserviceSearchCriteriaDTO();
+        msSearchCriteria.setProductName("product1");
+        criteriaDTO.setPageNumber(0);
+        criteriaDTO.setPageSize(1);
+
+        var ms = given().contentType(APPLICATION_JSON)
+                .body(msSearchCriteria)
+                .post("/internal/microservices/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicroservicePageResultDTO.class);
+        assertThat(ms.getStream()).isEmpty();
 
         // delete product
         given()
@@ -277,6 +292,38 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(dto).isNotNull();
         assertThat(dto.getDescription()).isEqualTo(updateDto.getDescription());
+
+        //check if mfes updated
+        MicrofrontendSearchCriteriaDTO criteriaDTO = new MicrofrontendSearchCriteriaDTO();
+        criteriaDTO.setProductName(updateDto.getName());
+        criteriaDTO.setPageSize(1);
+        criteriaDTO.setPageNumber(0);
+
+        var mfes = given().contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/microfrontends/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+        assertThat(mfes.getStream()).hasSize(1);
+
+        //check if ms updated
+        MicrofrontendSearchCriteriaDTO msCriteriaDTO = new MicrofrontendSearchCriteriaDTO();
+        msCriteriaDTO.setProductName(updateDto.getName());
+        msCriteriaDTO.setPageSize(1);
+        msCriteriaDTO.setPageNumber(0);
+
+        var ms = given().contentType(APPLICATION_JSON)
+                .body(msCriteriaDTO)
+                .post("/internal/microservices/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicroservicePageResultDTO.class);
+        assertThat(ms.getStream()).hasSize(1);
     }
 
     @Test

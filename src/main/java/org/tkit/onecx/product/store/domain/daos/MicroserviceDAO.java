@@ -1,9 +1,13 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.Predicate;
 
 import org.tkit.onecx.product.store.domain.criteria.MicroserviceSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
@@ -13,6 +17,7 @@ import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.jpa.models.AbstractTraceableEntity_;
 import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
@@ -85,6 +90,36 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         } catch (Exception exception) {
             throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, exception);
         }
+    }
+
+    public void updateByProductName(String productName, String updatedProductName) {
+        var cb = getEntityManager().getCriteriaBuilder();
+        var uq = this.updateQuery();
+        var root = uq.from(Microservice.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+
+        uq.set(Microservice_.PRODUCT_NAME, updatedProductName)
+                .set(AbstractTraceableEntity_.modificationCount,
+                        cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
+                .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
+                .where(cb.and(predicates.toArray(new Predicate[0])));
+
+        this.getEntityManager().createQuery(uq).executeUpdate();
+    }
+
+    public void deleteByProductName(String productName) {
+        var cb = getEntityManager().getCriteriaBuilder();
+        var dq = this.deleteQuery();
+        var root = dq.from(Microservice.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+
+        dq.where(cb.and(predicates.toArray(new Predicate[0])));
+
+        this.getEntityManager().createQuery(dq).executeUpdate();
     }
 
     public enum ErrorKeys {

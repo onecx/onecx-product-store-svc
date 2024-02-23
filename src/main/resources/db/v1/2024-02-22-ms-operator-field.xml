@@ -7,7 +7,7 @@
 
     <changeSet author="dev (generated)" id="1706808517706-9">
         <addColumn tableName="microservice">
-            <column name="operator" type="BOOLEAN">
+            <column name="operator" type="BOOLEAN" defaultOnNull="true">
                 <constraints nullable="false"/>
             </column>
         </addColumn>

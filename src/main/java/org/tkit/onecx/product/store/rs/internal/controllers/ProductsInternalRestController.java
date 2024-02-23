@@ -12,13 +12,14 @@ import jakarta.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.tkit.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
+import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
+import org.tkit.onecx.product.store.rs.internal.services.ProductService;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
@@ -45,6 +46,12 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     @Inject
     MicrofrontendDAO microfrontendDAO;
 
+    @Inject
+    MicroserviceDAO microserviceDAO;
+
+    @Inject
+    ProductService productService;
+
     @Override
     public Response createProduct(CreateProductRequestDTO createProductDTO) {
         var item = mapper.create(createProductDTO);
@@ -60,14 +67,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     public Response deleteProduct(String id) {
         var product = dao.findById(id);
         if (product != null) {
-            MicrofrontendSearchCriteria criteria = new MicrofrontendSearchCriteria();
-            criteria.setProductName(product.getName());
-            criteria.setPageNumber(0);
-            criteria.setPageSize(1);
-            List<Microfrontend> productRelatedMfes = microfrontendDAO.findMicrofrontendsByCriteria(criteria).getStream()
-                    .toList();
-
+            List<Microfrontend> productRelatedMfes = microfrontendDAO.loadByProductName(product.getName()).toList();
             microfrontendDAO.delete(productRelatedMfes);
+            microserviceDAO.deleteByProductName(product.getName());
             dao.deleteQueryById(id);
         }
         return Response.noContent().build();
@@ -104,9 +106,10 @@ public class ProductsInternalRestController implements ProductsInternalApi {
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        String oldProductName = item.getName();
 
         mapper.update(updateProductDTO, item);
-        dao.update(item);
+        productService.updateProductAndRelatedMfeAndMs(oldProductName, item);
         return Response.noContent().build();
     }
 
