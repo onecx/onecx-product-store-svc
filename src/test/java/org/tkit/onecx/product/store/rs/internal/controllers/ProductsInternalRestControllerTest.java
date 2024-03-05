@@ -5,11 +5,16 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
+import java.util.Objects;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
 import org.tkit.quarkus.test.WithDBData;
 
+import gen.org.tkit.onecx.image.rs.internal.model.ImageInfoDTO;
+import gen.org.tkit.onecx.image.rs.internal.model.RefTypeDTO;
 import gen.org.tkit.onecx.product.store.rs.internal.model.*;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -17,6 +22,11 @@ import io.quarkus.test.junit.QuarkusTest;
 //@TestHTTPEndpoint(ProductsInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
 class ProductsInternalRestControllerTest extends AbstractTest {
+
+    private static final String MEDIA_TYPE_IMAGE_PNG = "image/png";
+
+    private static final File FILE = new File(
+            Objects.requireNonNull(ProductsInternalRestControllerTest.class.getResource("/images/Testimage.png")).getFile());
 
     @Test
     void createProductTest() {
@@ -121,6 +131,59 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .delete("/internal/products/{id}")
                 .then()
                 .statusCode(NO_CONTENT.getStatusCode());
+    }
+
+    @Test
+    void deleteProductTest_shouldDeleteImages() {
+        var refId = "productDeleteTest";
+        var refType = RefTypeDTO.LOGO;
+
+        // Create Product
+        var createProductDTO = new CreateProductRequestDTO();
+        createProductDTO.setName(refId);
+        createProductDTO.setVersion("test01");
+        createProductDTO.setBasePath("basePath");
+
+        var output = given()
+                .when()
+                .contentType(APPLICATION_JSON)
+                .body(createProductDTO)
+                .post("/internal/products")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract()
+                .body().as(ProductDTO.class);
+
+        // Create Image
+        given()
+                .pathParam("refId", refId)
+                .pathParam("refType", refType)
+                .when()
+                .body(FILE)
+                .contentType(MEDIA_TYPE_IMAGE_PNG)
+                .post("/internal/images/{refId}/{refType}")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract()
+                .body().as(ImageInfoDTO.class);
+
+        // delete product
+        var res = given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("id", output.getId())
+                .delete("/internal/products/{id}")
+                .then()
+                .statusCode(NO_CONTENT.getStatusCode());
+
+        Assertions.assertNotNull(res);
+
+        given()
+                .contentType(APPLICATION_JSON)
+                .pathParam("refId", refId)
+                .pathParam("refType", refType)
+                .get("/internal/images/{refId}/{refType}")
+                .then()
+                .statusCode(NOT_FOUND.getStatusCode());
     }
 
     @Test

@@ -1,7 +1,5 @@
 package org.tkit.onecx.product.store.rs.internal.controllers;
 
-import java.util.List;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -15,7 +13,6 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
-import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
@@ -63,15 +60,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
-    @Transactional
     public Response deleteProduct(String id) {
-        var product = dao.findById(id);
-        if (product != null) {
-            List<Microfrontend> productRelatedMfes = microfrontendDAO.loadByProductName(product.getName()).toList();
-            microfrontendDAO.delete(productRelatedMfes);
-            microserviceDAO.deleteByProductName(product.getName());
-            dao.deleteQueryById(id);
-        }
+        productService.deleteProduct(id);
+
         return Response.noContent().build();
     }
 
