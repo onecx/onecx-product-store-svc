@@ -22,7 +22,7 @@ public interface ProductMapperV1 {
     @Mapping(target = "name", ignore = true)
     ProductSearchCriteria map(ProductItemLoadSearchCriteriaDTOv1 data);
 
-    @Mapping(target = "productNames", ignore = true)
+    @Mapping(target = "name", ignore = true)
     ProductSearchCriteria map(ProductItemSearchCriteriaDTOv1 productSearchCriteriaDTOV1);
 
     @Mapping(target = "removeStreamItem", ignore = true)
