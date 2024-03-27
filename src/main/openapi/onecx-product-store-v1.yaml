@@ -263,6 +263,14 @@ components:
           type: string
         displayName:
           type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        basePath:
+          type: string
+        classifications:
+          type: string
         microfrontends:
           type: array
           items:
