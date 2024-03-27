@@ -72,6 +72,11 @@ public interface ProductMapperV1 {
             var optional = wrapper.getProducts().stream().filter(
                     p -> p.getName().equals(s)).findFirst();
             optional.ifPresent(product -> dto.setDisplayName(product.getDisplayName()));
+            optional.ifPresent(product -> dto.setDescription(product.getDescription()));
+            optional.ifPresent(product -> dto.setBasePath(product.getBasePath()));
+            optional.ifPresent(product -> dto.setClassifications(product.getClassifications()));
+            optional.ifPresent(product -> dto.setImageUrl(product.getImageUrl()));
+
             dto.setMicrofrontends(
                     mapMfeList(wrapper.getMicrofrontends().stream().filter(mfe -> mfe.getProductName().equals(s)).toList()));
             dto.setMicroservices(
