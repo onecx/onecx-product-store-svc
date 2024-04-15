@@ -112,6 +112,8 @@ components:
           type: string
         technology:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -126,7 +128,9 @@ components:
           type: string
         name:
           type: string
-
+    MicrofrontendType:
+      type: string
+      enum: [ MODULE, COMPONENT ]
 
 
 

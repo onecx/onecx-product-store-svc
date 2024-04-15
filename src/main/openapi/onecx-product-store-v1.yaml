@@ -191,6 +191,8 @@ components:
           type: string
         exposedModule:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -293,10 +295,9 @@ components:
           type: string
         appName:
           type: string
-    OffsetDateTime:
-      format: date-time
+    MicrofrontendType:
       type: string
-      example: 2022-03-10T12:15:50-04:00
+      enum: [ MODULE, COMPONENT ]
     ProblemDetailResponse:
       type: object
       properties:

@@ -79,4 +79,13 @@ public class Microfrontend extends TraceableEntity {
 
     @Column(name = "TAG_NAME")
     private String tagName;
+
+    @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    public enum Type {
+        MODULE,
+        COMPONENT,
+    }
 }

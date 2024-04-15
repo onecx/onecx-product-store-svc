@@ -710,6 +710,8 @@ components:
           type: string
         classifications:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -823,6 +825,8 @@ components:
           type: string
         exposedModule:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -895,6 +899,8 @@ components:
           type: string
         exposedModule:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -979,6 +985,8 @@ components:
           type: string
         exposedModule:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -1025,6 +1033,9 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T12:15:50-04:00
+    MicrofrontendType:
+      type: string
+      enum: [ MODULE, COMPONENT ]
     ProblemDetailResponse:
       type: object
       properties:

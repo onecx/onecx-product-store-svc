@@ -1,0 +1,1 @@
+* xref:onecx-product-store-svc:index.adoc[Product Store Service]
