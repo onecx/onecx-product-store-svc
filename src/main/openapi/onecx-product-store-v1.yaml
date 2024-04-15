@@ -288,6 +288,8 @@ components:
           type: string
         appName:
           type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
     MicroserviceAbstract:
       type: object
       properties:
