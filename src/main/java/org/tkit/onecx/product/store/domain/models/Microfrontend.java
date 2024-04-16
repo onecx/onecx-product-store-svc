@@ -19,9 +19,8 @@ import lombok.Setter;
 @Table(name = "MICROFRONTEND", uniqueConstraints = {
         @UniqueConstraint(name = "MICROFRONTEND_REMOTE_MODULE", columnNames = { "PRODUCT_NAME", "REMOTE_BASE_URL",
                 "EXPOSED_MODULE" }),
-        @UniqueConstraint(name = "MICROFRONTEND_APP_ID", columnNames = { "PRODUCT_NAME", "APP_ID" })
-}, indexes = {
-        @Index(name = "MICROFRONTEND_PRODUCT_NAME", columnList = "PRODUCT_NAME")
+        @UniqueConstraint(name = "MICROFRONTEND_MODULE_PRODUCT_APP", columnNames = { "EXPOSED_MODULE", "PRODUCT_NAME",
+                "APP_ID" })
 })
 @NamedEntityGraph(name = Microfrontend.MICROFRONTEND_LOAD, includeAllAttributes = true)
 @SuppressWarnings("java:S2160")
@@ -83,6 +82,9 @@ public class Microfrontend extends TraceableEntity {
     @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    @Column(name = "DEPRECATED")
+    private Boolean deprecated;
 
     public enum Type {
         MODULE,

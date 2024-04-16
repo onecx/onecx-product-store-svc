@@ -47,4 +47,6 @@ public class Product extends TraceableEntity {
     @Column(name = "CLASSIFICATION")
     private String classifications;
 
+    @Column(name = "UNDEPLOYED")
+    private Boolean undeployed;
 }

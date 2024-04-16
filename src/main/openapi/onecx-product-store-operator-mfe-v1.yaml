@@ -114,6 +114,8 @@ components:
           type: string
         type:
           $ref: "#/components/schemas/MicrofrontendType"
+        deprecated:
+          type: boolean
         endpoints:
           type: array
           items:

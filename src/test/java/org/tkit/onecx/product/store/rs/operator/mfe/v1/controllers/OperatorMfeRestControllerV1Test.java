@@ -17,7 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
 @WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
-class OperatorMsRestControllerV1Test extends AbstractTest {
+class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
     void createMfeTest() {
@@ -65,7 +65,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
     void updateMfeTest() {
         var dto = new UpdateMfeRequestMDTOv1();
         dto.appVersion("0.0.0");
-        dto.setExposedModule("exposed-module");
+        dto.setExposedModule("exposed-module1");
         dto.setRemoteBaseUrl("remote-base-url");
         dto.setRemoteEntry("remote-entry");
         dto.setAppName("display-name");
@@ -75,7 +75,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("productName", "product-name")
+                .pathParam("productName", "p1")
                 .pathParam("appId", "mfe1")
                 .body(dto)
                 .put()
@@ -88,7 +88,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("productName", "product-name")
+                .pathParam("productName", "p2")
                 .pathParam("appId", "mfe2")
                 .body(dto)
                 .put()

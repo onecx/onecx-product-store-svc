@@ -86,9 +86,5 @@ components:
           type: string
         type:
           type: string
-
-
-
-
-
-
+        undeployed:
+          type: boolean

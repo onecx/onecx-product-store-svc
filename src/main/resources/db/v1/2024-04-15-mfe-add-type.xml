@@ -8,7 +8,18 @@
     <changeSet author="dev (generated)" id="1713168727351-1">
         <addColumn tableName="microfrontend">
             <column name="type" type="varchar(255 BYTE)"/>
+            <column name="deprecated" type="bool"/>
         </addColumn>
+        <addColumn tableName="microservice">
+            <column name="undeployed" type="bool"/>
+        </addColumn>
+        <addColumn tableName="product">
+            <column name="undeployed" type="bool"/>
+        </addColumn>
+
+        <dropIndex indexName="microfrontend_product_name" tableName="microfrontend"/>
+        <dropUniqueConstraint constraintName="microfrontend_app_id" tableName="microfrontend"/>
+        <addUniqueConstraint columnNames="exposed_module, product_name, app_id" constraintName="microfrontend_module_product_app" tableName="microfrontend"/>
     </changeSet>
 
 </databaseChangeLog>

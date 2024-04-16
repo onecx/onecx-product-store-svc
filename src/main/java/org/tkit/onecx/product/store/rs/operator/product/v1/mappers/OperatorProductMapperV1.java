@@ -25,6 +25,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "name", ignore = true)
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "toString")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     Product create(UpdateProductRequestPDTOv1 dto);
 
     @Mapping(target = "creationDate", ignore = true)
@@ -38,6 +39,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "name", ignore = true)
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "toString")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(@MappingTarget Product product, UpdateProductRequestPDTOv1 dto);
 
     @Named("toString")
@@ -46,5 +48,13 @@ public interface OperatorProductMapperV1 {
             return String.join(",", classifications);
         }
         return "";
+    }
+
+    @Named("undeployed")
+    default Boolean setUndeployed(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
     }
 }

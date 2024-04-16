@@ -29,6 +29,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "toString")
     @Mapping(target = "productName", ignore = true)
+    @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     Microfrontend create(UpdateMfeRequestMDTOv1 dto);
 
     @Mapping(target = "id", ignore = true)
@@ -47,6 +48,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "endpoints", qualifiedByName = "updateList")
     @Mapping(target = "classifications", qualifiedByName = "toString")
     @Mapping(target = "productName", ignore = true)
+    @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     void update(@MappingTarget Microfrontend mfe, UpdateMfeRequestMDTOv1 dto);
 
     @Named("updateList")
@@ -68,5 +70,13 @@ public interface OperatorMfeMapperV1 {
             return String.join(",", classifications);
         }
         return "";
+    }
+
+    @Named("deprecated")
+    default Boolean setDeprecated(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
     }
 }

@@ -35,7 +35,7 @@ public class OperatorMfeRestControllerV1 implements OperatorMfeApi {
     @Override
     public Response createOrUpdateMfe(String productName, String appId, UpdateMfeRequestMDTOv1 dto) {
 
-        var mfe = dao.findByAppId(appId);
+        var mfe = dao.findByProductAppExposedModule(productName, appId, dto.getExposedModule());
         if (mfe == null) {
             mfe = mapper.create(dto);
             mfe.setAppId(appId);

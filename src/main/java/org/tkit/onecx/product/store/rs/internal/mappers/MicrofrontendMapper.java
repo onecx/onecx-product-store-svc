@@ -25,6 +25,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "persisted", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
+    @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     Microfrontend create(CreateMicrofrontendRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
@@ -40,6 +41,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "endpoints", qualifiedByName = "updateList")
+    @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
     @Mapping(target = "id", ignore = true)
@@ -63,9 +65,27 @@ public interface MicrofrontendMapper {
     @Mapping(target = "removeStreamItem", ignore = true)
     MicrofrontendPageResultDTO mapPageResult(PageResult<Microfrontend> page);
 
+    @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
 
+    @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTO map(Microfrontend data);
+
+    @Named("get-deprecated")
+    default Boolean getDeprecated(Boolean value) {
+        if (value == null) {
+            return false;
+        }
+        return value;
+    }
+
+    @Named("deprecated")
+    default Boolean setDeprecated(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
+    }
 }
