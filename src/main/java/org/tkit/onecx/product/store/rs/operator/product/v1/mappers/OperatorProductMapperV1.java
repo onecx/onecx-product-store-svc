@@ -51,6 +51,7 @@ public interface OperatorProductMapperV1 {
     }
 
     @Named("undeployed")
+    @SuppressWarnings("java:S2447")
     default Boolean setUndeployed(Boolean value) {
         if (value == null || !value) {
             return null;

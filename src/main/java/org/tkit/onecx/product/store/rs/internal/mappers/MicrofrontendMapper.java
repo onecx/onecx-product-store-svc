@@ -82,6 +82,7 @@ public interface MicrofrontendMapper {
     }
 
     @Named("deprecated")
+    @SuppressWarnings("java:S2447")
     default Boolean setDeprecated(Boolean value) {
         if (value == null || !value) {
             return null;

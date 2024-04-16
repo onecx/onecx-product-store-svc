@@ -41,6 +41,7 @@ public interface OperatorMsMapperV1 {
     void update(@MappingTarget Microservice ms, UpdateMsRequestMsDTOv1 dto);
 
     @Named("undeployed")
+    @SuppressWarnings("java:S2447")
     default Boolean setUndeployed(Boolean value) {
         if (value == null || !value) {
             return null;
