@@ -20,6 +20,7 @@ public interface MicroserviceMapper {
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
     @Mapping(target = "operator", constant = "false")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     Microservice create(CreateMicroserviceRequestDTO dto);
 
     @Mapping(target = "persisted", ignore = true)
@@ -31,6 +32,7 @@ public interface MicroserviceMapper {
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
     @Mapping(target = "operator", constant = "false")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(UpdateMicroserviceRequestDTO dto, @MappingTarget Microservice data);
 
     MicroserviceSearchCriteria map(MicroserviceSearchCriteriaDTO dto);
@@ -38,7 +40,26 @@ public interface MicroserviceMapper {
     @Mapping(target = "removeStreamItem", ignore = true)
     MicroservicePageResultDTO mapPageResult(PageResult<Microservice> page);
 
+    @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
     MicroservicePageItemDTO mapPageItem(Microservice data);
 
+    @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
     MicroserviceDTO map(Microservice data);
+
+    @Named("get-undeployed")
+    default Boolean getUndeployed(Boolean value) {
+        if (value == null) {
+            return false;
+        }
+        return value;
+    }
+
+    @Named("undeployed")
+    @SuppressWarnings("java:S2447")
+    default Boolean setUndeployed(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
+    }
 }

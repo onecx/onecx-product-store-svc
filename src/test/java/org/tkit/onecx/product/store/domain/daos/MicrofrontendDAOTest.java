@@ -32,8 +32,8 @@ class MicrofrontendDAOTest {
                 MicrofrontendDAO.ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.findMicrofrontendsByCriteria(null),
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
-        methodExceptionTests(() -> dao.findByAppId("test"),
-                MicrofrontendDAO.ErrorKeys.ERROR_FIND_APP_ID);
+        methodExceptionTests(() -> dao.findByProductAppExposedModule(null, null, null),
+                MicrofrontendDAO.ErrorKeys.ERROR_FIND_PRODUCT_APP_MODULE);
         methodExceptionTests(() -> dao.loadByCriteria(null),
                 MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA);
     }

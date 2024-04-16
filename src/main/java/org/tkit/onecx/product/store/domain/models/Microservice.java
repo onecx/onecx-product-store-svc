@@ -39,4 +39,6 @@ public class Microservice extends TraceableEntity {
     @Column(name = "OPERATOR", nullable = false)
     private boolean operator;
 
+    @Column(name = "UNDEPLOYED")
+    private Boolean undeployed;
 }

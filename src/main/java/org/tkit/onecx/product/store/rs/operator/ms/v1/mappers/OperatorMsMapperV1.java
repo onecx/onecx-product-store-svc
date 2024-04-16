@@ -3,6 +3,7 @@ package org.tkit.onecx.product.store.rs.operator.ms.v1.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
@@ -22,6 +23,7 @@ public interface OperatorMsMapperV1 {
     @Mapping(target = "controlTraceabilityManual", ignore = true)
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "appId", ignore = true)
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     Microservice create(UpdateMsRequestMsDTOv1 dto);
 
     @Mapping(target = "productName", ignore = true)
@@ -35,5 +37,15 @@ public interface OperatorMsMapperV1 {
     @Mapping(target = "controlTraceabilityManual", ignore = true)
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "appId", ignore = true)
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(@MappingTarget Microservice ms, UpdateMsRequestMsDTOv1 dto);
+
+    @Named("undeployed")
+    @SuppressWarnings("java:S2447")
+    default Boolean setUndeployed(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
+    }
 }

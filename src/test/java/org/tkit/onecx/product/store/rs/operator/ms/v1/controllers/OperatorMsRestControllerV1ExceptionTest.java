@@ -27,9 +27,10 @@ class OperatorMsRestControllerV1ExceptionTest extends AbstractTest {
 
     @BeforeEach
     void beforeAll() {
-        Mockito.when(dao.findByAppId(any()))
+        Mockito.when(dao.findByProductAppExposedModule(any(), any(), any()))
                 .thenThrow(new RuntimeException("Test technical error exception"))
-                .thenThrow(new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_APP_ID, new RuntimeException("Test")));
+                .thenThrow(new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_PRODUCT_APP_MODULE,
+                        new RuntimeException("Test")));
     }
 
     @Test

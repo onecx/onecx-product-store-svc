@@ -1,0 +1,49 @@
+
+include::onecx-product-store-svc-attributes.adoc[opts=optional]
+
+=== Default properties
+
+.{properties-file}
+[%collapsible%open]
+====
+[source,properties,subs=attributes+]
+----
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.jdbc.max-size=30
+quarkus.datasource.jdbc.min-size=10
+quarkus.hibernate-orm.jdbc.timezone=UTC
+quarkus.hibernate-orm.database.generation=validate
+quarkus.liquibase.migrate-at-start=true
+quarkus.liquibase.validate-on-migrate=true
+%prod.quarkus.datasource.jdbc.url=${DB_URL:jdbc:postgresql://postgresdb:5432/onecx-product-store?sslmode=disable}
+%prod.quarkus.datasource.username=${DB_USER:onecx-product-store}
+%prod.quarkus.datasource.password=${DB_PWD:onecx-product-store}
+----
+====
+
+=== Extensions
+
+include::onecx-product-store-svc-extensions.adoc[opts=optional]
+
+=== Container
+
+{docker-registry}[Docker registry]
+
+
+=== Helm
+
+{helm-registry}[Helm registry]
+
+Default values
+
+.{helm-file}
+[source,yaml]
+----
+app:
+  name: svc
+  image:
+    repository: "onecx/onecx-product-store-svc"
+  db:
+    enabled: true
+----
+

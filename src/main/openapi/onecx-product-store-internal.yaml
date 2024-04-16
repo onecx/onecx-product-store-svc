@@ -135,27 +135,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
-  /internal/microfrontends/appId/{appId}:
-    get:
-      tags:
-        - microfrontendsInternal
-      description: Return micro-frontend by its appId
-      operationId: getMicrofrontendByAppId
-      parameters:
-        - name: appId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Microfrontend'
-        "404":
-          description: Not found
   /internal/microservices:
     post:
       tags:
@@ -516,6 +495,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
     ProductSearchCriteria:
       type: object
       properties:
@@ -554,6 +535,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
     UpdateProductRequest:
       type: object
       required:
@@ -577,6 +560,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
     Product:
       type: object
       required:
@@ -615,6 +600,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
     MicrofrontendPageResult:
       type: object
       properties:
@@ -710,6 +697,10 @@ components:
           type: string
         classifications:
           type: string
+        deprecated:
+          type: boolean
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -744,6 +735,8 @@ components:
         productName:
           type: string
         operator:
+          type: boolean
+        undeployed:
           type: boolean
     MicrofrontendSearchCriteria:
       type: object
@@ -823,6 +816,10 @@ components:
           type: string
         exposedModule:
           type: string
+        deprecated:
+          type: boolean
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -845,6 +842,8 @@ components:
           type: string
         type:
           type: string
+        undeployed:
+          type: boolean
     CreateUIEndpoint:
       required:
         - path
@@ -895,6 +894,10 @@ components:
           type: string
         exposedModule:
           type: string
+        deprecated:
+          type: boolean
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -914,6 +917,8 @@ components:
           type: string
         type:
           type: string
+        undeployed:
+          type: boolean
     UpdateUIEndpoint:
       required:
         - path
@@ -979,6 +984,10 @@ components:
           type: string
         exposedModule:
           type: string
+        deprecated:
+          type: boolean
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
           type: array
           items:
@@ -1011,6 +1020,8 @@ components:
           type: string
         operator:
           type: boolean
+        undeployed:
+          type: boolean
     UIEndpoint:
       required:
         - path
@@ -1025,6 +1036,9 @@ components:
       format: date-time
       type: string
       example: 2022-03-10T12:15:50-04:00
+    MicrofrontendType:
+      type: string
+      enum: [ MODULE, COMPONENT ]
     ProblemDetailResponse:
       type: object
       properties:

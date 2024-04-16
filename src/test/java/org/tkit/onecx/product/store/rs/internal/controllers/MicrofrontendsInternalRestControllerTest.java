@@ -58,7 +58,8 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", responseCreationRequest.getId())
                 .get("{id}")
-                .then().statusCode(OK.getStatusCode())
+                .then()
+                .statusCode(OK.getStatusCode())
                 .contentType(APPLICATION_JSON)
                 .extract()
                 .body().as(MicrofrontendDTO.class);
@@ -163,7 +164,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraintName).isPresent();
         assertThat(responseCreationRequest.getErrorCode()).isEqualTo("PERSIST_ENTITY_FAILED");
         assertThat(responseCreationRequest.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(ProductName, mfeId) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_remote_module'  Detail: Key (product_name, remote_base_url, exposed_module)=(ProductName, https://localhost/mfe/core/ah-mgmtv5/, /AnnouncementManagementModulev5) already exists.]");
 
     }
 
@@ -685,7 +686,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         UpdateMicrofrontendRequestDTO request = createMicrofrontendUpdateRequest("mfeOne", "1.0.0",
                 "AppName-5", "some description", "", "https://localhost/mfe/core/ah-mgmtv5/",
                 "https://localhost/mfe/core/ah-mgmtv5/remoteEntry.js", "productOne", null,
-                "developers@1000kit.org", "sun", "some notes", "/AnnouncementManagementModulev5", null);
+                "developers@1000kit.org", "sun", "some notes", "/AnnouncementManagementModule", null);
 
         var response = given()
                 .when()
@@ -711,11 +712,11 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraintName).isPresent();
         assertThat(response.getErrorCode()).isEqualTo("MERGE_ENTITY_FAILED");
         assertThat(response.getDetail()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_module_product_app'  Detail: Key (exposed_module, product_name, app_id)=(/AnnouncementManagementModule, productOne, mfeOne) already exists.]");
         assertThat(paramConstraint.get().getValue()).isEqualTo(
-                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_app_id'  Detail: Key (product_name, app_id)=(productOne, mfeOne) already exists.]");
+                "could not execute statement [ERROR: duplicate key value violates unique constraint 'microfrontend_module_product_app'  Detail: Key (exposed_module, product_name, app_id)=(/AnnouncementManagementModule, productOne, mfeOne) already exists.]");
         assertThat(paramConstraint.get().getKey()).isEqualTo("constraint");
-        assertThat(paramConstraintName.get().getValue()).isEqualTo("microfrontend_app_id");
+        assertThat(paramConstraintName.get().getValue()).isEqualTo("microfrontend_module_product_app");
         assertThat(paramConstraintName.get().getKey()).isEqualTo("constraintName");
         assertThat(response.getInvalidParams()).isNull();
     }
@@ -745,34 +746,6 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
                 exception.getDetail());
         Assertions.assertNotNull(exception.getInvalidParams());
         Assertions.assertEquals(1, exception.getInvalidParams().size());
-    }
-
-    /**
-     * Scenario: Receives microfrontend (mfe) by appId successfully .
-     * Given
-     * When I query GET endpoint with an existing appId
-     * Then I get a 'OK' response code back
-     * AND associated mfe is returned
-     */
-    @Test
-    void getMicrofrontendByAppId_shouldReturnMicrofrontend() {
-        var responseGetRequest = given()
-                .contentType(APPLICATION_JSON)
-                .pathParam("appId", "mfe1")
-                .get("/appId/{appId}")
-                .then().statusCode(OK.getStatusCode())
-                .contentType(APPLICATION_JSON)
-                .extract()
-                .body().as(MicrofrontendDTO.class);
-
-        assertThat(responseGetRequest).isNotNull();
-        assertThat(responseGetRequest.getId()).isNotNull();
-
-        given()
-                .contentType(APPLICATION_JSON)
-                .pathParam("appId", "invalidId")
-                .get("/appId/{appId}")
-                .then().statusCode(NOT_FOUND.getStatusCode());
     }
 
     /**

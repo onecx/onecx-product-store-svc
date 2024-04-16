@@ -19,16 +19,17 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
-class OperatorMsRestControllerV1ExceptionTest extends AbstractTest {
+class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
 
     @InjectMock
     MicrofrontendDAO dao;
 
     @BeforeEach
     void beforeAll() {
-        Mockito.when(dao.findByAppId(any()))
+        Mockito.when(dao.findByProductAppExposedModule(any(), any(), any()))
                 .thenThrow(new RuntimeException("Test technical error exception"))
-                .thenThrow(new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_APP_ID, new RuntimeException("Test")));
+                .thenThrow(new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_PRODUCT_APP_MODULE,
+                        new RuntimeException("Test")));
     }
 
     @Test

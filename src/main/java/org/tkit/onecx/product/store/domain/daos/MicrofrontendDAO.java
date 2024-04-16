@@ -50,17 +50,21 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
-    public Microfrontend findByAppId(String appId) {
+    public Microfrontend findByProductAppExposedModule(String productName, String appId, String exposedModule) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
-            cq.where(cb.equal(root.get(Microfrontend_.APP_ID), appId));
+            cq.where(
+                    cb.and(
+                            cb.equal(root.get(Microfrontend_.APP_ID), appId),
+                            cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName),
+                            cb.equal(root.get(Microfrontend_.EXPOSED_MODULE), exposedModule)));
             return this.getEntityManager().createQuery(cq).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_APP_ID, ex, appId);
+            throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCT_APP_MODULE, ex, appId);
         }
     }
 
@@ -115,6 +119,6 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
 
         ERROR_FIND_MFE_BY_CRITERIA,
         ERROR_LOAD_MFE_BY_PRODUCT_NAME,
-        ERROR_FIND_APP_ID;
+        ERROR_FIND_PRODUCT_APP_MODULE;
     }
 }

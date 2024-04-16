@@ -8,4 +8,5 @@
         <include relativeToChangelogFile="true" file="v1/2023-12-07-create-tables-image.xml"/>
         <include relativeToChangelogFile="true" file="v1/2024-02-19-create-ms-table.xml"/>
         <include relativeToChangelogFile="true" file="v1/2024-02-22-ms-operator-field.xml"/>
+        <include relativeToChangelogFile="true" file="v1/2024-04-15-mfe-add-type.xml"/>
 </databaseChangeLog>
