@@ -1,5 +1,8 @@
 package org.tkit.onecx.product.store.rs.external.v1.controllers;
 
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -11,9 +14,13 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.models.Microfrontend;
+import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
+import org.tkit.quarkus.jpa.daos.Page;
+import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.org.tkit.onecx.product.store.rs.external.v1.ProductsApi;
@@ -43,20 +50,28 @@ public class ProductsRestControllerV1 implements ProductsApi {
     public Response loadProductsByCriteria(ProductItemLoadSearchCriteriaDTOv1 productItemLoadSearchCriteriaDTOv1) {
         var criteria = mapper.map(productItemLoadSearchCriteriaDTOv1);
 
-        ProductLoadResultWrapper wrapper = new ProductLoadResultWrapper();
-
         var products = dao.findProductsByCriteria(criteria);
-        var microservices = microserviceDAO.loadByCriteria(criteria).getStream().toList();
-        var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().toList();
-        wrapper.setProducts(products.getStream().toList());
-        wrapper.setMicrofrontends(microfrontends);
-        wrapper.setMicroservices(microservices);
-        wrapper.setTotalPages(products.getTotalPages());
-        wrapper.setNumber(products.getNumber());
-        wrapper.setSize(products.getSize());
-        wrapper.setTotalElements(products.getTotalElements());
 
-        ProductsLoadResultDTOv1 resultDTOv1 = mapper.map(wrapper);
+        var microservices = microserviceDAO.loadByCriteria(criteria).getStream().collect(
+                Collectors.groupingBy(Microservice::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().collect(
+                Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var items = products.getStream().map(product -> {
+            var wrapper = new ProductLoadResultWrapper();
+            wrapper.setProduct(product);
+            wrapper.setMicroservices(microservices.get(product.getName()));
+            wrapper.setMicrofrontends(microfrontends.get(product.getName()));
+            return wrapper;
+        });
+
+        PageResult<ProductLoadResultWrapper> result = new PageResult<>(products.getSize(), items,
+                Page.of(Math.toIntExact(products.getNumber()), Math.toIntExact(products.getSize())));
+
+        ProductsLoadResultDTOv1 resultDTOv1 = mapper.mapPageResultWrapper(result);
         return Response.ok(resultDTOv1).build();
     }
 

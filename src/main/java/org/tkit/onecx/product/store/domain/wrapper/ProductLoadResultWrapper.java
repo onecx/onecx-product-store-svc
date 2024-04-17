@@ -6,17 +6,15 @@ import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@RegisterForReflection
 public class ProductLoadResultWrapper {
-    private List<Product> products;
+    private Product product;
     private List<Microservice> microservices;
     private List<Microfrontend> microfrontends;
-    private Long size;
-    private Long totalPages;
-    private Long number;
-    private Long totalElements;
 }

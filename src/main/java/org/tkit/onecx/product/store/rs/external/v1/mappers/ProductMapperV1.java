@@ -1,6 +1,5 @@
 package org.tkit.onecx.product.store.rs.external.v1.mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -61,33 +60,19 @@ public interface ProductMapperV1 {
 
     List<MicroserviceAbstractDTOv1> mapMsList(List<Microservice> ms);
 
-    default ProductsLoadResultDTOv1 map(ProductLoadResultWrapper wrapper) {
-        ProductsLoadResultDTOv1 resultDTOv1 = new ProductsLoadResultDTOv1();
-        List<ProductsAbstractDTOv1> abstractList = new ArrayList<>();
-
-        List<String> productNames = wrapper.getProducts().stream().map(Product::getName).toList();
-        productNames.forEach(s -> {
-            ProductsAbstractDTOv1 dto = new ProductsAbstractDTOv1();
-            dto.setName(s);
-            var optional = wrapper.getProducts().stream().filter(
-                    p -> p.getName().equals(s)).findFirst();
-            optional.ifPresent(product -> dto.setDisplayName(product.getDisplayName()));
-            optional.ifPresent(product -> dto.setDescription(product.getDescription()));
-            optional.ifPresent(product -> dto.setBasePath(product.getBasePath()));
-            optional.ifPresent(product -> dto.setClassifications(product.getClassifications()));
-            optional.ifPresent(product -> dto.setImageUrl(product.getImageUrl()));
-
-            dto.setMicrofrontends(
-                    mapMfeList(wrapper.getMicrofrontends().stream().filter(mfe -> mfe.getProductName().equals(s)).toList()));
-            dto.setMicroservices(
-                    mapMsList(wrapper.getMicroservices().stream().filter(ms -> ms.getProductName().equals(s)).toList()));
-            abstractList.add(dto);
-        });
-        resultDTOv1.setStream(abstractList);
-        resultDTOv1.setNumber(Math.toIntExact(wrapper.getNumber()));
-        resultDTOv1.setSize(Math.toIntExact(wrapper.getSize()));
-        resultDTOv1.setTotalElements(wrapper.getTotalElements());
-        resultDTOv1.setTotalPages(wrapper.getTotalPages());
-        return resultDTOv1;
+    default ProductsAbstractDTOv1 map(ProductLoadResultWrapper wrapper) {
+        ProductsAbstractDTOv1 result = mapProduct(wrapper.getProduct());
+        result.setMicrofrontends(mapMfeList(wrapper.getMicrofrontends()));
+        result.setMicroservices(mapMsList(wrapper.getMicroservices()));
+        return result;
     }
+
+    @Mapping(target = "removeStreamItem", ignore = true)
+    ProductsLoadResultDTOv1 mapPageResultWrapper(PageResult<ProductLoadResultWrapper> page);
+
+    @Mapping(target = "microfrontends", ignore = true)
+    @Mapping(target = "removeMicrofrontendsItem", ignore = true)
+    @Mapping(target = "microservices", ignore = true)
+    @Mapping(target = "removeMicroservicesItem", ignore = true)
+    ProductsAbstractDTOv1 mapProduct(Product product);
 }
