@@ -42,7 +42,7 @@ paths:
              $ref: '#/components/schemas/ProductItemLoadSearchCriteria'
       responses:
         "200":
-          description: Pageresult matching given criteria
+          description: Page result matching given criteria
           content:
             application/json:
               schema:
@@ -152,6 +152,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
         microfrontends:
           type: array
           items:
@@ -191,6 +193,10 @@ components:
           type: string
         exposedModule:
           type: string
+        deprecated:
+          type: boolean
+        undeployed:
+          type: boolean
         type:
           $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
@@ -210,6 +216,8 @@ components:
           type: string
         description:
           type: string
+        undeployed:
+          type: boolean
     UIEndpoint:
       required:
         - path
@@ -238,6 +246,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
     ProductsLoadResult:
       type: object
       properties:
@@ -273,6 +283,8 @@ components:
           type: string
         classifications:
           type: string
+        undeployed:
+          type: boolean
         microfrontends:
           type: array
           items:
@@ -288,6 +300,8 @@ components:
           type: string
         appName:
           type: string
+        undeployed:
+          type: boolean
         type:
           $ref: "#/components/schemas/MicrofrontendType"
     MicroserviceAbstract:
@@ -297,6 +311,8 @@ components:
           type: string
         appName:
           type: string
+        undeployed:
+          type: boolean
     MicrofrontendType:
       type: string
       enum: [ MODULE, COMPONENT ]
