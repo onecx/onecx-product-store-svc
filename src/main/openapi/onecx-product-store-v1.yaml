@@ -302,6 +302,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        deprecated:
+          type: boolean
         type:
           $ref: "#/components/schemas/MicrofrontendType"
     MicroserviceAbstract:
