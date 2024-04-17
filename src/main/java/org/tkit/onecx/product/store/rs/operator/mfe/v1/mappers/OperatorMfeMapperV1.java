@@ -49,6 +49,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "classifications", qualifiedByName = "toString")
     @Mapping(target = "productName", ignore = true)
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(@MappingTarget Microfrontend mfe, UpdateMfeRequestMDTOv1 dto);
 
     @Named("updateList")
@@ -75,6 +76,15 @@ public interface OperatorMfeMapperV1 {
     @Named("deprecated")
     @SuppressWarnings("java:S2447")
     default Boolean setDeprecated(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
+    }
+
+    @Named("undeployed")
+    @SuppressWarnings("java:S2447")
+    default Boolean setUndeployed(Boolean value) {
         if (value == null || !value) {
             return null;
         }
