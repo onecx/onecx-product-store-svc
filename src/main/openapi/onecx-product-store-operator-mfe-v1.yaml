@@ -116,6 +116,8 @@ components:
           $ref: "#/components/schemas/MicrofrontendType"
         deprecated:
           type: boolean
+        undeployed:
+          type: boolean
         endpoints:
           type: array
           items:

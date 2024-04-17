@@ -86,6 +86,9 @@ public class Microfrontend extends TraceableEntity {
     @Column(name = "DEPRECATED")
     private Boolean deprecated;
 
+    @Column(name = "UNDEPLOYED")
+    private Boolean undeployed;
+
     public enum Type {
         MODULE,
         COMPONENT,

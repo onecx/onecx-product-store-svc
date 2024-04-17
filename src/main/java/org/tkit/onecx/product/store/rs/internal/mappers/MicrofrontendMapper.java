@@ -26,6 +26,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     Microfrontend create(CreateMicrofrontendRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
@@ -42,6 +43,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "endpoints", qualifiedByName = "updateList")
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
+    @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
     @Mapping(target = "id", ignore = true)
@@ -66,10 +68,12 @@ public interface MicrofrontendMapper {
     MicrofrontendPageResultDTO mapPageResult(PageResult<Microfrontend> page);
 
     @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
+    @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
 
     @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
+    @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTO map(Microfrontend data);
 
@@ -84,6 +88,23 @@ public interface MicrofrontendMapper {
     @Named("deprecated")
     @SuppressWarnings("java:S2447")
     default Boolean setDeprecated(Boolean value) {
+        if (value == null || !value) {
+            return null;
+        }
+        return true;
+    }
+
+    @Named("get-undeployed")
+    default Boolean getUndeployed(Boolean value) {
+        if (value == null) {
+            return false;
+        }
+        return value;
+    }
+
+    @Named("undeployed")
+    @SuppressWarnings("java:S2447")
+    default Boolean setUndeployed(Boolean value) {
         if (value == null || !value) {
             return null;
         }
