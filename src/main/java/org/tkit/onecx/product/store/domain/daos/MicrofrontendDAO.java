@@ -89,7 +89,7 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
 
-            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+            if (!criteria.getProductNames().isEmpty()) {
                 cq.where(root.get(Microfrontend_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();

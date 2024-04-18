@@ -202,7 +202,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getDetail()).isEqualTo("createMicrofrontend.createMicrofrontendRequestDTO.appId: must not be null");
         assertThat(invalidParamConstraint.get().getMessage()).isEqualTo("must not be null");
         assertThat(invalidParamConstraint.get().getName()).isEqualTo("createMicrofrontend.createMicrofrontendRequestDTO.appId");
-        assertThat(response.getParams()).isNull();
+        assertThat(response.getParams()).isEmpty();
     }
 
     /**
@@ -524,7 +524,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getDetail()).isEqualTo("searchMicrofrontends.microfrontendSearchCriteriaDTO: must not be null");
         assertThat(invalidParamConstraint.get().getMessage()).isEqualTo("must not be null");
         assertThat(invalidParamConstraint.get().getName()).isEqualTo("searchMicrofrontends.microfrontendSearchCriteriaDTO");
-        assertThat(response.getParams()).isNull();
+        assertThat(response.getParams()).isEmpty();
     }
 
     /**
@@ -562,7 +562,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getDetail()).isEqualTo("updateMicrofrontend.updateMicrofrontendRequestDTO.appId: must not be null");
         assertThat(invalidParamConstraint.get().getMessage()).isEqualTo("must not be null");
         assertThat(invalidParamConstraint.get().getName()).isEqualTo("updateMicrofrontend.updateMicrofrontendRequestDTO.appId");
-        assertThat(response.getParams()).isNull();
+        assertThat(response.getParams()).isEmpty();
     }
 
     /**
@@ -718,7 +718,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraint.get().getKey()).isEqualTo("constraint");
         assertThat(paramConstraintName.get().getValue()).isEqualTo("microfrontend_module_product_app");
         assertThat(paramConstraintName.get().getKey()).isEqualTo("constraintName");
-        assertThat(response.getInvalidParams()).isNull();
+        assertThat(response.getInvalidParams()).isEmpty();
     }
 
     /**

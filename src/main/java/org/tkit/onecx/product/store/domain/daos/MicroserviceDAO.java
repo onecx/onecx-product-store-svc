@@ -83,7 +83,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             var cq = cb.createQuery(Microservice.class);
             var root = cq.from(Microservice.class);
 
-            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
+            if (!criteria.getProductNames().isEmpty()) {
                 cq.where(root.get(Microservice_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();

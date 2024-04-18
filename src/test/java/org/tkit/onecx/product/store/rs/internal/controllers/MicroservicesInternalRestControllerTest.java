@@ -161,7 +161,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         assertThat(response.getDetail()).isEqualTo("createMicroservice.createMicroserviceRequestDTO.appId: must not be null");
         assertThat(invalidParamConstraint.get().getMessage()).isEqualTo("must not be null");
         assertThat(invalidParamConstraint.get().getName()).isEqualTo("createMicroservice.createMicroserviceRequestDTO.appId");
-        assertThat(response.getParams()).isNull();
+        assertThat(response.getParams()).isEmpty();
     }
 
     /**
@@ -453,7 +453,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         assertThat(response.getDetail()).isEqualTo("searchMicroservice.microserviceSearchCriteriaDTO: must not be null");
         assertThat(invalidParamConstraint.get().getMessage()).isEqualTo("must not be null");
         assertThat(invalidParamConstraint.get().getName()).isEqualTo("searchMicroservice.microserviceSearchCriteriaDTO");
-        assertThat(response.getParams()).isNull();
+        assertThat(response.getParams()).isEmpty();
     }
 
     /**
@@ -570,7 +570,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         assertThat(paramConstraint.get().getKey()).isEqualTo("constraint");
         assertThat(paramConstraintName.get().getValue()).isEqualTo("microservice_app_id");
         assertThat(paramConstraintName.get().getKey()).isEqualTo("constraintName");
-        assertThat(response.getInvalidParams()).isNull();
+        assertThat(response.getInvalidParams()).isEmpty();
     }
 
     /**
