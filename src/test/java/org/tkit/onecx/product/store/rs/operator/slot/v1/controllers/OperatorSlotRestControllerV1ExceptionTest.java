@@ -1,4 +1,4 @@
-package org.tkit.onecx.product.store.rs.operator.ms.v1.controllers;
+package org.tkit.onecx.product.store.rs.operator.slot.v1.controllers;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -9,33 +9,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.tkit.onecx.product.store.AbstractTest;
-import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
+import org.tkit.onecx.product.store.domain.daos.SlotDAO;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
-import gen.org.tkit.onecx.product.store.rs.operator.ms.v1.model.UpdateMsRequestMsDTOv1;
+import gen.org.tkit.onecx.product.store.rs.operator.slot.v1.model.UpdateSlotRequestSlotDTOv1;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@TestHTTPEndpoint(OperatorMsRestControllerV1.class)
-class OperatorMsRestControllerV1ExceptionTest extends AbstractTest {
+@TestHTTPEndpoint(OperatorSlotRestControllerV1.class)
+class OperatorSlotRestControllerV1ExceptionTest extends AbstractTest {
 
     @InjectMock
-    MicroserviceDAO dao;
+    SlotDAO dao;
 
     @BeforeEach
     void beforeAll() {
         Mockito.when(dao.findByProductNameAppId(any(), any()))
                 .thenThrow(new RuntimeException("Test technical error exception"))
-                .thenThrow(new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_PRODUCT_NAME_APP_ID,
+                .thenThrow(new DAOException(SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID,
                         new RuntimeException("Test")));
     }
 
     @Test
     void exceptionTest() {
 
-        var dto = new UpdateMsRequestMsDTOv1();
+        var dto = new UpdateSlotRequestSlotDTOv1();
         dto.name("name");
         dto.setDescription("description");
 
