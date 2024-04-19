@@ -58,7 +58,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
                 .body(dto)
                 .put()
                 .then()
-                .statusCode(OK.getStatusCode());
+                .statusCode(CREATED.getStatusCode());
     }
 
     @Test

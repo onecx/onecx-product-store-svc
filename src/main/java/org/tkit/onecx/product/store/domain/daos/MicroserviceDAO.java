@@ -49,17 +49,19 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
-    public Microservice findByAppId(String appId) {
+    public Microservice findByProductNameAppId(String productName, String appId) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microservice.class);
             var root = cq.from(Microservice.class);
-            cq.where(cb.equal(root.get(Microservice_.APP_ID), appId));
+            cq.where(cb.and(
+                    cb.equal(root.get(Microservice_.APP_ID), appId),
+                    cb.equal(root.get(Microservice_.PRODUCT_NAME), productName)));
             return this.getEntityManager().createQuery(cq).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_APP_ID, ex, appId);
+            throw new DAOException(ErrorKeys.ERROR_FIND_MS_PRODUCT_NAME_APP_ID, ex, appId);
         }
     }
 
@@ -93,39 +95,49 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
     }
 
     public void updateByProductName(String productName, String updatedProductName) {
-        var cb = getEntityManager().getCriteriaBuilder();
-        var uq = this.updateQuery();
-        var root = uq.from(Microservice.class);
+        try {
+            var cb = getEntityManager().getCriteriaBuilder();
+            var uq = this.updateQuery();
+            var root = uq.from(Microservice.class);
 
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
 
-        uq.set(Microservice_.PRODUCT_NAME, updatedProductName)
-                .set(AbstractTraceableEntity_.modificationCount,
-                        cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
-                .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
-                .where(cb.and(predicates.toArray(new Predicate[0])));
+            uq.set(Microservice_.PRODUCT_NAME, updatedProductName)
+                    .set(AbstractTraceableEntity_.modificationCount,
+                            cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
+                    .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
+                    .where(cb.and(predicates.toArray(new Predicate[0])));
 
-        this.getEntityManager().createQuery(uq).executeUpdate();
+            this.getEntityManager().createQuery(uq).executeUpdate();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_UPDATE_BY_PRODUCT_NAME, ex);
+        }
     }
 
     public void deleteByProductName(String productName) {
-        var cb = getEntityManager().getCriteriaBuilder();
-        var dq = this.deleteQuery();
-        var root = dq.from(Microservice.class);
+        try {
+            var cb = getEntityManager().getCriteriaBuilder();
+            var dq = this.deleteQuery();
+            var root = dq.from(Microservice.class);
 
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
 
-        dq.where(cb.and(predicates.toArray(new Predicate[0])));
+            dq.where(cb.and(predicates.toArray(new Predicate[0])));
 
-        this.getEntityManager().createQuery(dq).executeUpdate();
+            this.getEntityManager().createQuery(dq).executeUpdate();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME, ex);
+        }
     }
 
     public enum ErrorKeys {
 
+        ERROR_UPDATE_BY_PRODUCT_NAME,
+        ERROR_DELETE_BY_PRODUCT_NAME,
         ERROR_FIND_MS_BY_CRITERIA,
         ERROR_LOAD_MS_BY_PRODUCT_NAME,
-        ERROR_FIND_APP_ID;
+        ERROR_FIND_MS_PRODUCT_NAME_APP_ID;
     }
 }

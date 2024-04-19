@@ -1,0 +1,88 @@
+---
+openapi: 3.0.3
+info:
+  title: onecx-product-store slot operator service
+  version: 1.0.0
+servers:
+  - url: "http://onecx-product-store-svc:8080"
+tags:
+  - name: operatorSlot
+paths:
+  /operator/slot/v1/{productName}/{appId}:
+    put:
+      tags:
+        - operatorSlot
+      description: Creates or updates a product slot.
+      operationId: createOrUpdateSlot
+      parameters:
+        - name: productName
+          in: path
+          description: product name
+          required: true
+          schema:
+            type: string
+        - name: appId
+          in: path
+          description: App ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSlotRequest'
+      responses:
+        "201":
+          description: Create new slot
+        "204":
+          description: Update existing slot
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
+components:
+  schemas:
+    ProblemDetailResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+    UpdateSlotRequest:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        undeployed:
+          type: boolean
+        deprecated:
+          type: boolean

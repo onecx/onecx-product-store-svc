@@ -14,9 +14,9 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-class MicroserviceDAOTest {
+class SlotDAOTest {
     @Inject
-    MicroserviceDAO dao;
+    SlotDAO dao;
 
     @InjectMock
     EntityManager em;
@@ -28,18 +28,14 @@ class MicroserviceDAOTest {
 
     @Test
     void methodExceptionTests() {
-        methodExceptionTests(() -> dao.loadByProductName(null),
-                MicroserviceDAO.ErrorKeys.ERROR_LOAD_MS_BY_PRODUCT_NAME);
-        methodExceptionTests(() -> dao.findMicroservicesByCriteria(null),
-                MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA);
         methodExceptionTests(() -> dao.findByProductNameAppId("test", "test"),
-                MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_PRODUCT_NAME_APP_ID);
-        methodExceptionTests(() -> dao.loadByCriteria(null),
-                MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA);
+                SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID);
+        methodExceptionTests(() -> dao.findByCriteria(null),
+                SlotDAO.ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA);
         methodExceptionTests(() -> dao.deleteByProductName(null),
-                MicroserviceDAO.ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME);
+                SlotDAO.ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.updateByProductName(null, null),
-                MicroserviceDAO.ErrorKeys.ERROR_UPDATE_BY_PRODUCT_NAME);
+                SlotDAO.ErrorKeys.ERROR_UPDATE_BY_PRODUCT_NAME);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

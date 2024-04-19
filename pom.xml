@@ -197,6 +197,18 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>operator-slot-v1</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>src/main/openapi/onecx-product-store-operator-slot-v1.yaml</inputSpec>
+                            <apiPackage>gen.org.tkit.onecx.product.store.rs.operator.slot.v1</apiPackage>
+                            <modelPackage>gen.org.tkit.onecx.product.store.rs.operator.slot.v1.model</modelPackage>
+                            <modelNameSuffix>SlotDTOv1</modelNameSuffix>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>internal</id>
                         <goals>
                             <goal>generate</goal>
