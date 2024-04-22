@@ -10,39 +10,38 @@ import jakarta.ws.rs.core.UriInfo;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
-import org.tkit.onecx.product.store.domain.models.Microservice;
+import org.tkit.onecx.product.store.domain.daos.SlotDAO;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
-import org.tkit.onecx.product.store.rs.internal.mappers.MicroserviceMapper;
+import org.tkit.onecx.product.store.rs.internal.mappers.SlotMapper;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
-import gen.org.tkit.onecx.product.store.rs.internal.MicroservicesInternalApi;
-import gen.org.tkit.onecx.product.store.rs.internal.model.CreateMicroserviceRequestDTO;
-import gen.org.tkit.onecx.product.store.rs.internal.model.MicroserviceSearchCriteriaDTO;
+import gen.org.tkit.onecx.product.store.rs.internal.SlotsInternalApi;
+import gen.org.tkit.onecx.product.store.rs.internal.model.CreateSlotRequestDTO;
 import gen.org.tkit.onecx.product.store.rs.internal.model.ProblemDetailResponseDTO;
-import gen.org.tkit.onecx.product.store.rs.internal.model.UpdateMicroserviceRequestDTO;
+import gen.org.tkit.onecx.product.store.rs.internal.model.SlotSearchCriteriaDTO;
+import gen.org.tkit.onecx.product.store.rs.internal.model.UpdateSlotRequestDTO;
 
 @LogService
 @ApplicationScoped
 @Transactional(Transactional.TxType.NOT_SUPPORTED)
-public class MicroservicesInternalRestController implements MicroservicesInternalApi {
+public class SlotInternalRestController implements SlotsInternalApi {
 
     @Inject
     InternalExceptionMapper exceptionMapper;
 
     @Inject
-    MicroserviceMapper mapper;
+    SlotMapper mapper;
 
     @Inject
-    MicroserviceDAO dao;
+    SlotDAO dao;
 
     @Context
     UriInfo uriInfo;
 
     @Override
-    public Response createMicroservice(CreateMicroserviceRequestDTO createMicroserviceDTO) {
-        var item = mapper.create(createMicroserviceDTO);
+    public Response createSlot(CreateSlotRequestDTO createSlotRequestDTO) {
+        var item = mapper.create(createSlotRequestDTO);
         item = dao.create(item);
         return Response
                 .created(uriInfo.getAbsolutePathBuilder().path(item.getId()).build())
@@ -51,13 +50,13 @@ public class MicroservicesInternalRestController implements MicroservicesInterna
     }
 
     @Override
-    public Response deleteMicroservice(String id) {
+    public Response deleteSlot(String id) {
         dao.deleteQueryById(id);
         return Response.noContent().build();
     }
 
     @Override
-    public Response getMicroservice(String id) {
+    public Response getSlot(String id) {
         var item = dao.findById(id);
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -66,21 +65,20 @@ public class MicroservicesInternalRestController implements MicroservicesInterna
     }
 
     @Override
-    @Transactional
-    public Response searchMicroservice(MicroserviceSearchCriteriaDTO microserviceSearchCriteriaDTO) {
-        var criteria = mapper.map(microserviceSearchCriteriaDTO);
-        var result = dao.findMicroservicesByCriteria(criteria);
+    public Response searchSlots(SlotSearchCriteriaDTO slotSearchCriteriaDTO) {
+        var criteria = mapper.map(slotSearchCriteriaDTO);
+        var result = dao.findByCriteria(criteria);
         return Response.ok(mapper.mapPageResult(result)).build();
     }
 
     @Override
-    public Response updateMicroservice(String id, UpdateMicroserviceRequestDTO updateMicroserviceDTO) {
-        Microservice item = dao.findById(id);
+    public Response updateSlot(String id, UpdateSlotRequestDTO updateSlotRequestDTO) {
+        var item = dao.findById(id);
         if (item == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        mapper.update(updateMicroserviceDTO, item);
+        mapper.update(updateSlotRequestDTO, item);
         dao.update(item);
         return Response.noContent().build();
     }

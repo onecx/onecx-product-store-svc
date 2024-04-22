@@ -1,4 +1,4 @@
-package org.tkit.onecx.product.store.rs.operator.ms.v1.controllers;
+package org.tkit.onecx.product.store.rs.operator.slot.v1.controllers;
 
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -8,19 +8,19 @@ import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.org.tkit.onecx.product.store.rs.operator.ms.v1.model.UpdateMsRequestMsDTOv1;
+import gen.org.tkit.onecx.product.store.rs.operator.slot.v1.model.UpdateSlotRequestSlotDTOv1;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-@TestHTTPEndpoint(OperatorMsRestControllerV1.class)
-@WithDBData(value = "data/test-operator-ms.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
-class OperatorMsRestControllerV1Test extends AbstractTest {
+@TestHTTPEndpoint(OperatorSlotRestControllerV1.class)
+@WithDBData(value = "data/test-operator-slot.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+class OperatorSlotRestControllerV1Test extends AbstractTest {
 
     @Test
-    void createMsTest() {
-        var dto = new UpdateMsRequestMsDTOv1();
-        dto.version("0.0.0");
+    void createSlotTest() {
+        var dto = new UpdateSlotRequestSlotDTOv1();
+        dto.description("description");
         dto.name("display-name");
 
         given()
@@ -35,15 +35,16 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
     }
 
     @Test
-    void updateMsTest() {
-        var dto = new UpdateMsRequestMsDTOv1();
+    void updateSlotTest() {
+        var dto = new UpdateSlotRequestSlotDTOv1();
         dto.name("display-name");
+        dto.description("description");
 
         given()
                 .when()
                 .contentType(APPLICATION_JSON)
-                .pathParam("productName", "p1")
-                .pathParam("appId", "ms1")
+                .pathParam("productName", "product1")
+                .pathParam("appId", "a1")
                 .body(dto)
                 .put()
                 .then()
@@ -62,7 +63,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
     }
 
     @Test
-    void createOrUpdateMsEmptyBodyTest() {
+    void createOrUpdateSlotEmptyBodyTest() {
         given()
                 .when()
                 .contentType(APPLICATION_JSON)

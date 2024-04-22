@@ -99,24 +99,29 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
     }
 
     public void updateByProductName(String productName, String updatedProductName) {
-        var cb = getEntityManager().getCriteriaBuilder();
-        var uq = this.updateQuery();
-        var root = uq.from(Microfrontend.class);
+        try {
+            var cb = getEntityManager().getCriteriaBuilder();
+            var uq = this.updateQuery();
+            var root = uq.from(Microfrontend.class);
 
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get(Microfrontend_.PRODUCT_NAME), productName));
 
-        uq.set(Microfrontend_.PRODUCT_NAME, updatedProductName)
-                .set(AbstractTraceableEntity_.modificationCount,
-                        cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
-                .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
-                .where(cb.and(predicates.toArray(new Predicate[0])));
+            uq.set(Microfrontend_.PRODUCT_NAME, updatedProductName)
+                    .set(AbstractTraceableEntity_.modificationCount,
+                            cb.sum(root.get(AbstractTraceableEntity_.modificationCount), 1))
+                    .set(AbstractTraceableEntity_.modificationDate, cb.currentTimestamp().as(LocalDateTime.class))
+                    .where(cb.and(predicates.toArray(new Predicate[0])));
 
-        this.getEntityManager().createQuery(uq).executeUpdate();
+            this.getEntityManager().createQuery(uq).executeUpdate();
+        } catch (Exception exception) {
+            throw new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_UPDATE_PRODUCT_NAME, exception);
+        }
     }
 
     public enum ErrorKeys {
 
+        ERROR_UPDATE_PRODUCT_NAME,
         ERROR_FIND_MFE_BY_CRITERIA,
         ERROR_LOAD_MFE_BY_PRODUCT_NAME,
         ERROR_FIND_PRODUCT_APP_MODULE;

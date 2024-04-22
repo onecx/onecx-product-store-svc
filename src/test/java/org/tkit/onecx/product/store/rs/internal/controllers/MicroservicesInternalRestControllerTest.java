@@ -601,34 +601,6 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     }
 
     /**
-     * Scenario: Receives microservice (ms) by appId successfully .
-     * Given
-     * When I query GET endpoint with an existing appId
-     * Then I get a 'OK' response code back
-     * AND associated ms is returned
-     */
-    @Test
-    void getMicroserviceByAppId_shouldReturnMicroservice() {
-        var responseGetRequest = given()
-                .contentType(APPLICATION_JSON)
-                .pathParam("appId", "ms1")
-                .get("/appId/{appId}")
-                .then().statusCode(OK.getStatusCode())
-                .contentType(APPLICATION_JSON)
-                .extract()
-                .body().as(MicroserviceDTO.class);
-
-        assertThat(responseGetRequest).isNotNull();
-        assertThat(responseGetRequest.getId()).isNotNull();
-
-        given()
-                .contentType(APPLICATION_JSON)
-                .pathParam("appId", "invalidId")
-                .get("/appId/{appId}")
-                .then().statusCode(NOT_FOUND.getStatusCode());
-    }
-
-    /**
      * Helper method to create a microservice (ms) create request object (inbound call).
      *
      * @param appId unique id of application

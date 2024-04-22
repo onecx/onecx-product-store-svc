@@ -33,8 +33,7 @@ public class OperatorMsRestControllerV1 implements OperatorMsApi {
 
     @Override
     public Response createOrUpdateMs(String productName, String appId, UpdateMsRequestMsDTOv1 dto) {
-
-        var ms = dao.findByAppId(appId);
+        var ms = dao.findByProductNameAppId(productName, appId);
         if (ms == null) {
             ms = mapper.create(dto);
             ms.setAppId(appId);

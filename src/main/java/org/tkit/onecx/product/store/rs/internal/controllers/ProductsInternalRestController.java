@@ -14,9 +14,9 @@ import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
 import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.services.ProductService;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
-import org.tkit.onecx.product.store.rs.internal.services.ProductService;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
