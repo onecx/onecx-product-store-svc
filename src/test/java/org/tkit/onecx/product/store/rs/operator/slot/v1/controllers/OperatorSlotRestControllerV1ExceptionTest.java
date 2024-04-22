@@ -26,9 +26,9 @@ class OperatorSlotRestControllerV1ExceptionTest extends AbstractTest {
 
     @BeforeEach
     void beforeAll() {
-        Mockito.when(dao.findByProductNameAppId(any(), any()))
+        Mockito.when(dao.findByProductNameAppId(any(), any(), any()))
                 .thenThrow(new RuntimeException("Test technical error exception"))
-                .thenThrow(new DAOException(SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID,
+                .thenThrow(new DAOException(SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID_NAME,
                         new RuntimeException("Test")));
     }
 

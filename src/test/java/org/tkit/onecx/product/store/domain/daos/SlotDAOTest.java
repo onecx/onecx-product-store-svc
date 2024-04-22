@@ -28,8 +28,8 @@ class SlotDAOTest {
 
     @Test
     void methodExceptionTests() {
-        methodExceptionTests(() -> dao.findByProductNameAppId("test", "test"),
-                SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID);
+        methodExceptionTests(() -> dao.findByProductNameAppId("test", "test", "test"),
+                SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID_NAME);
         methodExceptionTests(() -> dao.findByCriteria(null),
                 SlotDAO.ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA);
         methodExceptionTests(() -> dao.deleteByProductName(null),
