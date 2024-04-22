@@ -77,6 +77,8 @@ components:
           type: string
     UpdateSlotRequest:
       type: object
+      required:
+        - name
       properties:
         description:
           type: string

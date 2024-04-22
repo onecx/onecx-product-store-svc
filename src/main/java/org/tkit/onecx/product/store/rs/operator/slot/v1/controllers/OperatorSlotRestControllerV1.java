@@ -34,7 +34,7 @@ public class OperatorSlotRestControllerV1 implements OperatorSlotApi {
     @Override
     public Response createOrUpdateSlot(String productName, String appId,
             UpdateSlotRequestSlotDTOv1 updateSlotRequestSlotDTOv1) {
-        var ms = dao.findByProductNameAppId(productName, appId);
+        var ms = dao.findByProductNameAppId(productName, appId, updateSlotRequestSlotDTOv1.getName());
         if (ms == null) {
             ms = mapper.create(updateSlotRequestSlotDTOv1);
             ms.setAppId(appId);

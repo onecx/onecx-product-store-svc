@@ -37,7 +37,7 @@ class OperatorSlotRestControllerV1Test extends AbstractTest {
     @Test
     void updateSlotTest() {
         var dto = new UpdateSlotRequestSlotDTOv1();
-        dto.name("display-name");
+        dto.name("slot1");
         dto.description("description");
 
         given()

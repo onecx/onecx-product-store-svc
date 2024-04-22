@@ -41,19 +41,20 @@ public class SlotDAO extends AbstractDAO<Slot> {
         }
     }
 
-    public Slot findByProductNameAppId(String productName, String appId) {
+    public Slot findByProductNameAppId(String productName, String appId, String name) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Slot.class);
             var root = cq.from(Slot.class);
             cq.where(cb.and(
                     cb.equal(root.get(Slot_.APP_ID), appId),
+                    cb.equal(root.get(Slot_.NAME), name),
                     cb.equal(root.get(Slot_.PRODUCT_NAME), productName)));
             return this.getEntityManager().createQuery(cq).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID, ex, appId);
+            throw new DAOException(ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID_NAME, ex, appId);
         }
     }
 
@@ -98,7 +99,7 @@ public class SlotDAO extends AbstractDAO<Slot> {
     public enum ErrorKeys {
         ERROR_UPDATE_BY_PRODUCT_NAME,
         ERROR_DELETE_BY_PRODUCT_NAME,
-        ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID,
+        ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID_NAME,
         ERROR_FIND_SLOTS_BY_CRITERIA,
 
     }
