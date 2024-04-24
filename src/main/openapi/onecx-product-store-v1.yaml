@@ -146,7 +146,7 @@ components:
     LoadProductResponse:
       type: object
       properties:
-        product:
+        products:
           type: array
           items:
             $ref: '#/components/schemas/LoadProductItem'

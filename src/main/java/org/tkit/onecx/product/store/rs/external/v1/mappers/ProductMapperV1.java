@@ -86,7 +86,7 @@ public interface ProductMapperV1 {
             return new LoadProductResponseDTOv1();
         }
         var tmp = products.stream().map(p -> createLoadProduct(p, microfrontends)).toList();
-        return new LoadProductResponseDTOv1().product(tmp);
+        return new LoadProductResponseDTOv1().products(tmp);
     }
 
     default LoadProductItemDTOv1 createLoadProduct(Product product, Map<String, List<Microfrontend>> microfrontends) {
