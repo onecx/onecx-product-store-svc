@@ -76,6 +76,19 @@ public class ProductsRestControllerV1 implements ProductsApi {
     }
 
     @Override
+    public Response loadProductsByNames(LoadProductRequestDTOv1 loadProductRequestDTOv1) {
+        var productNames = loadProductRequestDTOv1.getProductNames();
+
+        var products = dao.findByProductNames(productNames);
+
+        var microfrontends = microfrontendDAO.findByProductNames(productNames).stream().collect(
+                Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        return Response.ok(mapper.createLoadProductResponse(products, microfrontends)).build();
+    }
+
+    @Override
     public Response getProductByName(String name) {
         var product = dao.findProductByName(name);
         if (product == null) {

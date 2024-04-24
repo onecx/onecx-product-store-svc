@@ -49,6 +49,26 @@ paths:
                 $ref: '#/components/schemas/ProductsLoadResult'
         "404":
           description: Product not found
+  /v1/products/load/shell:
+    post:
+      tags:
+        - products
+      description: load products and microfrontends by names (shell request)
+      operationId: loadProductsByNames
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadProductRequest'
+      responses:
+        "200":
+          description: Result matching given request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadProductResponse'
+        "404":
+          description: Product not found
   /v1/products/search:
     post:
       tags:
@@ -113,6 +133,51 @@ components:
           description: The size of page
           default: 10
           type: integer
+    LoadProductRequest:
+      type: object
+      required:
+        - productNames
+      properties:
+        productNames:
+          type: array
+          items:
+            minItems: 1
+            type: string
+    LoadProductResponse:
+      type: object
+      properties:
+        product:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoadProductItem'
+    LoadProductItem:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        microfrontends:
+          type: array
+          items:
+            $ref: '#/components/schemas/LoadProductMicrofrontend'
+    LoadProductMicrofrontend:
+      type: object
+      properties:
+        remoteName:
+          type: string
+        remoteBaseUrl:
+          type: string
+        appId:
+          type: string
+        exposedModule:
+          type: string
+        technology:
+          type: string
+        remoteEntry:
+          type: string
+        type:
+          $ref: "#/components/schemas/MicrofrontendType"
     ProductItemLoadSearchCriteria:
       type: object
       properties:

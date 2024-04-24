@@ -1,10 +1,13 @@
 package org.tkit.onecx.product.store.rs.external.v1.mappers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
@@ -75,4 +78,29 @@ public interface ProductMapperV1 {
     @Mapping(target = "microservices", ignore = true)
     @Mapping(target = "removeMicroservicesItem", ignore = true)
     ProductsAbstractDTOv1 mapProduct(Product product);
+
+    default LoadProductResponseDTOv1 createLoadProductResponse(List<Product> products,
+            Map<String, List<Microfrontend>> microfrontends) {
+
+        if (products == null) {
+            return new LoadProductResponseDTOv1();
+        }
+        var tmp = products.stream().map(p -> createLoadProduct(p, microfrontends)).toList();
+        return new LoadProductResponseDTOv1().product(tmp);
+    }
+
+    default LoadProductItemDTOv1 createLoadProduct(Product product, Map<String, List<Microfrontend>> microfrontends) {
+        var tmp = createLoadProduct(product);
+        tmp.setMicrofrontends(createLoadProductMicrofrontends(microfrontends.get(product.getName())));
+        return tmp;
+    }
+
+    @Mapping(target = "microfrontends", ignore = true)
+    @Mapping(target = "removeMicrofrontendsItem", ignore = true)
+    LoadProductItemDTOv1 createLoadProduct(Product product);
+
+    @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+    List<LoadProductMicrofrontendDTOv1> createLoadProductMicrofrontends(List<Microfrontend> microfrontends);
+
+    LoadProductMicrofrontendDTOv1 createLoadProductMicrofrontend(Microfrontend microfrontend);
 }

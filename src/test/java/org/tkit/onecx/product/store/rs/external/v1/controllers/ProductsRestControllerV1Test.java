@@ -182,4 +182,26 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(data.getStream()).hasSize(2);
     }
 
+    @Test
+    void loadProductsByNamesTest() {
+        var data = given()
+                .contentType(APPLICATION_JSON)
+                .body(new LoadProductRequestDTOv1().productNames(List.of("product1", "product2")))
+                .post("/load/shell")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(LoadProductResponseDTOv1.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getProduct()).isNotNull().hasSize(2);
+        var p1 = data.getProduct().stream().filter(x -> "product1".equals(x.getName())).findFirst().orElse(null);
+        assertThat(p1).isNotNull();
+        assertThat(p1.getMicrofrontends()).isNotNull().hasSize(2);
+        var p2 = data.getProduct().stream().filter(x -> "product2".equals(x.getName())).findFirst().orElse(null);
+        assertThat(p2).isNotNull();
+        assertThat(p2.getMicrofrontends()).isNotNull().isEmpty();
+    }
+
 }

@@ -98,6 +98,18 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
+    public List<Microfrontend> findByProductNames(List<String> productNames) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microfrontend.class);
+            var root = cq.from(Microfrontend.class);
+            cq.where(root.get(Microfrontend_.PRODUCT_NAME).in(productNames));
+            return this.getEntityManager().createQuery(cq).getResultList();
+        } catch (Exception exception) {
+            throw new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_PRODUCT_NAMES, exception);
+        }
+    }
+
     public void updateByProductName(String productName, String updatedProductName) {
         try {
             var cb = getEntityManager().getCriteriaBuilder();
@@ -121,6 +133,7 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
 
     public enum ErrorKeys {
 
+        ERROR_FIND_MFE_BY_PRODUCT_NAMES,
         ERROR_UPDATE_PRODUCT_NAME,
         ERROR_FIND_MFE_BY_CRITERIA,
         ERROR_LOAD_MFE_BY_PRODUCT_NAME,
