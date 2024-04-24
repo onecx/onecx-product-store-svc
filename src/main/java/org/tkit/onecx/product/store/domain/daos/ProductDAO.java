@@ -1,5 +1,7 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 
@@ -35,6 +37,18 @@ public class ProductDAO extends AbstractDAO<Product> {
         }
     }
 
+    public List<Product> findByProductNames(List<String> productNames) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Product.class);
+            var root = cq.from(Product.class);
+            cq.where(root.get(Product_.NAME).in(productNames));
+            return this.getEntityManager().createQuery(cq).getResultList();
+        } catch (Exception exception) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCT_BY_PRODUCT_NAMES, exception);
+        }
+    }
+
     public Product findProductByName(String productName) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
@@ -50,6 +64,8 @@ public class ProductDAO extends AbstractDAO<Product> {
     }
 
     public enum ErrorKeys {
+
+        ERROR_FIND_PRODUCT_BY_PRODUCT_NAMES,
 
         ERROR_FIND_PRODUCTS_BY_CRITERIA,
 
