@@ -392,7 +392,7 @@ components:
     SlotAbstract:
       type: object
       properties:
-        slotName:
+        name:
           type: string
         deprecated:
           type: boolean

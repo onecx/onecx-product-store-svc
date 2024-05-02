@@ -32,6 +32,8 @@ class SlotDAOTest {
                 SlotDAO.ErrorKeys.ERROR_FIND_SLOT_PRODUCT_NAME_APP_ID_NAME);
         methodExceptionTests(() -> dao.findByCriteria(null),
                 SlotDAO.ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA);
+        methodExceptionTests(() -> dao.loadByCriteria(null),
+                SlotDAO.ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA);
         methodExceptionTests(() -> dao.deleteByProductName(null),
                 SlotDAO.ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.updateByProductName(null, null),
