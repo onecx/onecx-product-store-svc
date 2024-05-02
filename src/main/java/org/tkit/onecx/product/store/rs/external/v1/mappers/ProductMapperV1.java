@@ -73,6 +73,8 @@ public interface ProductMapperV1 {
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductsLoadResultDTOv1 mapPageResultWrapper(PageResult<ProductLoadResultWrapper> page);
 
+    @Mapping(target = "slots", ignore = true)
+    @Mapping(target = "removeSlotsItem", ignore = true)
     @Mapping(target = "microfrontends", ignore = true)
     @Mapping(target = "removeMicrofrontendsItem", ignore = true)
     @Mapping(target = "microservices", ignore = true)

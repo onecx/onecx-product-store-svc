@@ -14,8 +14,10 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.daos.SlotDAO;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
+import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ExceptionMapperV1;
 import org.tkit.onecx.product.store.rs.external.v1.mappers.ProductMapperV1;
@@ -46,6 +48,9 @@ public class ProductsRestControllerV1 implements ProductsApi {
     @Inject
     MicroserviceDAO microserviceDAO;
 
+    @Inject
+    SlotDAO slotDAO;
+
     @Override
     public Response loadProductsByCriteria(ProductItemLoadSearchCriteriaDTOv1 productItemLoadSearchCriteriaDTOv1) {
         var criteria = mapper.map(productItemLoadSearchCriteriaDTOv1);
@@ -60,11 +65,16 @@ public class ProductsRestControllerV1 implements ProductsApi {
                 Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
+        var slots = slotDAO.loadByCriteria(criteria).getStream().collect(
+                Collectors.groupingBy(Slot::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
         var items = products.getStream().map(product -> {
             var wrapper = new ProductLoadResultWrapper();
             wrapper.setProduct(product);
             wrapper.setMicroservices(microservices.get(product.getName()));
             wrapper.setMicrofrontends(microfrontends.get(product.getName()));
+            wrapper.setSlots(slots.get(product.getName()));
             return wrapper;
         });
 

@@ -358,6 +358,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MicroserviceAbstract'
+        slots:
+          type: array
+          items:
+            $ref: '#/components/schemas/SlotAbstract'
     MicrofrontendAbstract:
       type: object
       properties:
@@ -385,6 +389,17 @@ components:
     MicrofrontendType:
       type: string
       enum: [ MODULE, COMPONENT ]
+    SlotAbstract:
+      type: object
+      properties:
+        slotName:
+          type: string
+        deprecated:
+          type: boolean
+          default: false
+        undeployed:
+          type: boolean
+          default: false
     ProblemDetailResponse:
       type: object
       properties:
