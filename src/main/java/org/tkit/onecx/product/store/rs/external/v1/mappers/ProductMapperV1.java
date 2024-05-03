@@ -12,6 +12,7 @@ import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -63,16 +64,21 @@ public interface ProductMapperV1 {
 
     List<MicroserviceAbstractDTOv1> mapMsList(List<Microservice> ms);
 
+    List<SlotAbstractDTOv1> mapSlotList(List<Slot> slot);
+
     default ProductsAbstractDTOv1 map(ProductLoadResultWrapper wrapper) {
         ProductsAbstractDTOv1 result = mapProduct(wrapper.getProduct());
         result.setMicrofrontends(mapMfeList(wrapper.getMicrofrontends()));
         result.setMicroservices(mapMsList(wrapper.getMicroservices()));
+        result.setSlots(mapSlotList(wrapper.getSlots()));
         return result;
     }
 
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductsLoadResultDTOv1 mapPageResultWrapper(PageResult<ProductLoadResultWrapper> page);
 
+    @Mapping(target = "slots", ignore = true)
+    @Mapping(target = "removeSlotsItem", ignore = true)
     @Mapping(target = "microfrontends", ignore = true)
     @Mapping(target = "removeMicrofrontendsItem", ignore = true)
     @Mapping(target = "microservices", ignore = true)

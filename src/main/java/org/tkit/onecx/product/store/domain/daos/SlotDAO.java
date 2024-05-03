@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.Predicate;
 
+import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.SlotSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.onecx.product.store.domain.models.Slot_;
@@ -93,6 +94,21 @@ public class SlotDAO extends AbstractDAO<Slot> {
             this.getEntityManager().createQuery(dq).executeUpdate();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME, ex, productName);
+        }
+    }
+
+    public PageResult<Slot> loadByCriteria(ProductSearchCriteria criteria) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Slot.class);
+            var root = cq.from(Slot.class);
+
+            if (!criteria.getProductNames().isEmpty()) {
+                cq.where(root.get(Slot_.PRODUCT_NAME).in(criteria.getProductNames()));
+            }
+            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+        } catch (Exception exception) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA, exception);
         }
     }
 
