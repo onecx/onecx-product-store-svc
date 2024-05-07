@@ -200,6 +200,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         var p1 = data.getProducts().stream().filter(x -> "product1".equals(x.getName())).findFirst().orElse(null);
         assertThat(p1).isNotNull();
         assertThat(p1.getMicrofrontends()).isNotNull().hasSize(2);
+        assertThat(p1.getMicrofrontends().get(0).getEndpoints()).hasSize(2);
         var p2 = data.getProducts().stream().filter(x -> "product2".equals(x.getName())).findFirst().orElse(null);
         assertThat(p2).isNotNull();
         assertThat(p2.getMicrofrontends()).isNotNull().isEmpty();

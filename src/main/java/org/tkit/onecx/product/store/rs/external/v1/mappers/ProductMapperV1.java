@@ -9,10 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
-import org.tkit.onecx.product.store.domain.models.Microfrontend;
-import org.tkit.onecx.product.store.domain.models.Microservice;
-import org.tkit.onecx.product.store.domain.models.Product;
-import org.tkit.onecx.product.store.domain.models.Slot;
+import org.tkit.onecx.product.store.domain.models.*;
 import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -108,5 +105,7 @@ public interface ProductMapperV1 {
     @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
     List<LoadProductMicrofrontendDTOv1> createLoadProductMicrofrontends(List<Microfrontend> microfrontends);
 
+    @Mapping(target = "removeEndpointsItem", ignore = true)
     LoadProductMicrofrontendDTOv1 createLoadProductMicrofrontend(Microfrontend microfrontend);
+
 }

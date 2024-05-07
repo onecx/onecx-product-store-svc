@@ -178,6 +178,10 @@ components:
           type: string
         type:
           $ref: "#/components/schemas/MicrofrontendType"
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/UIEndpoint'
     ProductItemLoadSearchCriteria:
       type: object
       properties:
