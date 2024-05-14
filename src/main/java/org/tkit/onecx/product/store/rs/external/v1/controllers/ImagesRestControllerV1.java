@@ -8,10 +8,10 @@ import jakarta.ws.rs.core.Response;
 
 import org.tkit.onecx.product.store.domain.daos.ImageDAO;
 import org.tkit.onecx.product.store.domain.models.Image;
+import org.tkit.quarkus.log.cdi.LogService;
 
 import gen.org.tkit.onecx.product.store.rs.external.v1.ImagesApi;
 import gen.org.tkit.onecx.product.store.rs.external.v1.model.RefTypeDTOv1;
-import org.tkit.quarkus.log.cdi.LogService;
 
 @LogService
 @ApplicationScoped
