@@ -94,8 +94,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  /v1/image/{refId}/{refType}:
+    get:
+      tags:
+        - images
+      description: Get Image by id
+      operationId: getImage
+      parameters:
+        - name: refId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: refType
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/RefType"
+      responses:
+        "200":
+          description: OK
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
+    RefType:
+      type: string
+      enum: [ logo, favicon ]
     ProductItemPageResult:
       type: object
       properties:
