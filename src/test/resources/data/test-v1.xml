@@ -15,4 +15,5 @@
     <SLOT guid="s1" app_id="a1" product_name="product1" name="slot1" optlock="0" operator="false"/>
     <SLOT guid="s2" app_id="a2" product_name="product2" name="slot1" optlock="0" operator="false"/>
     <SLOT guid="s3" app_id="a3" product_name="product1" name="slot3" optlock="0" description="some text" creationDate="2024-01-11 12:21:38.914993" modificationDate="2024-01-11 12:21:38.914993" operator="false"/>
+    <IMAGE optlock="0" guid="i1" mime_type="image/png" ref_id="product1" data_length="100" data="abc" ref_type="logo"/>
 </dataset>
