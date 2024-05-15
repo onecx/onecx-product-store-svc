@@ -94,23 +94,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
-  /v1/image/{refId}/{refType}:
+  /v1/image/{refId}/logo:
     get:
       tags:
         - images
       description: Get Image by id
-      operationId: getImage
+      operationId: getProductLogo
       parameters:
         - name: refId
           in: path
           required: true
           schema:
             type: string
-        - name: refType
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/ProductImageRefType"
       responses:
         "200":
           description: OK
@@ -127,9 +122,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
-    ProductImageRefType:
-      type: string
-      enum: [ logo, favicon ]
     ProductItemPageResult:
       type: object
       properties:
