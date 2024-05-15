@@ -110,7 +110,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/RefType"
+            $ref: "#/components/schemas/ProductImageRefType"
       responses:
         "200":
           description: OK
@@ -127,7 +127,7 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
 components:
   schemas:
-    RefType:
+    ProductImageRefType:
       type: string
       enum: [ logo, favicon ]
     ProductItemPageResult:
