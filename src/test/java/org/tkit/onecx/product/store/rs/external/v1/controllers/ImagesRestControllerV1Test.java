@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
 import org.tkit.quarkus.test.WithDBData;
 
-import gen.org.tkit.onecx.product.store.rs.external.v1.model.RefTypeDTOv1;
+import gen.org.tkit.onecx.product.store.rs.external.v1.model.ProductImageRefTypeDTOv1;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 
@@ -24,7 +24,7 @@ class ImagesRestControllerV1Test extends AbstractTest {
     void getImageTest() {
 
         var refId = "product1";
-        var refType = RefTypeDTOv1.LOGO;
+        var refType = ProductImageRefTypeDTOv1.LOGO;
 
         given()
                 .contentType(APPLICATION_JSON)
@@ -41,7 +41,7 @@ class ImagesRestControllerV1Test extends AbstractTest {
     void getImageTest_shouldReturnNotFound_whenImagesDoesNotExist() {
 
         var refId = "test-image";
-        var refType = RefTypeDTOv1.LOGO;
+        var refType = ProductImageRefTypeDTOv1.LOGO;
 
         given()
                 .contentType(APPLICATION_JSON)
