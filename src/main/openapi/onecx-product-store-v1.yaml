@@ -202,6 +202,8 @@ components:
           type: string
         remoteEntry:
           type: string
+        tagName:
+          type: string
         type:
           $ref: "#/components/schemas/MicrofrontendType"
         endpoints:
