@@ -79,7 +79,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
-    public PageResult<Microservice> loadByCriteria(ProductSearchCriteria criteria) {
+    public Stream<Microservice> loadByCriteria(ProductSearchCriteria criteria) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microservice.class);
@@ -88,7 +88,9 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             if (!criteria.getProductNames().isEmpty()) {
                 cq.where(root.get(Microservice_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
-            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+            return this.getEntityManager()
+                    .createQuery(cq)
+                    .getResultStream();
         } catch (Exception exception) {
             throw new DAOException(MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, exception);
         }

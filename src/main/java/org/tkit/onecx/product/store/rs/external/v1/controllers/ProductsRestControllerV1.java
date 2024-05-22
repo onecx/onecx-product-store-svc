@@ -57,15 +57,15 @@ public class ProductsRestControllerV1 implements ProductsApi {
 
         var products = dao.findProductsByCriteria(criteria);
 
-        var microservices = microserviceDAO.loadByCriteria(criteria).getStream().collect(
+        var microservices = microserviceDAO.loadByCriteria(criteria).collect(
                 Collectors.groupingBy(Microservice::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
-        var microfrontends = microfrontendDAO.loadByCriteria(criteria).getStream().collect(
+        var microfrontends = microfrontendDAO.loadByCriteria(criteria).collect(
                 Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
-        var slots = slotDAO.loadByCriteria(criteria).getStream().collect(
+        var slots = slotDAO.loadByCriteria(criteria).collect(
                 Collectors.groupingBy(Slot::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
