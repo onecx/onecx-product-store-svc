@@ -5,6 +5,7 @@ import static org.tkit.quarkus.jpa.utils.QueryCriteriaUtil.addSearchStringPredic
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
@@ -97,7 +98,7 @@ public class SlotDAO extends AbstractDAO<Slot> {
         }
     }
 
-    public PageResult<Slot> loadByCriteria(ProductSearchCriteria criteria) {
+    public Stream<Slot> loadByCriteria(ProductSearchCriteria criteria) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Slot.class);
@@ -106,7 +107,9 @@ public class SlotDAO extends AbstractDAO<Slot> {
             if (!criteria.getProductNames().isEmpty()) {
                 cq.where(root.get(Slot_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
-            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+            return this.getEntityManager()
+                    .createQuery(cq)
+                    .getResultStream();
         } catch (Exception exception) {
             throw new DAOException(ErrorKeys.ERROR_FIND_SLOTS_BY_CRITERIA, exception);
         }

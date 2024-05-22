@@ -83,7 +83,7 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
-    public PageResult<Microfrontend> loadByCriteria(ProductSearchCriteria criteria) {
+    public Stream<Microfrontend> loadByCriteria(ProductSearchCriteria criteria) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
@@ -92,7 +92,9 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             if (!criteria.getProductNames().isEmpty()) {
                 cq.where(root.get(Microfrontend_.PRODUCT_NAME).in(criteria.getProductNames()));
             }
-            return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
+            return this.getEntityManager()
+                    .createQuery(cq)
+                    .getResultStream();
         } catch (Exception exception) {
             throw new DAOException(MicrofrontendDAO.ErrorKeys.ERROR_FIND_MFE_BY_CRITERIA, exception);
         }
