@@ -94,3 +94,5 @@ components:
             type: string
         undeployed:
           type: boolean
+        provider:
+          type: string
