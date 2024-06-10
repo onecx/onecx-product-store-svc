@@ -49,4 +49,7 @@ public class Product extends TraceableEntity {
 
     @Column(name = "UNDEPLOYED")
     private Boolean undeployed;
+
+    @Column(name = "PROVIDER")
+    private String provider;
 }

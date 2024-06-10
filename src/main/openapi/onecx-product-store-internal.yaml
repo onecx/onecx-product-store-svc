@@ -602,6 +602,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        provider:
+          type: string
     ProductSearchCriteria:
       type: object
       properties:
@@ -642,6 +644,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        provider:
+          type: string
     UpdateProductRequest:
       type: object
       required:
@@ -667,6 +671,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        provider:
+          type: string
     Product:
       type: object
       required:
@@ -707,6 +713,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        provider:
+          type: string
     MicrofrontendPageResult:
       type: object
       properties:
