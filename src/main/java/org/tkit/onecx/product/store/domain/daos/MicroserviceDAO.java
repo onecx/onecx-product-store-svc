@@ -42,7 +42,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
                 cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.NAME),
                         criteria.getName()));
             }
-
+            cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_MS_BY_CRITERIA, ex);
