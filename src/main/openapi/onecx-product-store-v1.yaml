@@ -157,7 +157,8 @@ components:
         pageSize:
           format: int32
           description: The size of page
-          default: 10
+          default: 100
+          maximum: 1000
           type: integer
     LoadProductRequest:
       type: object
@@ -225,7 +226,8 @@ components:
         pageSize:
           format: int32
           description: The size of page
-          default: 10
+          default: 100
+          maximum: 1000
           type: integer
     Product:
       type: object
