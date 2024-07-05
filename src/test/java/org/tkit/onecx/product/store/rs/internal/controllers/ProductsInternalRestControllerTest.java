@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.io.File;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.image.rs.internal.model.ImageInfoDTO;
@@ -21,6 +23,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 //@TestHTTPEndpoint(ProductsInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps:read", "ocx-ps:write", "ocx-ps:delete", "ocx-ps:all" })
 class ProductsInternalRestControllerTest extends AbstractTest {
 
     private static final String MEDIA_TYPE_IMAGE_PNG = "image/png";
@@ -38,6 +41,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         createProductDTO.setBasePath("basePath");
 
         var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
@@ -53,6 +57,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         // create product without body
         var exception = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .post("/internal/products")
@@ -64,7 +69,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(exception.getDetail()).isEqualTo("createProduct.createProductRequestDTO: must not be null");
 
         // create product with existing name
-        exception = given().when()
+        exception = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
                 .post("/internal/products")
@@ -81,6 +87,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void deleteProductTest() {
         // delete product
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .delete("/internal/products/{id}")
@@ -88,6 +95,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         // check if product exists
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .get("/internal/products/{id}")
@@ -99,7 +107,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         criteriaDTO.setPageNumber(0);
         criteriaDTO.setPageSize(1);
 
-        var mfes = given().contentType(APPLICATION_JSON)
+        var mfes = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
                 .body(criteriaDTO)
                 .post("/internal/microfrontends/search")
                 .then()
@@ -114,7 +123,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         criteriaDTO.setPageNumber(0);
         criteriaDTO.setPageSize(1);
 
-        var ms = given().contentType(APPLICATION_JSON)
+        var ms = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
                 .body(msSearchCriteria)
                 .post("/internal/microservices/search")
                 .then()
@@ -126,6 +136,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         // delete product
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .delete("/internal/products/{id}")
@@ -145,6 +156,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         createProductDTO.setBasePath("basePath");
 
         var output = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(createProductDTO)
@@ -156,6 +168,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         // Create Image
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .pathParam("refId", refId)
                 .pathParam("refType", refType)
                 .when()
@@ -169,6 +182,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         // delete product
         var res = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", output.getId())
                 .delete("/internal/products/{id}")
@@ -178,6 +192,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         Assertions.assertNotNull(res);
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("refId", refId)
                 .pathParam("refType", refType)
@@ -189,6 +204,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void getProductTest() {
         var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "p1")
                 .get("/internal/products/{id}")
@@ -203,6 +219,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(dto.getDescription()).isEqualTo("description");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "___")
                 .get("/internal/products/{id}")
@@ -217,6 +234,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         criteria.setPageSize(100);
 
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/internal/products/search")
@@ -236,6 +254,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         criteria2.setPageSize(1);
 
         var data2 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria2)
                 .post("/internal/products/search")
@@ -257,6 +276,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         var criteria = new ProductSearchCriteriaDTO();
 
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/internal/products/search")
@@ -274,6 +294,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchProductsNoBodyTest() {
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .post("/internal/products/search")
                 .then()
@@ -290,6 +311,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void searchProductsNoProductNameCriteriaTest() {
         ProductSearchCriteriaDTO criteriaDTO = new ProductSearchCriteriaDTO();
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTO)
                 .post("/internal/products/search")
@@ -305,6 +327,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         ProductSearchCriteriaDTO criteriaDTO2 = new ProductSearchCriteriaDTO();
         criteriaDTO2.setName("");
         var data2 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTO2)
                 .post("/internal/products/search")
@@ -327,6 +350,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         updateDto.setBasePath("basePath");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(updateDto)
                 .when()
@@ -336,6 +360,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .statusCode(NOT_FOUND.getStatusCode());
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(updateDto)
                 .when()
@@ -343,7 +368,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .put("/internal/products/{id}")
                 .then().statusCode(NO_CONTENT.getStatusCode());
 
-        var dto = given().contentType(APPLICATION_JSON)
+        var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
                 .body(updateDto)
                 .when()
                 .pathParam("id", "p1")
@@ -362,7 +388,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         criteriaDTO.setPageSize(1);
         criteriaDTO.setPageNumber(0);
 
-        var mfes = given().contentType(APPLICATION_JSON)
+        var mfes = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
                 .body(criteriaDTO)
                 .post("/internal/microfrontends/search")
                 .then()
@@ -378,7 +405,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         msCriteriaDTO.setPageSize(1);
         msCriteriaDTO.setPageNumber(0);
 
-        var ms = given().contentType(APPLICATION_JSON)
+        var ms = given()
+                .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
                 .body(msCriteriaDTO)
                 .post("/internal/microservices/search")
                 .then()
@@ -393,6 +421,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void updateProductWithoutBodyTest() {
 
         var exception = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .when()
                 .pathParam("id", "update_create_new")
@@ -412,6 +441,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void getProductByNameTest() {
         var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("name", "product1")
                 .get("/internal/products/name/{name}")
@@ -426,6 +456,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(dto.getDescription()).isEqualTo("description");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("name", "___")
                 .get("/internal/products/name/{name}")

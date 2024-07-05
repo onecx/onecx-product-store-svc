@@ -4,10 +4,12 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
 import org.tkit.onecx.product.store.rs.internal.mappers.ExceptionMapper;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.internal.model.*;
@@ -17,6 +19,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(SlotInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps:read", "ocx-ps:write", "ocx-ps:delete", "ocx-ps:all" })
 class SlotsInternalRestControllerTest extends AbstractTest {
 
     @Test
@@ -26,6 +29,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .name("n-1");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(data)
@@ -43,6 +47,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         data.setProductName("p-1");
 
         var slot = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(data)
@@ -56,6 +61,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(slot.getName()).isNotNull().isEqualTo(data.getName());
 
         response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(data)
@@ -75,6 +81,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
     @Test
     void updateSlotTest() {
         var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
                 .get("{id}")
@@ -91,6 +98,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .undeployed(dto.getUndeployed());
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -100,6 +108,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .statusCode(NOT_FOUND.getStatusCode());
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -109,6 +118,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .statusCode(NO_CONTENT.getStatusCode());
 
         dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
                 .get("{id}")
@@ -126,6 +136,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
 
         // ensure exists
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
                 .get("{id}")
@@ -133,6 +144,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
 
         // delete existing
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
                 .delete("{id}")
@@ -140,6 +152,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
 
         // verify successful deletion by GET call
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
                 .get("{id}")
@@ -147,6 +160,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
 
         // delete does not existing
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "does-not-exists")
                 .delete("{id}")
@@ -159,6 +173,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         var criteria = new SlotSearchCriteriaDTO();
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -175,6 +190,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         criteria.appId("notExisting");
 
         response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -191,6 +207,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         criteria.productName("product1").appId("a1").name("slot1");
 
         response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")

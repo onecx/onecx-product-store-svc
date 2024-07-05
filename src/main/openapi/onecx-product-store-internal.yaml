@@ -13,6 +13,8 @@ tags:
 paths:
   /internal/microfrontends:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - microfrontendsInternal
       description: Create micro-frontend
@@ -44,6 +46,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microfrontends/search:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - microfrontendsInternal
       description: Search for micro-frontend by search criteria
@@ -69,6 +73,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microfrontends/{id}:
     get:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - microfrontendsInternal
       description: Return micro-frontend by ID
@@ -89,6 +95,8 @@ paths:
         "404":
           description: Not found
     put:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - microfrontendsInternal
       description: Update microfrontend by ID
@@ -117,6 +125,8 @@ paths:
         "404":
           description: Microfrontend not found
     delete:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:delete ]
       tags:
         - microfrontendsInternal
       description: Delete microfrontend by ID
@@ -138,6 +148,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/slots:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - slotsInternal
       description: Create slot
@@ -169,6 +181,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/slots/search:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - slotsInternal
       description: Search for slots by search criteria
@@ -194,6 +208,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/slots/{id}:
     get:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - slotsInternal
       description: Return slot by ID
@@ -214,6 +230,8 @@ paths:
         "404":
           description: Not found
     put:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - slotsInternal
       description: Update slot by ID
@@ -242,6 +260,8 @@ paths:
         "404":
           description: Slot not found
     delete:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:delete ]
       tags:
         - slotsInternal
       description: Delete slot by ID
@@ -263,6 +283,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microservices:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - microservicesInternal
       description: Create microservice
@@ -294,6 +316,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microservices/search:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - microservicesInternal
       description: Search for microservices by search criteria
@@ -319,6 +343,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/microservices/{id}:
     get:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - microservicesInternal
       description: Return microservices by ID
@@ -339,6 +365,8 @@ paths:
         "404":
           description: Not found
     put:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - microservicesInternal
       description: Update microservice by ID
@@ -367,6 +395,8 @@ paths:
         "404":
           description: microservice not found
     delete:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:delete ]
       tags:
         - microservicesInternal
       description: Delete microservice by ID
@@ -388,6 +418,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - productsInternal
       description: Create new product
@@ -419,6 +451,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products/search:
     post:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - productsInternal
       description: Search for products by search criteria
@@ -444,6 +478,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products/{id}:
     get:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - productsInternal
       description: Return product by ID
@@ -470,6 +506,8 @@ paths:
         "404":
           description: Not found
     put:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - productsInternal
       description: Update product by ID
@@ -498,6 +536,8 @@ paths:
         "404":
           description: Product not found
     delete:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:delete ]
       tags:
         - productsInternal
       description: Delete product by ID
@@ -519,6 +559,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /internal/products/name/{name}:
     get:
+      security:
+        - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - productsInternal
       description: Return product by name (unique)
@@ -545,6 +587,17 @@ paths:
         "404":
           description: Not found
 components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.simple.api/token
+          scopes:
+            ocx-ps:all: Grants access to all operations
+            ocx-ps:read: Grants read access
+            ocx-ps:write: Grants write access
+            ocx-ps:delete: Grants access to delete operations
   schemas:
     ProductPageResult:
       type: object
