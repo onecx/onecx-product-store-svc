@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.mockito.Mockito;
 import org.tkit.onecx.product.store.AbstractTest;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 
 import gen.org.tkit.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
 import io.quarkus.test.InjectMock;
@@ -19,6 +21,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps-mfe:write" })
 class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
 
     @InjectMock
@@ -44,6 +47,7 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(dto)
                 .pathParam("productName", "product-name")
@@ -53,6 +57,7 @@ class OperatorMfeRestControllerV1ExceptionTest extends AbstractTest {
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(dto)
                 .pathParam("productName", "product-name")

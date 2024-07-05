@@ -4,12 +4,14 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.external.v1.model.*;
@@ -19,11 +21,13 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(ProductsRestControllerV1.class)
 @WithDBData(value = "data/test-v1.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps:read" })
 class ProductsRestControllerV1Test extends AbstractTest {
 
     @Test
     void getProductByNameTest() {
         var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParams("name", "product1")
                 .get("{name}")
@@ -38,6 +42,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(dto.getMicrofrontends()).isNotNull().hasSize(2);
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParams("name", "does-not-exists")
                 .get("{name}")
@@ -51,6 +56,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
 
         var criteria = new ProductItemSearchCriteriaDTOv1();
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -72,6 +78,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         var criteria = new ProductItemSearchCriteriaDTOv1();
         criteria.productNames(List.of("product1", "product2"));
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -89,6 +96,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
     @Test
     void searchProductsNoBodyTest() {
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .post("/search")
                 .then()
@@ -107,6 +115,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         criteriaDTOv1.setProductNames(List.of("product1"));
 
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTOv1)
                 .post("/load")
@@ -133,6 +142,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         criteriaDTOv1.setProductNames(List.of(""));
 
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTOv1)
                 .post("/load")
@@ -151,6 +161,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         ProductItemLoadSearchCriteriaDTOv1 criteriaDTOv1 = new ProductItemLoadSearchCriteriaDTOv1();
 
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTOv1)
                 .post("/load")
@@ -170,6 +181,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
         List<String> emptyList = new ArrayList<>();
         criteriaDTOv1.setProductNames(emptyList);
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaDTOv1)
                 .post("/load")
@@ -186,6 +198,7 @@ class ProductsRestControllerV1Test extends AbstractTest {
     @Test
     void loadProductsByNamesTest() {
         var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(new LoadProductRequestDTOv1().productNames(List.of("product1", "product2")))
                 .post("/load/shell")

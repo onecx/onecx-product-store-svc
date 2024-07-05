@@ -5,6 +5,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.internal.model.*;
@@ -21,6 +23,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(MicroservicesInternalRestController.class)
 @WithDBData(value = "data/test-internal.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps:read", "ocx-ps:write", "ocx-ps:delete", "ocx-ps:all" })
 class MicroservicesInternalRestControllerTest extends AbstractTest {
 
     /**
@@ -38,6 +41,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // create
         var responseCreationRequest = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -49,6 +53,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // try to fetch newly created object
         var responseGetRequest = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", responseCreationRequest.getId())
                 .get("{id}")
@@ -92,6 +97,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // first shot (success)
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -103,6 +109,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // second shot (violates unique constraint)
         var responseCreationRequest = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -142,6 +149,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
                 "AppName-5", "some description", "");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -174,6 +182,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     void deleteMicroservice_shouldDeleteMicroservice() {
         // ensure ms exists
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "m1")
                 .get("{id}")
@@ -181,6 +190,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // delete existing ms
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "m1")
                 .delete("{id}")
@@ -188,6 +198,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // verify successful deletion by GET call
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "m1")
                 .get("{id}")
@@ -205,6 +216,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     void deleteMicroservice_shouldReturnNoContent_whenMFEIdDoesNotExist() {
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "notExistingMFEId")
                 .delete("{id}")
@@ -222,6 +234,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     @Test
     void getMicroservice_shouldReturnMicroservice() {
         var responseGetRequest = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "ms1")
                 .get("{id}")
@@ -258,6 +271,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     @Test
     void getMicroservice_shouldReturnNotFound_whenMFEIdDoesNotExist() {
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "notExisting")
                 .get("{id}")
@@ -278,6 +292,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         criteria.setName("notExisting");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -300,6 +315,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         criteriaBlank.setProductName("");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaBlank)
                 .post("/search")
@@ -315,6 +331,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         var criteriaMissing = new MicroserviceSearchCriteriaDTO();
 
         var response2 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteriaMissing)
                 .post("/search")
@@ -347,6 +364,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         criteria.setName("displayname-1");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -365,6 +383,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         criteria2.setAppId("ms1");
 
         var response2 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria2)
                 .post("/search")
@@ -384,6 +403,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         criteria.setProductName("product1");
 
         var response3 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria2)
                 .post("/search")
@@ -411,6 +431,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         var criteria = new MicroserviceSearchCriteriaDTO();
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(criteria)
                 .post("/search")
@@ -435,6 +456,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicroservices_shouldReturnBadRequest_whenRunningIntoValidationConstraints() {
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .post("/search")
                 .then()
@@ -471,6 +493,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
                 "display_name1", "some description", "product1");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -481,6 +504,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // Verify update
         var responseGetRequest = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", msId)
                 .get("{id}")
@@ -518,6 +542,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
                 "AppName-5", "some description", "ProductName");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -541,6 +566,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
                 "AppName-5", "some description", "productOne");
 
         var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .body(request)
@@ -584,6 +610,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     void updateMicroservice_shouldReturnBadRequest_whenRunningIntoValidationConstraintsEmptyBody() {
 
         var exception = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .when()
                 .pathParam("id", "update_create_new")

@@ -3,11 +3,13 @@ package org.tkit.onecx.product.store.rs.operator.mfe.v1.controllers;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.operator.mfe.v1.model.UpdateMfeRequestMDTOv1;
@@ -17,6 +19,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
 @WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps-mfe:write" })
 class OperatorMfeRestControllerV1Test extends AbstractTest {
 
     @Test
@@ -30,6 +33,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote-base-url");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -51,6 +55,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote_base_url1");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "p1")
@@ -73,6 +78,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
 
         dto.setClassifications(Set.of("a", "b"));
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "p1")
@@ -86,6 +92,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setRemoteBaseUrl("remote-base-url2");
         dto.setRemoteEntry("remote-entry2");
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "p2")
@@ -102,6 +109,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
         dto.setAppName("base_new");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -115,6 +123,7 @@ class OperatorMfeRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateMfeEmptyBodyTest() {
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")

@@ -3,9 +3,11 @@ package org.tkit.onecx.product.store.rs.operator.slot.v1.controllers;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.operator.slot.v1.model.UpdateSlotRequestSlotDTOv1;
@@ -15,6 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(OperatorSlotRestControllerV1.class)
 @WithDBData(value = "data/test-operator-slot.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps-slot:write" })
 class OperatorSlotRestControllerV1Test extends AbstractTest {
 
     @Test
@@ -24,6 +27,7 @@ class OperatorSlotRestControllerV1Test extends AbstractTest {
         dto.name("display-name");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -41,6 +45,7 @@ class OperatorSlotRestControllerV1Test extends AbstractTest {
         dto.description("description");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product1")
@@ -52,6 +57,7 @@ class OperatorSlotRestControllerV1Test extends AbstractTest {
 
         dto.setDescription("desc2");
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -65,6 +71,7 @@ class OperatorSlotRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateSlotEmptyBodyTest() {
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")

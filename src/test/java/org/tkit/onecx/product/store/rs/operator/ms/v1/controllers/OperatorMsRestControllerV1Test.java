@@ -3,9 +3,11 @@ package org.tkit.onecx.product.store.rs.operator.ms.v1.controllers;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
+import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import org.junit.jupiter.api.Test;
 import org.tkit.onecx.product.store.AbstractTest;
+import org.tkit.quarkus.security.test.GenerateKeycloakClient;
 import org.tkit.quarkus.test.WithDBData;
 
 import gen.org.tkit.onecx.product.store.rs.operator.ms.v1.model.UpdateMsRequestMsDTOv1;
@@ -15,6 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMsRestControllerV1.class)
 @WithDBData(value = "data/test-operator-ms.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps-ms:write" })
 class OperatorMsRestControllerV1Test extends AbstractTest {
 
     @Test
@@ -24,6 +27,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
         dto.name("display-name");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -40,6 +44,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
         dto.name("display-name");
 
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "p1")
@@ -51,6 +56,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
 
         dto.setDescription("desc2");
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")
@@ -64,6 +70,7 @@ class OperatorMsRestControllerV1Test extends AbstractTest {
     @Test
     void createOrUpdateMsEmptyBodyTest() {
         given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
                 .when()
                 .contentType(APPLICATION_JSON)
                 .pathParam("productName", "product-name")

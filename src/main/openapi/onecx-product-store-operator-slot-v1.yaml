@@ -10,6 +10,8 @@ tags:
 paths:
   /operator/slot/v1/{productName}/{appId}:
     put:
+      security:
+        - oauth2: [ ocx-ps-slot:write ]
       tags:
         - operatorSlot
       description: Creates or updates a product slot.
@@ -45,6 +47,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
 components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://oauth.simple.api/token
+          scopes:
+            ocx-ps-slot:write: Grants write access
   schemas:
     ProblemDetailResponse:
       type: object
