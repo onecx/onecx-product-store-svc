@@ -45,7 +45,7 @@ class ProductsRestControllerV1ExceptionTest extends AbstractTest {
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
 
-        var exception = given()
+        given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(new ProductItemSearchCriteriaDTOv1())
