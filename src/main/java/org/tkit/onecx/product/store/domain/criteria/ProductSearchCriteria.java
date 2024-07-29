@@ -13,6 +13,8 @@ public class ProductSearchCriteria {
 
     private List<String> productNames;
 
+    private String displayName;
+
     private String name;
 
     private Integer pageNumber;

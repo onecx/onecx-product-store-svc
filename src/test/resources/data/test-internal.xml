@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <PRODUCT guid="p1" name="product1" description="description" image_url="/image" base_path="/product1" operator="false" optlock="0" classification="searching" provider="provider1"/>
+    <PRODUCT guid="p1" name="product1" description="description" image_url="/image" base_path="/product1" operator="false" optlock="0" classification="searching" provider="provider1" display_name="p1"/>
     <PRODUCT guid="p2" name="product2" description="description" image_url="/image" base_path="/product2" operator="false" optlock="0" provider="provider1"/>
 
     <MICROFRONTEND guid="m1" app_id="mfe1" product_name="product1" remote_entry="remote-entry1"
