@@ -662,6 +662,8 @@ components:
       properties:
         name:
           type: string
+        displayName:
+          type: string
         pageNumber:
           format: int32
           description: The number of page.
