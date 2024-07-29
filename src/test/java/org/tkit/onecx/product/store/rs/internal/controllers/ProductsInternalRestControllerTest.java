@@ -274,7 +274,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchProductsTest() {
         var criteria = new ProductSearchCriteriaDTO();
-
+        criteria.setDisplayName("");
         var data = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
@@ -289,6 +289,21 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
+
+        criteria.setDisplayName("p1");
+        data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(1);
     }
 
     @Test
