@@ -54,6 +54,7 @@ public interface ProductMapperV1 {
 
     MicroserviceDTOv1 map(Microservice data);
 
+    @Mapping(target = "version", source = "appVersion")
     MicrofrontendAbstractDTOv1 mapAbstract(Microfrontend mfe);
 
     @Mapping(target = "appName", source = "name")
