@@ -365,6 +365,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        version:
+          type: string
     ProductsLoadResult:
       type: object
       properties:
@@ -398,6 +400,8 @@ components:
           type: string
         basePath:
           type: string
+        version:
+          type: string
         classifications:
           type: string
         undeployed:
@@ -423,6 +427,8 @@ components:
           type: string
         undeployed:
           type: boolean
+        version:
+          type: string
         deprecated:
           type: boolean
         type:
