@@ -202,6 +202,8 @@ components:
           type: string
         displayName:
           type: string
+        version:
+          type: string
         microfrontends:
           type: array
           items:
