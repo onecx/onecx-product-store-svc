@@ -43,6 +43,11 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
                 cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
                         criteria.getAppId()));
             }
+
+            if (criteria.getType() != null) {
+                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.TYPE),
+                        criteria.getType().toString()));
+            }
             cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {

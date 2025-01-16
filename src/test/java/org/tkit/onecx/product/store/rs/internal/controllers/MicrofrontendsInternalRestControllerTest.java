@@ -431,6 +431,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         criteria.setProductName("product1");
         criteria.setAppId("mfe1");
         criteria.setAppName("display_name1");
+        criteria.setType(MicrofrontendTypeDTO.COMPONENT);
 
         var response = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))

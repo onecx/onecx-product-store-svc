@@ -1,5 +1,7 @@
 package org.tkit.onecx.product.store.domain.criteria;
 
+import org.tkit.onecx.product.store.domain.models.Microfrontend;
+
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,4 +20,6 @@ public class MicrofrontendSearchCriteria {
     private Integer pageNumber;
 
     private Integer pageSize;
+
+    private Microfrontend.Type type;
 }
