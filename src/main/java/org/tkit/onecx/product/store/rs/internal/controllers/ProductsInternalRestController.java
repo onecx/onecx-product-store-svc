@@ -100,8 +100,8 @@ public class ProductsInternalRestController implements ProductsInternalApi {
         String oldProductName = item.getName();
 
         mapper.update(updateProductDTO, item);
-        productService.updateProductAndRelatedMfeAndMs(oldProductName, item);
-        return Response.noContent().build();
+        item = productService.updateProductAndRelatedMfeAndMs(oldProductName, item);
+        return Response.status(Response.Status.OK).entity(mapper.map(item)).build();
     }
 
     @ServerExceptionMapper

@@ -374,14 +374,17 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .then()
                 .statusCode(NOT_FOUND.getStatusCode());
 
-        given()
+        var updateResult = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .body(updateDto)
                 .when()
                 .pathParam("id", "p1")
                 .put("/internal/products/{id}")
-                .then().statusCode(NO_CONTENT.getStatusCode());
+                .then().statusCode(OK.getStatusCode()).extract().as(ProductDTO.class);
+
+        assertThat(updateResult).isNotNull();
+        assertThat(updateResult.getDescription()).isEqualTo(updateDto.getDescription());
 
         var dto = given()
                 .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
