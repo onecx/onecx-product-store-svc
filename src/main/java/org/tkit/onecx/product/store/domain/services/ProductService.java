@@ -28,11 +28,11 @@ public class ProductService {
     SlotDAO slotDAO;
 
     @Transactional
-    public void updateProductAndRelatedMfeAndMs(String oldProductName, Product updateItem) {
+    public Product updateProductAndRelatedMfeAndMs(String oldProductName, Product updateItem) {
         microfrontendDAO.updateByProductName(oldProductName, updateItem.getName());
         microserviceDAO.updateByProductName(oldProductName, updateItem.getName());
         slotDAO.updateByProductName(oldProductName, updateItem.getName());
-        productDAO.update(updateItem);
+        return productDAO.update(updateItem);
     }
 
     @Transactional
