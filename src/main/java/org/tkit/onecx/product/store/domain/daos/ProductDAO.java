@@ -1,9 +1,11 @@
 package org.tkit.onecx.product.store.domain.daos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.Predicate;
 
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.*;
@@ -23,19 +25,22 @@ public class ProductDAO extends AbstractDAO<Product> {
             var cq = cb.createQuery(Product.class);
             var root = cq.from(Product.class);
 
-            if (criteria.getName() != null && !criteria.getName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Product_.NAME),
-                        criteria.getName()));
-            }
+            List<Predicate> predicates = new ArrayList<>();
 
-            if (criteria.getDisplayName() != null && !criteria.getDisplayName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Product_.DISPLAY_NAME),
-                        criteria.getDisplayName()));
-            }
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Product_.NAME),
+                    criteria.getName());
+
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Product_.DISPLAY_NAME),
+                    criteria.getDisplayName());
 
             if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
-                cq.where(root.get(Product_.NAME).in(criteria.getProductNames()));
+                predicates.add(root.get(Product_.name).in(criteria.getProductNames()));
             }
+
+            if (!predicates.isEmpty()) {
+                cq.where(cb.and(predicates.toArray(new Predicate[0])));
+            }
+
             cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {

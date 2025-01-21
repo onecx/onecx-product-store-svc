@@ -28,25 +28,22 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
+            List<Predicate> predicates = new ArrayList<>();
 
-            if (criteria.getProductName() != null && !criteria.getProductName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.PRODUCT_NAME),
-                        criteria.getProductName()));
-            }
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.PRODUCT_NAME),
+                    criteria.getProductName());
 
-            if (criteria.getAppName() != null && !criteria.getAppName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),
-                        criteria.getAppName()));
-            }
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.APP_NAME),
+                    criteria.getAppName());
 
-            if (criteria.getAppId() != null && !criteria.getAppId().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
-                        criteria.getAppId()));
-            }
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.APP_ID),
+                    criteria.getAppId());
 
             if (criteria.getType() != null) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.TYPE),
-                        criteria.getType().toString()));
+                predicates.add(cb.equal(root.get(Microfrontend_.TYPE), criteria.getType().toString()));
+            }
+            if (!predicates.isEmpty()) {
+                cq.where(predicates.toArray(new Predicate[] {}));
             }
             cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
