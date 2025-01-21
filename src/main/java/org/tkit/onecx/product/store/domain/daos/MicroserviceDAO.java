@@ -28,20 +28,21 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             var cq = cb.createQuery(Microservice.class);
             var root = cq.from(Microservice.class);
 
-            if (criteria.getProductName() != null && !criteria.getProductName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.PRODUCT_NAME),
-                        criteria.getProductName()));
+            List<Predicate> predicates = new ArrayList<>();
+
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.PRODUCT_NAME),
+                    criteria.getProductName());
+
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.APP_ID),
+                    criteria.getAppId());
+
+            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.NAME),
+                    criteria.getName());
+
+            if (!predicates.isEmpty()) {
+                cq.where(predicates.toArray(new Predicate[] {}));
             }
 
-            if (criteria.getAppId() != null && !criteria.getAppId().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.APP_ID),
-                        criteria.getAppId()));
-            }
-
-            if (criteria.getName() != null && !criteria.getName().isBlank()) {
-                cq.where(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.NAME),
-                        criteria.getName()));
-            }
             cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
         } catch (Exception ex) {

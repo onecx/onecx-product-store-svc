@@ -361,7 +361,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         var criteria = new MicroserviceSearchCriteriaDTO();
         criteria.setProductName("product1");
         criteria.setAppId("ms1");
-        criteria.setName("displayname-1");
+        criteria.setName("coolname");
 
         var response = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
