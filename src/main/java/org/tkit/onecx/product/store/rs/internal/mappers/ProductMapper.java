@@ -1,10 +1,11 @@
 package org.tkit.onecx.product.store.rs.internal.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import java.util.List;
+
+import org.mapstruct.*;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
+import org.tkit.onecx.product.store.domain.models.Microfrontend;
+import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
@@ -44,6 +45,8 @@ public interface ProductMapper {
     @Mapping(target = "removeStreamItem", ignore = true)
     ProductPageResultDTO mapPageResult(PageResult<Product> page);
 
+    @Mapping(target = "applications", ignore = true)
+    @Mapping(target = "removeApplicationsItem", ignore = true)
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
     ProductAbstractDTO mapProductAbstract(Product data);
 
@@ -66,4 +69,13 @@ public interface ProductMapper {
         }
         return true;
     }
+
+    List<ApplicationAbstractDTO> mapMfeToAppAbstracts(List<Microfrontend> microfrontend);
+
+    List<ApplicationAbstractDTO> mapMsToAppAbstracts(List<Microservice> microservice);
+
+    @Mapping(target = "deprecated", ignore = true)
+    @Mapping(target = "appName", source = "name")
+    ApplicationAbstractDTO mapMsToAppAbstract(Microservice microservice);
+
 }

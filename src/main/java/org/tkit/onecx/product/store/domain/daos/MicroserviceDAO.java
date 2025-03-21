@@ -135,12 +135,25 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
+    public List<Microservice> findByProductNames(List<String> productNames) {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(Microservice.class);
+            var root = cq.from(Microservice.class);
+            cq.where(root.get(Microservice_.PRODUCT_NAME).in(productNames));
+            return this.getEntityManager().createQuery(cq).getResultList();
+        } catch (Exception exception) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_MS_BY_PRODUCT_NAMES, exception);
+        }
+    }
+
     public enum ErrorKeys {
 
         ERROR_UPDATE_BY_PRODUCT_NAME,
         ERROR_DELETE_BY_PRODUCT_NAME,
         ERROR_FIND_MS_BY_CRITERIA,
         ERROR_LOAD_MS_BY_PRODUCT_NAME,
-        ERROR_FIND_MS_PRODUCT_NAME_APP_ID;
+        ERROR_FIND_MS_PRODUCT_NAME_APP_ID,
+        ERROR_FIND_MS_BY_PRODUCT_NAMES
     }
 }

@@ -40,6 +40,8 @@ class MicroserviceDAOTest {
                 MicroserviceDAO.ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.updateByProductName(null, null),
                 MicroserviceDAO.ErrorKeys.ERROR_UPDATE_BY_PRODUCT_NAME);
+        methodExceptionTests(() -> dao.findByProductNames(null),
+                MicroserviceDAO.ErrorKeys.ERROR_FIND_MS_BY_PRODUCT_NAMES);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

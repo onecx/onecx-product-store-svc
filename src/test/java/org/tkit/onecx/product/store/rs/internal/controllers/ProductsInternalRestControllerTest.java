@@ -289,6 +289,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
+        assertThat(data.getStream().get(0).getApplications().get(0).getAppName()).isNotNull();
 
         criteria.setDisplayName("p1");
         data = given()
