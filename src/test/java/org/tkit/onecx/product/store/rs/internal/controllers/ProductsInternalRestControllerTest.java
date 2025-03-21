@@ -287,8 +287,8 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .as(ProductPageResultDTO.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getTotalElements()).isEqualTo(2);
-        assertThat(data.getStream()).isNotNull().hasSize(2);
+        assertThat(data.getTotalElements()).isEqualTo(3);
+        assertThat(data.getStream()).isNotNull().hasSize(3);
         assertThat(data.getStream().get(0).getApplications().get(0).getAppName()).isNotNull();
 
         criteria.setDisplayName("p1");
@@ -338,7 +338,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .as(ProductPageResultDTO.class);
 
         assertThat(data).isNotNull();
-        assertThat(data.getStream()).hasSize(2);
+        assertThat(data.getStream()).hasSize(3);
 
         ProductSearchCriteriaDTO criteriaDTO2 = new ProductSearchCriteriaDTO();
         criteriaDTO2.setName("");
@@ -354,7 +354,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .as(ProductPageResultDTO.class);
 
         assertThat(data2).isNotNull();
-        assertThat(data2.getStream()).hasSize(2);
+        assertThat(data2.getStream()).hasSize(3);
     }
 
     @Test

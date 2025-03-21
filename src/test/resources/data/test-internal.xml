@@ -2,6 +2,7 @@
 <dataset>
     <PRODUCT guid="p1" name="product1" description="description" image_url="/image" base_path="/product1" operator="false" optlock="0" classification="searching" provider="provider1" display_name="p1"/>
     <PRODUCT guid="p2" name="product2" description="description" image_url="/image" base_path="/product2" operator="false" optlock="0" provider="provider1"/>
+    <PRODUCT guid="p3" name="product3" description="description" image_url="/image" base_path="/product3" operator="false" optlock="0" provider="provider1"/>
 
     <MICROFRONTEND guid="m1" app_id="mfe1" product_name="product1" remote_entry="remote-entry1"
                       exposed_module="exposed-module1" app_name="display_name1" remote_base_url="remote_base_url1"
