@@ -106,10 +106,14 @@ public class ProductsInternalRestController implements ProductsInternalApi {
                         Collectors.mapping(x -> x, Collectors.toList())));
 
         pageResult.getStream().forEach(productAbstractDTO -> {
-            productAbstractDTO.getApplications()
-                    .addAll(mapper.mapMsToAppAbstracts(microservices.get(productAbstractDTO.getName())));
-            productAbstractDTO.getApplications()
-                    .addAll(mapper.mapMfeToAppAbstracts(microfrontends.get(productAbstractDTO.getName())));
+            if (microservices.get(productAbstractDTO.getName()) != null) {
+                productAbstractDTO.getApplications()
+                        .addAll(mapper.mapMsToAppAbstracts(microservices.get(productAbstractDTO.getName())));
+            }
+            if (microfrontends.get(productAbstractDTO.getName()) != null) {
+                productAbstractDTO.getApplications()
+                        .addAll(mapper.mapMfeToAppAbstracts(microfrontends.get(productAbstractDTO.getName())));
+            }
         });
         return Response.ok(pageResult).build();
     }
