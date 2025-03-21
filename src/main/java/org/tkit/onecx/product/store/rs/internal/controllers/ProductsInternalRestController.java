@@ -1,5 +1,8 @@
 package org.tkit.onecx.product.store.rs.internal.controllers;
 
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -13,6 +16,8 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.models.Microfrontend;
+import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.onecx.product.store.domain.services.ProductService;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
@@ -87,8 +92,26 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     @Override
     public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
         var criteria = mapper.map(productSearchCriteriaDTO);
-        var result = dao.findProductsByCriteria(criteria);
-        return Response.ok(mapper.mapPageResult(result)).build();
+
+        var pageResult = mapper.mapPageResult(dao.findProductsByCriteria(criteria));
+
+        var productNames = pageResult.getStream().stream().map(ProductAbstractDTO::getName).toList();
+
+        var microservices = microserviceDAO.findByProductNames(productNames).stream().collect(
+                Collectors.groupingBy(Microservice::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var microfrontends = microfrontendDAO.findByProductNames(productNames).stream().collect(
+                Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        pageResult.getStream().forEach(productAbstractDTO -> {
+            productAbstractDTO.getApplications()
+                    .addAll(mapper.mapMsToAppAbstracts(microservices.get(productAbstractDTO.getName())));
+            productAbstractDTO.getApplications()
+                    .addAll(mapper.mapMfeToAppAbstracts(microfrontends.get(productAbstractDTO.getName())));
+        });
+        return Response.ok(pageResult).build();
     }
 
     @Override
