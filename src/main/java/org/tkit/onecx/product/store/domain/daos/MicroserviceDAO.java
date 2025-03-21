@@ -143,7 +143,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             cq.where(root.get(Microservice_.PRODUCT_NAME).in(productNames));
             return this.getEntityManager().createQuery(cq).getResultList();
         } catch (Exception exception) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_MFE_BY_PRODUCT_NAMES, exception);
+            throw new DAOException(ErrorKeys.ERROR_FIND_MS_BY_PRODUCT_NAMES, exception);
         }
     }
 
@@ -154,6 +154,6 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         ERROR_FIND_MS_BY_CRITERIA,
         ERROR_LOAD_MS_BY_PRODUCT_NAME,
         ERROR_FIND_MS_PRODUCT_NAME_APP_ID,
-        ERROR_FIND_MFE_BY_PRODUCT_NAMES
+        ERROR_FIND_MS_BY_PRODUCT_NAMES
     }
 }
