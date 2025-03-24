@@ -9,7 +9,7 @@
                       operator="false" optlock="0" classification="searching" app_version="1.0.0" technology="Angular" type="COMPONENT"/>
     <MICROFRONTEND guid="m2" app_id="mfe2" product_name="product2" remote_entry="remote-entry2"
                       exposed_module="exposed-module2" app_name="display_name2" remote_base_url="remote_base_url2"
-                      operator="false" optlock="0"/>
+                      operator="false" optlock="0" type="MODULE"/>
 
     <MICROFRONTEND guid="mfe1" app_id="mfeOne" product_name="productOne" remote_entry="https://localhost/mfe/core/ah-mgmtv5/remoteEntry.js"
                       exposed_module="/AnnouncementManagementModule" app_name="coolname" remote_base_url="https://localhost/mfe/core/ah-mgmt/"

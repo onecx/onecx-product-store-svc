@@ -101,9 +101,10 @@ public class ProductsInternalRestController implements ProductsInternalApi {
                 Collectors.groupingBy(Microservice::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
-        var microfrontends = microfrontendDAO.findByProductNames(productNames).stream().collect(
-                Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
-                        Collectors.mapping(x -> x, Collectors.toList())));
+        var microfrontends = microfrontendDAO.findByProductNames(productNames).stream()
+                .filter(mf -> mf.getType() == Microfrontend.Type.MODULE).collect(
+                        Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
+                                Collectors.mapping(x -> x, Collectors.toList())));
 
         pageResult.getStream().forEach(productAbstractDTO -> {
             if (microservices.get(productAbstractDTO.getName()) != null) {
