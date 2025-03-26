@@ -11,3 +11,7 @@ app:
         spec:
           kcConfig:
             defaultClientScopes: [ ocx-tn:read ]
+    microservice:
+      spec:
+        description: OneCX Product Store Backend Service
+        name: OneCX Product Store SVC
