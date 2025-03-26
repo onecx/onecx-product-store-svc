@@ -16,7 +16,6 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
-import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
 import org.tkit.onecx.product.store.domain.services.ProductService;
@@ -101,19 +100,10 @@ public class ProductsInternalRestController implements ProductsInternalApi {
                 Collectors.groupingBy(Microservice::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
 
-        var microfrontends = microfrontendDAO.findByProductNames(productNames).stream()
-                .filter(mf -> mf.getType() == Microfrontend.Type.MODULE).collect(
-                        Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
-                                Collectors.mapping(x -> x, Collectors.toList())));
-
         pageResult.getStream().forEach(productAbstractDTO -> {
             if (microservices.get(productAbstractDTO.getName()) != null) {
                 productAbstractDTO.getApplications()
                         .addAll(mapper.mapMsToAppAbstracts(microservices.get(productAbstractDTO.getName())));
-            }
-            if (microfrontends.get(productAbstractDTO.getName()) != null) {
-                productAbstractDTO.getApplications()
-                        .addAll(mapper.mapMfeToAppAbstracts(microfrontends.get(productAbstractDTO.getName())));
             }
         });
         return Response.ok(pageResult).build();
