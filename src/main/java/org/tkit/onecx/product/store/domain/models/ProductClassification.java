@@ -11,9 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "PRODUCT_CLASSIFICATION", indexes = {
-        @Index(columnList = "PRODUCT_ID", name = "PRODUCT_CLASSIFICATION_PRODUCT_ID")
-}, uniqueConstraints = {
+@Table(name = "PRODUCT_CLASSIFICATION", uniqueConstraints = {
         @UniqueConstraint(name = "PRODUCT_CLASSIFICATION_VALUE", columnNames = { "PRODUCT_ID", "VALUE" })
 })
 public class ProductClassification implements Serializable {

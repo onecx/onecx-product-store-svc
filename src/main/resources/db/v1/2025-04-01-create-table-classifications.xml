@@ -13,16 +13,11 @@
             <column name="value" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="dev (generated)" id="1743431263804-2">
-        <createIndex indexName="product_classification_product_id" tableName="product_classification">
-            <column name="product_id"/>
-        </createIndex>
-    </changeSet>
     <changeSet author="dev (generated)" id="1743431263804-3">
         <addUniqueConstraint columnNames="product_id, value" constraintName="product_classification_value" tableName="product_classification"/>
     </changeSet>
     <changeSet author="dev (generated)" id="1743431263804-4">
-        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_classification" constraintName="products_classifications" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="product"/>
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_classification" constraintName="fk_product_classification" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="product"/>
     </changeSet>
     <changeSet author="dev (generated)" id="1743431263804-5">
         <dropColumn columnName="classification" tableName="product"/>
