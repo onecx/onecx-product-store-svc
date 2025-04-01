@@ -43,7 +43,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(@MappingTarget Product product, UpdateProductRequestPDTOv1 dto);
-    
+
     @Named("undeployed")
     @SuppressWarnings("java:S2447")
     default Boolean setUndeployed(Boolean value) {
