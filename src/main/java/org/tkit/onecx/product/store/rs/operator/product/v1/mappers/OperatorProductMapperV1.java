@@ -43,15 +43,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     void update(@MappingTarget Product product, UpdateProductRequestPDTOv1 dto);
-
-    //    @Named("toString")
-    //    default String setToString(Set<String> classifications) {
-    //        if (classifications != null && !classifications.isEmpty()) {
-    //            return String.join(",", classifications);
-    //        }
-    //        return "";
-    //    }
-
+    
     @Named("undeployed")
     @SuppressWarnings("java:S2447")
     default Boolean setUndeployed(Boolean value) {
