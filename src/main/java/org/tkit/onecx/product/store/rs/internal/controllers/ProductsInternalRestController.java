@@ -98,7 +98,6 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
-    @Transactional
     public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
         var criteria = mapper.map(productSearchCriteriaDTO);
 
