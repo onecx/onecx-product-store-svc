@@ -49,9 +49,7 @@ public class ProductDAO extends AbstractDAO<Product> {
             }
 
             cq.orderBy(cb.desc(root.get(AbstractTraceableEntity_.CREATION_DATE)));
-            //            var query = getEntityManager().createQuery(cq).setHint(HINT_LOAD_GRAPH, this.getEntityManager().getEntityGraph(Product.PRODUCT_LOAD));
             return createPageQuery(cq, Page.of(criteria.getPageNumber(), criteria.getPageSize())).getPageResult();
-
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA, ex);
         }
