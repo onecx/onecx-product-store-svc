@@ -43,7 +43,7 @@ public class ProductService {
             microfrontendDAO.delete(productRelatedMfes);
             microserviceDAO.deleteByProductName(product.getName());
             slotDAO.deleteByProductName(product.getName());
-            productDAO.deleteQueryById(id);
+            productDAO.delete(product);
 
             // workaround for images
             imageDAO.deleteQueryByRefId(product.getName());

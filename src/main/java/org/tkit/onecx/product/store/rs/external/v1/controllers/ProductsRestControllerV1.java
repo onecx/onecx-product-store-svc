@@ -52,6 +52,7 @@ public class ProductsRestControllerV1 implements ProductsApi {
     SlotDAO slotDAO;
 
     @Override
+    @Transactional
     public Response loadProductsByCriteria(ProductItemLoadSearchCriteriaDTOv1 productItemLoadSearchCriteriaDTOv1) {
         var criteria = mapper.map(productItemLoadSearchCriteriaDTOv1);
 
@@ -99,6 +100,7 @@ public class ProductsRestControllerV1 implements ProductsApi {
     }
 
     @Override
+    @Transactional
     public Response getProductByName(String name) {
         var product = dao.findProductByName(name);
         if (product == null) {
@@ -114,6 +116,7 @@ public class ProductsRestControllerV1 implements ProductsApi {
     }
 
     @Override
+    @Transactional
     public Response searchProductsByCriteria(ProductItemSearchCriteriaDTOv1 productSearchCriteriaDTOV1) {
         var criteria = mapper.map(productSearchCriteriaDTOV1);
         var result = dao.findProductsByCriteria(criteria);

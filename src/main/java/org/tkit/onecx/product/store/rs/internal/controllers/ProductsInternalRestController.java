@@ -89,6 +89,16 @@ public class ProductsInternalRestController implements ProductsInternalApi {
     }
 
     @Override
+    public Response getProductSearchCriteria() {
+        var providers = dao.findAllProviders();
+        var classifications = dao.findAllClassifications();
+
+        return Response.status(Response.Status.OK.getStatusCode()).entity(mapper.mapCriteriaLists(providers, classifications))
+                .build();
+    }
+
+    @Override
+    @Transactional
     public Response searchProducts(ProductSearchCriteriaDTO productSearchCriteriaDTO) {
         var criteria = mapper.map(productSearchCriteriaDTO);
 

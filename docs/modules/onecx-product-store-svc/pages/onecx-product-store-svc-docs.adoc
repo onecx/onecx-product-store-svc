@@ -61,7 +61,7 @@ app:
     microservice:
       spec:
         description: OneCX Product Store Backend Service
-        name: OneCX Product Store Svc
+        name: OneCX Product Store SVC
 
 ----
 

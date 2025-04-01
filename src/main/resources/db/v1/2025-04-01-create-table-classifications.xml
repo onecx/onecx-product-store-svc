@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet author="dev (generated)" id="1743431263804-1">
+        <createTable tableName="product_classification">
+            <column name="guid" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="product_classification_pkey"/>
+            </column>
+            <column name="product_id" type="VARCHAR(255)"/>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="dev (generated)" id="1743431263804-2">
+        <createIndex indexName="product_classification_product_id" tableName="product_classification">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="dev (generated)" id="1743431263804-3">
+        <addUniqueConstraint columnNames="product_id, value" constraintName="product_classification_value" tableName="product_classification"/>
+    </changeSet>
+    <changeSet author="dev (generated)" id="1743431263804-4">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_classification" constraintName="products_classifications" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="guid" referencedTableName="product"/>
+    </changeSet>
+    <changeSet author="dev (generated)" id="1743431263804-5">
+        <dropColumn columnName="classification" tableName="product"/>
+    </changeSet>
+</databaseChangeLog>

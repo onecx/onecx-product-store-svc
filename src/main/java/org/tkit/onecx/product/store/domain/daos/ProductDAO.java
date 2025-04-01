@@ -2,6 +2,7 @@ package org.tkit.onecx.product.store.domain.daos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
@@ -35,6 +36,12 @@ public class ProductDAO extends AbstractDAO<Product> {
 
             if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
                 predicates.add(root.get(Product_.name).in(criteria.getProductNames()));
+            }
+            if (criteria.getProviders() != null && !criteria.getProviders().isEmpty()) {
+                predicates.add(root.get(Product_.provider).in(criteria.getProviders()));
+            }
+            if (criteria.getClassifications() != null && !criteria.getClassifications().isEmpty()) {
+                predicates.add(root.get(Product_.CLASSIFICATIONS).get("value").in(criteria.getClassifications()));
             }
 
             if (!predicates.isEmpty()) {
@@ -74,11 +81,39 @@ public class ProductDAO extends AbstractDAO<Product> {
         }
     }
 
+    public Stream<String> findAllProviders() {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(String.class);
+            var root = cq.from(Product.class);
+            cq.select(root.get(Product_.PROVIDER));
+            return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_ALL_PROVIDERS, ex);
+        }
+    }
+
+    public Stream<String> findAllClassifications() {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(String.class);
+            var root = cq.from(ProductClassification.class);
+            cq.select(root.get("value"));
+            return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
+        } catch (Exception ex) {
+            throw new DAOException(ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS, ex);
+        }
+    }
+
     public enum ErrorKeys {
 
         ERROR_FIND_PRODUCT_BY_PRODUCT_NAMES,
 
         ERROR_FIND_PRODUCTS_BY_CRITERIA,
+
+        ERROR_FIND_ALL_PROVIDERS,
+
+        ERROR_FIND_ALL_CLASSIFICATIONS,
 
         ERROR_FIND_PRODUCT_BY_NAME;
     }

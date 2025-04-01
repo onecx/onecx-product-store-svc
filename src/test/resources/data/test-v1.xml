@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <PRODUCT guid="p1" name="product1" description="description" version="v1" image_url="/image" base_path="/product1" operator="false" optlock="0" classification="search" provider="provider1"/>
-    <PRODUCT guid="p2" name="product2" description="description" version="v2" image_url="/image" base_path="/product2" operator="false" optlock="0" classification="search" provider="provider1"/>
+    <PRODUCT guid="p1" name="product1" description="description" version="v1" image_url="/image" base_path="/product1" operator="false" optlock="0" provider="provider1"/>
+    <PRODUCT guid="p2" name="product2" description="description" version="v2" image_url="/image" base_path="/product2" operator="false" optlock="0" provider="provider1"/>
+    <PRODUCT_CLASSIFICATION guid="pcl1" product_id="p1" value="search"/>
+    <PRODUCT_CLASSIFICATION guid="pcl2" product_id="p2" value="search"/>
 
     <MICROFRONTEND guid="m1" app_id="mfe1" product_name="product1" remote_entry="remote-entry1" exposed_module="exposed-module1" app_name="display_name1" remote_base_url="remote_base_url1" operator="false" optlock="0"/>
     <MICROFRONTEND guid="m2" app_id="mfe2" product_name="product1" remote_entry="remote-entry2" exposed_module="exposed-module2" app_name="display_name2" remote_base_url="remote_base_url2" operator="false" optlock="0"/>
