@@ -46,9 +46,6 @@ public class ProductsRestControllerV1 implements ProductsApi {
     MicroserviceDAO microserviceDAO;
 
     @Inject
-    ProductClassificationDAO productClassificationDAO;
-
-    @Inject
     SlotDAO slotDAO;
 
     @Override
