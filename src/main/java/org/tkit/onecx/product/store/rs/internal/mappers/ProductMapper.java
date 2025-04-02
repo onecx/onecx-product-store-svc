@@ -52,7 +52,6 @@ public interface ProductMapper {
     @Mapping(target = "applications", ignore = true)
     @Mapping(target = "removeApplicationsItem", ignore = true)
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
-    //    @Mapping(target = "classifications", qualifiedByName = "toString")
     @Mapping(target = "classifications", ignore = true)
     ProductAbstractDTO mapProductAbstract(Product data);
 
