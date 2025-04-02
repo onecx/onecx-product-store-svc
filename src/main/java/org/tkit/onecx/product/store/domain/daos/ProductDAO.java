@@ -94,18 +94,6 @@ public class ProductDAO extends AbstractDAO<Product> {
         }
     }
 
-    public Stream<String> findAllClassifications() {
-        try {
-            var cb = this.getEntityManager().getCriteriaBuilder();
-            var cq = cb.createQuery(String.class);
-            var root = cq.from(ProductClassification.class);
-            cq.select(root.get("value"));
-            return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
-        } catch (Exception ex) {
-            throw new DAOException(ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS, ex);
-        }
-    }
-
     public enum ErrorKeys {
 
         ERROR_FIND_PRODUCT_BY_PRODUCT_NAMES,
@@ -113,8 +101,6 @@ public class ProductDAO extends AbstractDAO<Product> {
         ERROR_FIND_PRODUCTS_BY_CRITERIA,
 
         ERROR_FIND_ALL_PROVIDERS,
-
-        ERROR_FIND_ALL_CLASSIFICATIONS,
 
         ERROR_FIND_PRODUCT_BY_NAME;
     }

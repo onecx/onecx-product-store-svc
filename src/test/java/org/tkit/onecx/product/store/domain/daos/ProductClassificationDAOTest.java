@@ -30,6 +30,8 @@ public class ProductClassificationDAOTest {
     void methodExceptionTests() {
         methodExceptionTests(() -> dao.findByProductIds(null),
                 ProductClassificationDAO.ErrorKeys.ERROR_FIND_BY_PRODUCT_IDS);
+        methodExceptionTests(() -> dao.findAllClassifications(),
+                ProductClassificationDAO.ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

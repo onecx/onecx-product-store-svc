@@ -1,6 +1,7 @@
 package org.tkit.onecx.product.store.domain.daos;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -24,7 +25,20 @@ public class ProductClassificationDAO extends AbstractDAO<ProductClassification>
         }
     }
 
+    public Stream<String> findAllClassifications() {
+        try {
+            var cb = this.getEntityManager().getCriteriaBuilder();
+            var cq = cb.createQuery(String.class);
+            var root = cq.from(ProductClassification.class);
+            cq.select(root.get(ProductClassification_.VALUE));
+            return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
+        } catch (Exception ex) {
+            throw new DAOException(ProductClassificationDAO.ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS, ex);
+        }
+    }
+
     public enum ErrorKeys {
+        ERROR_FIND_ALL_CLASSIFICATIONS,
         ERROR_FIND_BY_PRODUCT_IDS;
     }
 }

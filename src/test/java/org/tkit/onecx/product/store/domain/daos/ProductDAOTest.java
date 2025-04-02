@@ -34,8 +34,6 @@ class ProductDAOTest {
                 ProductDAO.ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA);
         methodExceptionTests(() -> dao.findProductByName("test"),
                 ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME);
-        methodExceptionTests(() -> dao.findAllClassifications(),
-                ProductDAO.ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS);
         methodExceptionTests(() -> dao.findAllProviders(),
                 ProductDAO.ErrorKeys.ERROR_FIND_ALL_PROVIDERS);
     }
