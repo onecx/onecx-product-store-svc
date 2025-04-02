@@ -11,10 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
-import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
-import org.tkit.onecx.product.store.domain.daos.ProductDAO;
-import org.tkit.onecx.product.store.domain.daos.SlotDAO;
+import org.tkit.onecx.product.store.domain.daos.*;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Slot;
@@ -47,6 +44,9 @@ public class ProductsRestControllerV1 implements ProductsApi {
 
     @Inject
     MicroserviceDAO microserviceDAO;
+
+    @Inject
+    ProductClassificationDAO productClassificationDAO;
 
     @Inject
     SlotDAO slotDAO;

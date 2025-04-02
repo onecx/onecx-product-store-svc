@@ -15,9 +15,11 @@ import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
+import org.tkit.onecx.product.store.domain.daos.ProductClassificationDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.ProductClassification;
 import org.tkit.onecx.product.store.domain.services.ProductService;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
@@ -52,6 +54,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
 
     @Inject
     ProductService productService;
+
+    @Inject
+    ProductClassificationDAO productClassificationDAO;
 
     @Override
     public Response createProduct(CreateProductRequestDTO createProductDTO) {
@@ -108,11 +113,18 @@ public class ProductsInternalRestController implements ProductsInternalApi {
         var microservices = microserviceDAO.findByProductNames(productNames).stream().collect(
                 Collectors.groupingBy(Microservice::getProductName, HashMap::new,
                         Collectors.mapping(x -> x, Collectors.toList())));
+        var classifications = productClassificationDAO.findByProductIds(pageResult.getStream()
+                .stream().map(ProductAbstractDTO::getId).toList()).stream().collect(
+                        Collectors.groupingBy(ProductClassification::getProductId, HashMap::new,
+                                Collectors.mapping(x -> x, Collectors.toSet())));
 
         pageResult.getStream().forEach(productAbstractDTO -> {
             if (microservices.get(productAbstractDTO.getName()) != null) {
                 productAbstractDTO.getApplications()
                         .addAll(mapper.mapMsToAppAbstracts(microservices.get(productAbstractDTO.getName())));
+            }
+            if (classifications.get(productAbstractDTO.getId()) != null) {
+                productAbstractDTO.setClassifications(mapper.setToString(classifications.get(productAbstractDTO.getId())));
             }
         });
         return Response.ok(pageResult).build();

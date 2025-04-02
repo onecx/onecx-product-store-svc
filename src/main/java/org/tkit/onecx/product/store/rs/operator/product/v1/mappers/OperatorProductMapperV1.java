@@ -55,6 +55,7 @@ public interface OperatorProductMapperV1 {
 
     @Mapping(target = "value", source = "classification")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "productId", ignore = true)
     ProductClassification mapClassificationString(String classification);
 
     @Named("updateList")

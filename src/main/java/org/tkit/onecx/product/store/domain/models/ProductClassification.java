@@ -22,4 +22,7 @@ public class ProductClassification implements Serializable {
 
     @Column(name = "VALUE")
     private String value;
+
+    @Column(name = "PRODUCT_ID", insertable = false, updatable = false)
+    private String productId;
 }

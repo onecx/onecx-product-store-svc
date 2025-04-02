@@ -52,7 +52,8 @@ public interface ProductMapper {
     @Mapping(target = "applications", ignore = true)
     @Mapping(target = "removeApplicationsItem", ignore = true)
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
-    @Mapping(target = "classifications", qualifiedByName = "toString")
+    //    @Mapping(target = "classifications", qualifiedByName = "toString")
+    @Mapping(target = "classifications", ignore = true)
     ProductAbstractDTO mapProductAbstract(Product data);
 
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
@@ -76,6 +77,7 @@ public interface ProductMapper {
         return true;
     }
 
+    @Mapping(target = "productId", ignore = true)
     @Mapping(target = "value", source = "classification")
     @Mapping(target = "id", ignore = true)
     ProductClassification mapClassificationString(String classification);

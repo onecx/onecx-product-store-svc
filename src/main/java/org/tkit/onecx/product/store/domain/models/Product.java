@@ -2,7 +2,7 @@ package org.tkit.onecx.product.store.domain.models;
 
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.CascadeType.MERGE;
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +51,7 @@ public class Product extends TraceableEntity {
     @Column(name = "ICON_NAME")
     private String iconName;
 
-    @OneToMany(cascade = { REMOVE, REFRESH, PERSIST, MERGE }, fetch = EAGER, orphanRemoval = true)
+    @OneToMany(cascade = { REMOVE, REFRESH, PERSIST, MERGE }, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "PRODUCT_ID")
     private Set<ProductClassification> classifications = new HashSet<>();
 
