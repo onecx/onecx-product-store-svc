@@ -14,9 +14,9 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-class ProductDAOTest {
+class ProductClassificationDAOTest {
     @Inject
-    ProductDAO dao;
+    ProductClassificationDAO dao;
 
     @InjectMock
     EntityManager em;
@@ -28,14 +28,10 @@ class ProductDAOTest {
 
     @Test
     void methodExceptionTests() {
-        methodExceptionTests(() -> dao.findByProductNames(null),
-                ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_PRODUCT_NAMES);
-        methodExceptionTests(() -> dao.findProductsByCriteria(null),
-                ProductDAO.ErrorKeys.ERROR_FIND_PRODUCTS_BY_CRITERIA);
-        methodExceptionTests(() -> dao.findProductByName("test"),
-                ProductDAO.ErrorKeys.ERROR_FIND_PRODUCT_BY_NAME);
-        methodExceptionTests(() -> dao.findAllProviders(),
-                ProductDAO.ErrorKeys.ERROR_FIND_ALL_PROVIDERS);
+        methodExceptionTests(() -> dao.findByProductIds(null),
+                ProductClassificationDAO.ErrorKeys.ERROR_FIND_BY_PRODUCT_IDS);
+        methodExceptionTests(() -> dao.findAllClassifications(),
+                ProductClassificationDAO.ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {

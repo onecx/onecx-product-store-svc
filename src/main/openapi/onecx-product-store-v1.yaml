@@ -269,8 +269,6 @@ components:
           type: string
         iconName:
           type: string
-        classifications:
-          type: string
         undeployed:
           type: boolean
         microfrontends:
@@ -301,8 +299,6 @@ components:
         remoteEntry:
           type: string
         technology:
-          type: string
-        classifications:
           type: string
         contact:
           type: string
@@ -363,8 +359,6 @@ components:
           type: string
         basePath:
           type: string
-        classifications:
-          type: string
         undeployed:
           type: boolean
         version:
@@ -403,8 +397,6 @@ components:
         basePath:
           type: string
         version:
-          type: string
-        classifications:
           type: string
         undeployed:
           type: boolean

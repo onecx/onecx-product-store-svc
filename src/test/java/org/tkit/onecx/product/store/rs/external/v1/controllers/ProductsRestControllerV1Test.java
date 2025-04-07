@@ -69,7 +69,6 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(2);
         assertThat(data.getStream()).isNotNull().hasSize(2);
-        assertThat(data.getStream().get(0).getClassifications()).isEqualTo("search");
     }
 
     @Test
@@ -133,7 +132,6 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(data.getStream().get(0).getDescription()).isEqualTo("description");
         assertThat(data.getStream().get(0).getImageUrl()).isEqualTo("/image");
         assertThat(data.getStream().get(0).getBasePath()).isEqualTo("/product1");
-        assertThat(data.getStream().get(0).getClassifications()).isEqualTo("search");
     }
 
     @Test

@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValueMappingStrategy;
+import org.mapstruct.*;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.*;
 import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
@@ -19,10 +16,14 @@ import gen.org.tkit.onecx.product.store.rs.external.v1.model.*;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface ProductMapperV1 {
 
+    @Mapping(target = "providers", ignore = true)
+    @Mapping(target = "classifications", ignore = true)
     @Mapping(target = "displayName", ignore = true)
     @Mapping(target = "name", ignore = true)
     ProductSearchCriteria map(ProductItemLoadSearchCriteriaDTOv1 data);
 
+    @Mapping(target = "providers", ignore = true)
+    @Mapping(target = "classifications", ignore = true)
     @Mapping(target = "displayName", ignore = true)
     @Mapping(target = "name", ignore = true)
     ProductSearchCriteria map(ProductItemSearchCriteriaDTOv1 productSearchCriteriaDTOV1);
@@ -110,5 +111,4 @@ public interface ProductMapperV1 {
 
     @Mapping(target = "removeEndpointsItem", ignore = true)
     LoadProductMicrofrontendDTOv1 createLoadProductMicrofrontend(Microfrontend microfrontend);
-
 }

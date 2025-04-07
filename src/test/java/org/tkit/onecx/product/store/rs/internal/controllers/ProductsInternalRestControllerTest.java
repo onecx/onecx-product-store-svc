@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
@@ -305,6 +306,43 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(1);
+        assertThat(data.getStream().get(0).getClassifications()).isNotBlank().isNotNull();
+    }
+
+    @Test
+    void searchProductsByProviderAndClassificationCriteriaTest() {
+        var criteria = new ProductSearchCriteriaDTO();
+        criteria.setProviders(List.of("provider1"));
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(3);
+        assertThat(data.getStream()).isNotNull().hasSize(3);
+
+        var criteria2 = new ProductSearchCriteriaDTO();
+        criteria2.setClassifications(List.of("searching"));
+        data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria2)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(1);
     }
 
     @Test
@@ -364,6 +402,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         updateDto.setVersion("0.0.0");
         updateDto.setDescription("description-update");
         updateDto.setBasePath("basePath");
+        updateDto.setClassifications("test,test2,test3");
 
         given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -386,6 +425,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(updateResult).isNotNull();
         assertThat(updateResult.getDescription()).isEqualTo(updateDto.getDescription());
+        assertThat(updateResult.getClassifications().split(",")).contains("test", "test2", "test3");
 
         var dto = given()
                 .auth().oauth2(getKeycloakClientToken("testClient")).contentType(APPLICATION_JSON)
@@ -481,4 +521,23 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .get("/internal/products/name/{name}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
     }
+
+    @Test
+    void getAllProductCriteriaListsTest() {
+        var dto = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .get("/internal/products/criteria")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .body().as(ProductCriteriaDTO.class);
+        System.out.println(dto);
+        assertThat(dto.getClassifications()).isNotNull();
+        assertThat(dto.getClassifications()).hasSize(1);
+        assertThat(dto.getProviders()).isNotNull();
+        assertThat(dto.getProviders()).hasSize(1);
+    }
+
 }
