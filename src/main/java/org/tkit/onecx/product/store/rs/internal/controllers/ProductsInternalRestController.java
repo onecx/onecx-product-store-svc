@@ -16,11 +16,17 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 import org.tkit.onecx.product.store.domain.daos.MicrofrontendDAO;
 import org.tkit.onecx.product.store.domain.daos.MicroserviceDAO;
 import org.tkit.onecx.product.store.domain.daos.ProductDAO;
+import org.tkit.onecx.product.store.domain.daos.SlotDAO;
+import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.onecx.product.store.domain.services.ProductService;
+import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.InternalExceptionMapper;
 import org.tkit.onecx.product.store.rs.internal.mappers.ProductMapper;
+import org.tkit.quarkus.jpa.daos.Page;
+import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.ConstraintException;
 import org.tkit.quarkus.log.cdi.LogService;
 
@@ -52,6 +58,9 @@ public class ProductsInternalRestController implements ProductsInternalApi {
 
     @Inject
     ProductService productService;
+
+    @Inject
+    SlotDAO slotDAO;
 
     @Override
     public Response createProduct(CreateProductRequestDTO createProductDTO) {
@@ -86,6 +95,40 @@ public class ProductsInternalRestController implements ProductsInternalApi {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok(mapper.map(item)).build();
+    }
+
+    @Override
+    public Response loadProductsByCriteria(ProductLoadSearchCriteriaDTO productLoadSearchCriteriaDTO) {
+        var criteria = mapper.mapLoadCriteria(productLoadSearchCriteriaDTO);
+
+        var products = dao.findProductsByCriteria(criteria);
+
+        var microservices = microserviceDAO.loadByCriteria(criteria).collect(
+                Collectors.groupingBy(Microservice::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var microfrontends = microfrontendDAO.loadByCriteria(criteria).collect(
+                Collectors.groupingBy(Microfrontend::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var slots = slotDAO.loadByCriteria(criteria).collect(
+                Collectors.groupingBy(Slot::getProductName, HashMap::new,
+                        Collectors.mapping(x -> x, Collectors.toList())));
+
+        var items = products.getStream().map(product -> {
+            var wrapper = new ProductLoadResultWrapper();
+            wrapper.setProduct(product);
+            wrapper.setMicroservices(microservices.get(product.getName()));
+            wrapper.setMicrofrontends(microfrontends.get(product.getName()));
+            wrapper.setSlots(slots.get(product.getName()));
+            return wrapper;
+        });
+
+        PageResult<ProductLoadResultWrapper> result = new PageResult<>(products.getSize(), items,
+                Page.of(Math.toIntExact(products.getNumber()), Math.toIntExact(products.getSize())));
+
+        ProductsLoadResultDTO resultDTO = mapper.mapPageResultWrapper(result);
+        return Response.ok(resultDTO).build();
     }
 
     @Override

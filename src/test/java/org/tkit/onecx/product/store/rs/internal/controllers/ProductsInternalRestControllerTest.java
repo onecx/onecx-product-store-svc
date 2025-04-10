@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Assertions;
@@ -480,5 +482,91 @@ class ProductsInternalRestControllerTest extends AbstractTest {
                 .pathParam("name", "___")
                 .get("/internal/products/name/{name}")
                 .then().statusCode(NOT_FOUND.getStatusCode());
+    }
+
+    //new
+    @Test
+    void loadProductsByCriteriaTest() {
+        ProductLoadSearchCriteriaDTO criteriaDTO = new ProductLoadSearchCriteriaDTO();
+        criteriaDTO.setProductNames(List.of("product1"));
+
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(1);
+        assertThat(data.getStream().get(0).getMicrofrontends()).hasSize(1);
+        assertThat(data.getStream().get(0).getMicroservices()).hasSize(1);
+        assertThat(data.getStream().get(0).getDescription()).isEqualTo("description");
+        assertThat(data.getStream().get(0).getImageUrl()).isEqualTo("/image");
+        assertThat(data.getStream().get(0).getBasePath()).isEqualTo("/product1");
+        assertThat(data.getStream().get(0).getClassifications()).isEqualTo("searching");
+    }
+
+    @Test
+    void loadProductsByCriteriaEmptyProductNameTest() {
+        ProductLoadSearchCriteriaDTO criteriaDTO = new ProductLoadSearchCriteriaDTO();
+        criteriaDTO.setProductNames(List.of(""));
+
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).isEmpty();
+    }
+
+    @Test
+    void loadProductsByEmptyCriteriaTest() {
+        ProductLoadSearchCriteriaDTO criteriaDTO = new ProductLoadSearchCriteriaDTO();
+
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(3);
+    }
+
+    @Test
+    void loadProductsByCriteriaEmptyListTest() {
+        ProductLoadSearchCriteriaDTO criteriaDTO = new ProductLoadSearchCriteriaDTO();
+        List<String> emptyList = new ArrayList<>();
+        criteriaDTO.setProductNames(emptyList);
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/load")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductsLoadResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getStream()).hasSize(3);
     }
 }

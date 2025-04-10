@@ -7,6 +7,8 @@ import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microservice;
 import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.Slot;
+import org.tkit.onecx.product.store.domain.wrapper.ProductLoadResultWrapper;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.rs.mappers.OffsetDateTimeMapper;
 
@@ -78,4 +80,38 @@ public interface ProductMapper {
     @Mapping(target = "appName", source = "name")
     ApplicationAbstractDTO mapMsToAppAbstract(Microservice microservice);
 
+    @Mapping(target = "displayName", ignore = true)
+    @Mapping(target = "name", ignore = true)
+    ProductSearchCriteria mapLoadCriteria(ProductLoadSearchCriteriaDTO productLoadSearchCriteriaDTO);
+
+    @Mapping(target = "removeStreamItem", ignore = true)
+    ProductsLoadResultDTO mapPageResultWrapper(PageResult<ProductLoadResultWrapper> page);
+
+    @Mapping(target = "version", source = "appVersion")
+    MicrofrontendAbstractDTO map(Microfrontend mfe);
+
+    @Mapping(target = "appName", source = "name")
+    MicroserviceAbstractDTO mapAbstract(Microservice mfe);
+
+    default LoadProductDTO map(ProductLoadResultWrapper wrapper) {
+        LoadProductDTO result = mapProduct(wrapper.getProduct());
+        result.setMicrofrontends(mapMfeList(wrapper.getMicrofrontends()));
+        result.setMicroservices(mapMsList(wrapper.getMicroservices()));
+        result.setSlots(mapSlotList(wrapper.getSlots()));
+        return result;
+    }
+
+    List<SlotAbstractDTO> mapSlotList(List<Slot> slots);
+
+    List<MicroserviceAbstractDTO> mapMsList(List<Microservice> microservices);
+
+    List<MicrofrontendAbstractDTO> mapMfeList(List<Microfrontend> microfrontends);
+
+    @Mapping(target = "slots", ignore = true)
+    @Mapping(target = "removeSlotsItem", ignore = true)
+    @Mapping(target = "microfrontends", ignore = true)
+    @Mapping(target = "removeMicrofrontendsItem", ignore = true)
+    @Mapping(target = "microservices", ignore = true)
+    @Mapping(target = "removeMicroservicesItem", ignore = true)
+    LoadProductDTO mapProduct(Product product);
 }
