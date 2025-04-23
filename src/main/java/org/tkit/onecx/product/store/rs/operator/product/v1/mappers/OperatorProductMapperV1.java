@@ -16,6 +16,7 @@ import gen.org.tkit.onecx.product.store.rs.operator.product.v1.model.*;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface OperatorProductMapperV1 {
 
+    @Mapping(target = "productClassifications", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
@@ -30,6 +31,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
     Product create(UpdateProductRequestPDTOv1 dto);
 
+    @Mapping(target = "productClassifications", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)

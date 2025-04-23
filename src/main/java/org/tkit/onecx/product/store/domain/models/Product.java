@@ -51,6 +51,9 @@ public class Product extends TraceableEntity {
     @Column(name = "ICON_NAME")
     private String iconName;
 
+    @Column(name = "CLASSIFICATION")
+    private String productClassifications;
+
     @OneToMany(cascade = { REMOVE, REFRESH, PERSIST, MERGE }, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "PRODUCT_ID")
     private Set<ProductClassification> classifications = new HashSet<>();

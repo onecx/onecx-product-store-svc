@@ -13,6 +13,6 @@
         <include relativeToChangelogFile="true" file="v1/2024-04-19-slot-table.xml"/>
         <include relativeToChangelogFile="true" file="v1/2024-06-07-product-provider.xml"/>
         <include relativeToChangelogFile="true" file="v1/2025-04-01-create-table-classifications.xml"/>
-
+        <include relativeToChangelogFile="true" file="v1/2025-04-23-readd-classifications-column.xml"/>
 
 </databaseChangeLog>

@@ -21,6 +21,7 @@ public interface ProductMapper {
     @Mapping(target = "productNames", ignore = true)
     ProductSearchCriteria map(ProductSearchCriteriaDTO data);
 
+    @Mapping(target = "productClassifications", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
@@ -34,6 +35,7 @@ public interface ProductMapper {
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     Product create(CreateProductRequestDTO dto);
 
+    @Mapping(target = "productClassifications", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "modificationDate", ignore = true)
