@@ -7,6 +7,7 @@ import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import io.quarkus.test.keycloak.client.KeycloakTestClient;
 import io.restassured.config.RestAssuredConfig;
 
 public abstract class AbstractTest {
@@ -21,4 +22,11 @@ public abstract class AbstractTest {
                             return objectMapper;
                         }));
     }
+
+    KeycloakTestClient keycloakClient = new KeycloakTestClient();
+
+    protected String getKeycloakClientToken(String clientId) {
+        return keycloakClient.getClientAccessToken(clientId);
+    }
+
 }

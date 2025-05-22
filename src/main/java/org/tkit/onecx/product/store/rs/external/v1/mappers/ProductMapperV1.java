@@ -2,7 +2,6 @@ package org.tkit.onecx.product.store.rs.external.v1.mappers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.mapstruct.*;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
@@ -39,16 +38,16 @@ public interface ProductMapperV1 {
     @Mapping(target = "microservices", ignore = true)
     ProductDTOv1 map(Product data);
 
-    default ProductDTOv1 map(Product product, Stream<Microfrontend> microfrontends, Stream<Microservice> microservices) {
+    default ProductDTOv1 map(Product product, List<Microfrontend> microfrontends, List<Microservice> microservices) {
         var p = map(product);
         p.setMicrofrontends(items(microfrontends));
         p.setMicroservices(microservices(microservices));
         return p;
     }
 
-    List<MicrofrontendDTOv1> items(Stream<Microfrontend> microfrontends);
+    List<MicrofrontendDTOv1> items(List<Microfrontend> microfrontends);
 
-    List<MicroserviceDTOv1> microservices(Stream<Microservice> microservices);
+    List<MicroserviceDTOv1> microservices(List<Microservice> microservices);
 
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTOv1 map(Microfrontend data);
