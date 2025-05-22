@@ -39,7 +39,7 @@ public class ProductService {
     public void deleteProduct(String id) {
         var product = productDAO.findById(id);
         if (product != null) {
-            List<Microfrontend> productRelatedMfes = microfrontendDAO.loadByProductName(product.getName()).toList();
+            List<Microfrontend> productRelatedMfes = microfrontendDAO.loadByProductName(product.getName());
             microfrontendDAO.delete(productRelatedMfes);
             microserviceDAO.deleteByProductName(product.getName());
             slotDAO.deleteByProductName(product.getName());

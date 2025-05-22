@@ -70,7 +70,7 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
         }
     }
 
-    public Stream<Microfrontend> loadByProductName(String productName) {
+    public List<Microfrontend> loadByProductName(String productName) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microfrontend.class);
@@ -79,7 +79,7 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             return this.getEntityManager()
                     .createQuery(cq)
                     .setHint(HINT_LOAD_GRAPH, this.getEntityManager().getEntityGraph(Microfrontend.MICROFRONTEND_LOAD))
-                    .getResultStream();
+                    .getResultList();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_LOAD_MFE_BY_PRODUCT_NAME, ex, productName);
         }

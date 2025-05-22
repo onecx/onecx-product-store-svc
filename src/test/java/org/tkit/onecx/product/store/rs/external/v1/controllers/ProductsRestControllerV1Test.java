@@ -4,7 +4,6 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.tkit.quarkus.security.test.SecurityTestUtils.getKeycloakClientToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +39,8 @@ class ProductsRestControllerV1Test extends AbstractTest {
         assertThat(dto).isNotNull();
         assertThat(dto.getName()).isEqualTo("product1");
         assertThat(dto.getMicrofrontends()).isNotNull().hasSize(2);
+        var mfe = dto.getMicrofrontends().get(0);
+        assertThat(mfe.getEndpoints()).isNotNull().hasSize(2);
 
         given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))

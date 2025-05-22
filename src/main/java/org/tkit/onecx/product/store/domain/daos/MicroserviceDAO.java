@@ -66,7 +66,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
         }
     }
 
-    public Stream<Microservice> loadByProductName(String productName) {
+    public List<Microservice> loadByProductName(String productName) {
         try {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(Microservice.class);
@@ -74,7 +74,7 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             cq.where(cb.equal(root.get(Microservice_.PRODUCT_NAME), productName));
             return this.getEntityManager()
                     .createQuery(cq)
-                    .getResultStream();
+                    .getResultList();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_LOAD_MS_BY_PRODUCT_NAME, ex, productName);
         }
