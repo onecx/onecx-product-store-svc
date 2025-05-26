@@ -1,5 +1,6 @@
 package org.tkit.onecx.product.store.rs.internal.mappers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,11 +26,10 @@ public interface ProductMapper {
     @Named("cleanStringList")
     default List<String> cleanStringList(List<String> input) {
         if (input == null) {
-            return null;
+            return new ArrayList<>();
         }
         return input.stream()
-                .filter(s -> s != null && !s.trim().isEmpty())
-                .collect(Collectors.toList());
+                .filter(s -> s != null && !s.trim().isEmpty()).toList();
     }
 
     @Mapping(target = "productClassifications", ignore = true)
