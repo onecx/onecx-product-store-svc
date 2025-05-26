@@ -19,7 +19,18 @@ import gen.org.tkit.onecx.product.store.rs.internal.model.*;
 public interface ProductMapper {
 
     @Mapping(target = "productNames", ignore = true)
+    @Mapping(target = "names", source = "names", qualifiedByName = "cleanStringList")
     ProductSearchCriteria map(ProductSearchCriteriaDTO data);
+
+    @Named("cleanStringList")
+    default List<String> cleanStringList(List<String> input) {
+        if (input == null) {
+            return null;
+        }
+        return input.stream()
+                .filter(s -> s != null && !s.trim().isEmpty())
+                .collect(Collectors.toList());
+    }
 
     @Mapping(target = "productClassifications", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
@@ -118,10 +129,9 @@ public interface ProductMapper {
     @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductCriteriaDTO mapCriteriaLists(Stream<String> providers, Stream<String> classifications);
 
+    @Mapping(target = "names", ignore = true)
     @Mapping(target = "providers", ignore = true)
     @Mapping(target = "classifications", ignore = true)
-    @Mapping(target = "displayName", ignore = true)
-    @Mapping(target = "name", ignore = true)
     ProductSearchCriteria mapLoadCriteria(ProductLoadSearchCriteriaDTO productLoadSearchCriteriaDTO);
 
     @Mapping(target = "removeStreamItem", ignore = true)

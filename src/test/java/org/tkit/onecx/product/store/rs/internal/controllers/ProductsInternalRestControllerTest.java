@@ -230,7 +230,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
         var criteria = new ProductSearchCriteriaDTO();
-        criteria.setName("product1");
+        criteria.setNames(List.of(("product1")));
         criteria.setPageNumber(0);
         criteria.setPageSize(100);
 
@@ -250,7 +250,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(1);
 
         var criteria2 = new ProductSearchCriteriaDTO();
-        criteria2.setName("product1");
+        criteria2.setNames(List.of("product1"));
         criteria2.setPageNumber(0);
         criteria2.setPageSize(1);
 
@@ -275,7 +275,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchProductsTest() {
         var criteria = new ProductSearchCriteriaDTO();
-        criteria.setDisplayName("");
+        criteria.setNames(List.of(("")));
         var data = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
@@ -292,7 +292,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).isNotNull().hasSize(3);
         assertThat(data.getStream().get(0).getApplications().get(0).getAppName()).isNotNull();
 
-        criteria.setDisplayName("p1");
+        criteria.setNames(List.of(("p1")));
         data = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
@@ -379,7 +379,7 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data.getStream()).hasSize(3);
 
         ProductSearchCriteriaDTO criteriaDTO2 = new ProductSearchCriteriaDTO();
-        criteriaDTO2.setName("");
+        criteriaDTO2.setNames(List.of(("")));
         var data2 = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
