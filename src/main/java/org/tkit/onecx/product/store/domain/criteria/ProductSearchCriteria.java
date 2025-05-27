@@ -13,9 +13,7 @@ public class ProductSearchCriteria {
 
     private List<String> productNames;
 
-    private String displayName;
-
-    private String name;
+    private List<String> names;
 
     private List<String> providers;
 

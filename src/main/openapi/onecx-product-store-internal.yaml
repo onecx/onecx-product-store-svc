@@ -838,10 +838,10 @@ components:
     ProductSearchCriteria:
       type: object
       properties:
-        name:
-          type: string
-        displayName:
-          type: string
+        names:
+          type: array
+          items:
+            type: string
         providers:
           type: array
           items:

@@ -15,7 +15,6 @@ import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.jpa.models.AbstractTraceableEntity_;
-import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
 public class ProductDAO extends AbstractDAO<Product> {
@@ -27,13 +26,10 @@ public class ProductDAO extends AbstractDAO<Product> {
             var root = cq.from(Product.class);
 
             List<Predicate> predicates = new ArrayList<>();
-
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Product_.NAME),
-                    criteria.getName());
-
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Product_.DISPLAY_NAME),
-                    criteria.getDisplayName());
-
+            if (criteria.getNames() != null && !criteria.getNames().isEmpty()) {
+                predicates.add(cb.or(root.get(Product_.NAME).in(criteria.getNames()),
+                        root.get(Product_.DISPLAY_NAME).in(criteria.getNames())));
+            }
             if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
                 predicates.add(root.get(Product_.name).in(criteria.getProductNames()));
             }

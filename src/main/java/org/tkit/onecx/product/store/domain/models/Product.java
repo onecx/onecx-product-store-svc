@@ -20,8 +20,7 @@ import lombok.Setter;
 @Table(name = "PRODUCT", uniqueConstraints = {
         @UniqueConstraint(name = "UI_PRODUCT_NAME", columnNames = { "NAME" }),
         @UniqueConstraint(name = "UI_PRODUCT_BASE_PATH", columnNames = { "BASE_PATH" }),
-
-})
+}, indexes = { @Index(name = "product_provider_idx", columnList = "PROVIDER") })
 @NamedEntityGraph(name = Product.PRODUCT_LOAD, includeAllAttributes = true)
 @SuppressWarnings("java:S2160")
 public class Product extends TraceableEntity {
