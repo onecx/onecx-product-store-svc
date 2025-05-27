@@ -21,7 +21,7 @@ quarkus.http.auth.permission.default.policy=authenticated
 quarkus.hibernate-orm.database.generation=validate
 quarkus.liquibase.migrate-at-start=true
 quarkus.liquibase.validate-on-migrate=true
-%prod.quarkus.oidc-client.client-id=${quarkus.application.name}
+%prod.quarkus.oidc-client.client-id=${ONECX_OIDC_CLIENT_CLIENT_ID:${quarkus.application.name}}
 %prod.quarkus.datasource.jdbc.url=${DB_URL:jdbc:postgresql://postgresdb:5432/onecx-product-store?sslmode=disable}
 %prod.quarkus.datasource.username=${DB_USER:onecx-product-store}
 %prod.quarkus.datasource.password=${DB_PWD:onecx-product-store}
@@ -48,6 +48,8 @@ Default values
 ----
 app:
   name: svc
+  template:
+    oidc_client_id: "ONECX_OIDC_CLIENT_CLIENT_ID"
   image:
     repository: "onecx/onecx-product-store-svc"
   db:
@@ -63,10 +65,6 @@ app:
       spec:
         description: OneCX Product Store Backend Service
         name: OneCX Product Store SVC
-
-----
-
- Store SVC
 
 ----
 
