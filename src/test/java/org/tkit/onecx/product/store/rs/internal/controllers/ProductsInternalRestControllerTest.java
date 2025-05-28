@@ -307,6 +307,22 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(1);
         assertThat(data.getStream().get(0).getClassifications()).isNotBlank().isNotNull();
+
+        criteria.setNames(List.of("p1", "doesnt-exist"));
+        data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(1);
+        assertThat(data.getStream().get(0).getClassifications()).isNotBlank().isNotNull();
     }
 
     @Test
