@@ -98,7 +98,7 @@ public interface ProductMapper {
     @Named("updateList")
     default Set<ProductClassification> updateList(String listToUpdate) {
         var list = new HashSet<ProductClassification>();
-        if (listToUpdate != null) {
+        if (listToUpdate != null && !listToUpdate.isEmpty()) {
             var listOfString = listToUpdate.split(",");
             for (var cf : listOfString) {
                 list.add(mapClassificationString(cf));

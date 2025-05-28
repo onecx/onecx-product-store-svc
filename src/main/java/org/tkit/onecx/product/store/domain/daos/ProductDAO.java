@@ -92,7 +92,7 @@ public class ProductDAO extends AbstractDAO<Product> {
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(String.class);
             var root = cq.from(Product.class);
-            cq.select(root.get(Product_.PROVIDER));
+            cq.select(root.get(Product_.PROVIDER)).where(cb.isNotNull(root.get(Product_.PROVIDER)));
             return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
         } catch (Exception ex) {
             throw new DAOException(ErrorKeys.ERROR_FIND_ALL_PROVIDERS, ex);
