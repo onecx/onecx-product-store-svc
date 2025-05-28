@@ -30,7 +30,7 @@ public class ProductClassificationDAO extends AbstractDAO<ProductClassification>
             var cb = this.getEntityManager().getCriteriaBuilder();
             var cq = cb.createQuery(String.class);
             var root = cq.from(ProductClassification.class);
-            cq.select(root.get(ProductClassification_.VALUE));
+            cq.select(root.get(ProductClassification_.VALUE)).where(cb.isNotNull(root.get(ProductClassification_.VALUE)));
             return this.getEntityManager().createQuery(cq).getResultList().stream().distinct();
         } catch (Exception ex) {
             throw new DAOException(ProductClassificationDAO.ErrorKeys.ERROR_FIND_ALL_CLASSIFICATIONS, ex);
