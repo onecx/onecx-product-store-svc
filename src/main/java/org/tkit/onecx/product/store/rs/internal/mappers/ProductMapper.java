@@ -97,15 +97,14 @@ public interface ProductMapper {
 
     @Named("updateList")
     default Set<ProductClassification> updateList(String listToUpdate) {
+        var list = new HashSet<ProductClassification>();
         if (listToUpdate != null && !listToUpdate.isEmpty()) {
-            var list = new HashSet<ProductClassification>();
             var listOfString = listToUpdate.split(",");
             for (var cf : listOfString) {
                 list.add(mapClassificationString(cf));
             }
-            return list;
         }
-        return null;
+        return list;
     }
 
     List<ApplicationAbstractDTO> mapMfeToAppAbstracts(List<Microfrontend> microfrontend);
