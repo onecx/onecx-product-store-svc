@@ -1098,8 +1098,6 @@ components:
     MicrofrontendSearchCriteria:
       type: object
       properties:
-        appId:
-          type: string
         appName:
           type: string
         productName:
@@ -1120,9 +1118,7 @@ components:
     MicroserviceSearchCriteria:
       type: object
       properties:
-        appId:
-          type: string
-        name:
+        appName:
           type: string
         productName:
           type: string

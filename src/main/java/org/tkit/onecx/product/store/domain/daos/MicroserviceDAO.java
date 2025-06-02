@@ -33,11 +33,12 @@ public class MicroserviceDAO extends AbstractDAO<Microservice> {
             QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.PRODUCT_NAME),
                     criteria.getProductName());
 
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.APP_ID),
-                    criteria.getAppId());
-
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microservice_.NAME),
-                    criteria.getName());
+            if (criteria.getAppName() != null && !criteria.getAppName().isEmpty()) {
+                predicates.add(cb.or(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.APP_ID),
+                        criteria.getAppName()),
+                        QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microservice_.NAME),
+                                criteria.getAppName())));
+            }
 
             if (!predicates.isEmpty()) {
                 cq.where(predicates.toArray(new Predicate[] {}));

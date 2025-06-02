@@ -287,8 +287,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicroservices_shouldReturnEmptyList_whenSearchCriteriaDoesNotMatch() {
         var criteria = new MicroserviceSearchCriteriaDTO();
-        criteria.setAppId("notExisting");
-        criteria.setName("notExisting");
+        criteria.setAppName("notExisting");
 
         var response = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -309,8 +308,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicroservices_missing_and_blank_criteria_Test() {
         var criteriaBlank = new MicroserviceSearchCriteriaDTO();
-        criteriaBlank.setAppId("");
-        criteriaBlank.setName("");
+        criteriaBlank.setAppName("");
         criteriaBlank.setProductName("");
 
         var response = given()
@@ -359,8 +357,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
         // 3 matching search criteria
         var criteria = new MicroserviceSearchCriteriaDTO();
         criteria.setProductName("product1");
-        criteria.setAppId("ms1");
-        criteria.setName("coolname");
+        criteria.setAppName("ms1");
 
         var response = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -379,7 +376,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // single matching search criteria
         var criteria2 = new MicroserviceSearchCriteriaDTO();
-        criteria2.setAppId("ms1");
+        criteria2.setAppName("ms1");
 
         var response2 = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -398,7 +395,7 @@ class MicroservicesInternalRestControllerTest extends AbstractTest {
 
         // 2 matching search criteria
         var criteria3 = new MicroserviceSearchCriteriaDTO();
-        criteria3.setAppId("ms1");
+        criteria3.setAppName("ms1");
         criteria.setProductName("product1");
 
         var response3 = given()
