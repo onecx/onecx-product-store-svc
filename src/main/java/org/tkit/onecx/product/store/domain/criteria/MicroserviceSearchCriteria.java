@@ -9,8 +9,7 @@ import lombok.Setter;
 @RegisterForReflection
 public class MicroserviceSearchCriteria {
 
-    private String appId;
-    private String name;
+    private String appName;
     private String productName;
     private Integer pageNumber;
     private Integer pageSize;

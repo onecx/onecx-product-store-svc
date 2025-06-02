@@ -357,7 +357,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicrofrontends_shouldReturnEmptyList_whenSearchCriteriaDoesNotMatch() {
         var criteria = new MicrofrontendSearchCriteriaDTO();
-        criteria.setAppId("notExisting");
+        criteria.setAppName("notExisting");
 
         var response = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -378,7 +378,6 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicrofrontends_missing_and_blank_criteria_Test() {
         var criteriaBlank = new MicrofrontendSearchCriteriaDTO();
-        criteriaBlank.setAppId("");
         criteriaBlank.setAppName("");
         criteriaBlank.setProductName("");
 
@@ -428,7 +427,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         // 3 matching search criteria
         var criteria = new MicrofrontendSearchCriteriaDTO();
         criteria.setProductName("product1");
-        criteria.setAppId("mfe1");
+        criteria.setAppName("mfe1");
         criteria.setAppName("display_name1");
         criteria.setType(MicrofrontendTypeDTO.COMPONENT);
 
@@ -449,7 +448,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         // single matching search criteria
         var criteria2 = new MicrofrontendSearchCriteriaDTO();
-        criteria2.setAppId("mfe1");
+        criteria2.setAppName("mfe1");
 
         var response2 = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
@@ -468,7 +467,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         // 2 matching search criteria
         var criteria3 = new MicrofrontendSearchCriteriaDTO();
-        criteria3.setAppId("mfe1");
+        criteria3.setAppName("mfe1");
         criteria.setProductName("product1");
 
         var response3 = given()

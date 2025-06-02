@@ -33,11 +33,12 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.PRODUCT_NAME),
                     criteria.getProductName());
 
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.APP_NAME),
-                    criteria.getAppName());
-
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.APP_ID),
-                    criteria.getAppId());
+            if (criteria.getAppName() != null && !criteria.getAppName().isEmpty()) {
+                predicates.add(cb.or(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),
+                        criteria.getAppName()),
+                        QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
+                                criteria.getAppName())));
+            }
 
             if (criteria.getType() != null) {
                 predicates.add(cb.equal(root.get(Microfrontend_.TYPE), criteria.getType().toString()));
