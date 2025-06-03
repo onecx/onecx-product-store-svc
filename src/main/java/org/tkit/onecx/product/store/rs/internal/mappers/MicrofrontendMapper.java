@@ -27,6 +27,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "hasParameter", qualifiedByName = "hasParameter")
     Microfrontend create(CreateMicrofrontendRequestDTO dto);
 
     @Mapping(target = "id", ignore = true)
@@ -44,6 +45,7 @@ public interface MicrofrontendMapper {
     @Mapping(target = "endpoints", qualifiedByName = "updateList")
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "hasParameter", qualifiedByName = "hasParameter")
     void update(UpdateMicrofrontendRequestDTO dto, @MappingTarget Microfrontend data);
 
     @Mapping(target = "id", ignore = true)
@@ -69,11 +71,13 @@ public interface MicrofrontendMapper {
 
     @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
+    @Mapping(target = "hasParameter", qualifiedByName = "get-hasParameter")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendPageItemDTO mapPageItem(Microfrontend data);
 
     @Mapping(target = "deprecated", qualifiedByName = "get-deprecated")
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
+    @Mapping(target = "hasParameter", qualifiedByName = "get-hasParameter")
     @Mapping(target = "removeEndpointsItem", ignore = true)
     MicrofrontendDTO map(Microfrontend data);
 
@@ -109,5 +113,19 @@ public interface MicrofrontendMapper {
             return null;
         }
         return true;
+    }
+
+    @Named("hasParameter")
+    @SuppressWarnings("java:S2447")
+    default Boolean setHasParameter(Boolean value) {
+        return value != null && value;
+    }
+
+    @Named("get-hasParameter")
+    default Boolean getHasParameter(Boolean value) {
+        if (value == null) {
+            return false;
+        }
+        return value;
     }
 }

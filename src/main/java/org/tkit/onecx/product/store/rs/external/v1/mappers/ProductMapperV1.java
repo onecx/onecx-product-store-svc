@@ -107,5 +107,14 @@ public interface ProductMapperV1 {
     List<LoadProductMicrofrontendDTOv1> createLoadProductMicrofrontends(List<Microfrontend> microfrontends);
 
     @Mapping(target = "removeEndpointsItem", ignore = true)
+    @Mapping(target = "hasParameter", qualifiedByName = "get-hasParameter")
     LoadProductMicrofrontendDTOv1 createLoadProductMicrofrontend(Microfrontend microfrontend);
+
+    @Named("get-hasParameter")
+    default Boolean getHasParameter(Boolean value) {
+        if (value == null) {
+            return false;
+        }
+        return value;
+    }
 }
