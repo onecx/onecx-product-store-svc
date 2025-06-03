@@ -30,6 +30,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "classifications", qualifiedByName = "toString")
     @Mapping(target = "productName", ignore = true)
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
+    @Mapping(target = "hasParameter", qualifiedByName = "hasParameter")
     Microfrontend create(UpdateMfeRequestMDTOv1 dto);
 
     @Mapping(target = "id", ignore = true)
@@ -50,6 +51,7 @@ public interface OperatorMfeMapperV1 {
     @Mapping(target = "productName", ignore = true)
     @Mapping(target = "deprecated", qualifiedByName = "deprecated")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "hasParameter", qualifiedByName = "hasParameter")
     void update(@MappingTarget Microfrontend mfe, UpdateMfeRequestMDTOv1 dto);
 
     @Named("updateList")
@@ -89,5 +91,11 @@ public interface OperatorMfeMapperV1 {
             return null;
         }
         return true;
+    }
+
+    @Named("hasParameter")
+    @SuppressWarnings("java:S2447")
+    default Boolean setHasParameter(Boolean value) {
+        return value != null && value;
     }
 }

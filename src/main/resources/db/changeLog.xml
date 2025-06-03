@@ -15,5 +15,5 @@
         <include relativeToChangelogFile="true" file="v1/2025-04-01-create-table-classifications.xml"/>
         <include relativeToChangelogFile="true" file="v1/2025-04-23-readd-classifications-column.xml"/>
         <include relativeToChangelogFile="true" file="v1/2025-05-26-provider-idx.xml"/>
-
+        <include relativeToChangelogFile="true" file="v1/2025-06-03-mfe-parameter-flag.xml"/>
 </databaseChangeLog>

@@ -89,6 +89,9 @@ public class Microfrontend extends TraceableEntity {
     @Column(name = "UNDEPLOYED")
     private Boolean undeployed;
 
+    @Column(name = "HAS_PARAMETER")
+    private Boolean hasParameter;
+
     public enum Type {
         MODULE,
         COMPONENT,

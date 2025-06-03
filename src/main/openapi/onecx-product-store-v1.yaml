@@ -231,6 +231,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UIEndpoint'
+        hasParameter:
+          type: boolean
     ProductItemLoadSearchCriteria:
       type: object
       properties:
