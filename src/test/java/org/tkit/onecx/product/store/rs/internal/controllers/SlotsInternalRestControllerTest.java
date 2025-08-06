@@ -93,7 +93,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         var request = new UpdateSlotRequestDTO().appId(dto.getAppId())
                 .productName("new-product-1")
                 .name(dto.getName())
-                .deprecated(dto.getDeprecated())
+                .deprecated(true)
                 .undeployed(dto.getUndeployed());
 
         given()
@@ -116,7 +116,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .then()
                 .statusCode(NO_CONTENT.getStatusCode());
 
-        dto = given()
+        var dto2 = given()
                 .auth().oauth2(getKeycloakClientToken("testClient"))
                 .contentType(APPLICATION_JSON)
                 .pathParam("id", "s1")
@@ -125,8 +125,10 @@ class SlotsInternalRestControllerTest extends AbstractTest {
                 .extract()
                 .body().as(SlotDTO.class);
 
-        assertThat(dto).isNotNull();
-        assertThat(dto.getProductName()).isEqualTo(request.getProductName());
+        assertThat(dto2).isNotNull();
+        assertThat(dto2.getDeprecated()).isEqualTo(dto.getDeprecated());
+        assertThat(dto2.getOperator()).isEqualTo(dto.getOperator());
+        assertThat(dto2.getProductName()).isEqualTo(request.getProductName());
 
     }
 
