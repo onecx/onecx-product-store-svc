@@ -35,9 +35,9 @@ public interface SlotMapper {
     @Mapping(target = "creationUser", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "controlTraceabilityManual", ignore = true)
-    @Mapping(target = "operator", constant = "false")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
-    @Mapping(target = "deprecated", qualifiedByName = "deprecated")
+    @Mapping(target = "deprecated", ignore = true)
+    @Mapping(target = "operator", ignore = true)
     void update(UpdateSlotRequestDTO dto, @MappingTarget Slot data);
 
     SlotSearchCriteria map(SlotSearchCriteriaDTO dto);
