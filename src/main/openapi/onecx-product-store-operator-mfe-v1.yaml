@@ -132,6 +132,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UpdateMfeUIEndpointRequest"
+        hasParameter:
+          type: boolean
     UpdateMfeUIEndpointRequest:
       required:
         - path
