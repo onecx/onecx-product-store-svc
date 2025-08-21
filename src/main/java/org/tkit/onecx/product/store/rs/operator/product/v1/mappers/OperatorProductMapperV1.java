@@ -29,6 +29,7 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "set-multitenancy")
     Product create(UpdateProductRequestPDTOv1 dto);
 
     @Mapping(target = "productClassifications", ignore = true)
@@ -44,7 +45,17 @@ public interface OperatorProductMapperV1 {
     @Mapping(target = "operator", constant = "true")
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "set-multitenancy")
     void update(@MappingTarget Product product, UpdateProductRequestPDTOv1 dto);
+
+    @Named("set-multitenancy")
+    @SuppressWarnings("java:S2447")
+    default Boolean setMultitenancy(Boolean value) {
+        if (value == null || value) {
+            return null;
+        }
+        return false;
+    }
 
     @Named("undeployed")
     @SuppressWarnings("java:S2447")
