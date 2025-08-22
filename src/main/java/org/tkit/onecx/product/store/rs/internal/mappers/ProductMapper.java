@@ -43,6 +43,7 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "set-multitenancy")
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     Product create(CreateProductRequestDTO dto);
 
@@ -57,6 +58,7 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "operator", constant = "false")
     @Mapping(target = "undeployed", qualifiedByName = "undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "set-multitenancy")
     @Mapping(target = "classifications", qualifiedByName = "updateList")
     void update(UpdateProductRequestDTO dto, @MappingTarget Product product);
 
@@ -66,12 +68,31 @@ public interface ProductMapper {
     @Mapping(target = "applications", ignore = true)
     @Mapping(target = "removeApplicationsItem", ignore = true)
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "get-multitenancy")
     @Mapping(target = "classifications", ignore = true)
     ProductAbstractDTO mapProductAbstract(Product data);
 
     @Mapping(target = "undeployed", qualifiedByName = "get-undeployed")
+    @Mapping(target = "multitenancy", qualifiedByName = "get-multitenancy")
     @Mapping(target = "classifications", qualifiedByName = "toString")
     ProductDTO map(Product data);
+
+    @Named("get-multitenancy")
+    default Boolean getMultitenancy(Boolean value) {
+        if (value == null) {
+            return true;
+        }
+        return value;
+    }
+
+    @Named("set-multitenancy")
+    @SuppressWarnings("java:S2447")
+    default Boolean setMultitenancy(Boolean value) {
+        if (value == null || value) {
+            return null;
+        }
+        return false;
+    }
 
     @Named("get-undeployed")
     default Boolean getUndeployed(Boolean value) {

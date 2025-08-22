@@ -62,4 +62,7 @@ public class Product extends TraceableEntity {
 
     @Column(name = "PROVIDER")
     private String provider;
+
+    @Column(name = "MULTITENANCY")
+    private Boolean multitenancy;
 }

@@ -106,3 +106,5 @@ components:
           type: boolean
         provider:
           type: string
+        multitenancy:
+          type: boolean
