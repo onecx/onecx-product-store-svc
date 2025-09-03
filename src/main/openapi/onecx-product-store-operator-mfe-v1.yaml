@@ -2,11 +2,13 @@
 openapi: 3.0.3
 info:
   title: onecx-product-store mfe operator service
+  description: This API provides endpoints for the onecx-product-store-operator to manage Microfrontends
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store:8080"
 tags:
   - name: operatorMfe
+    description: Managing Microfrontends
 paths:
   /operator/mfe/v1/{productName}/{appId}:
     put:
@@ -14,7 +16,7 @@ paths:
         - oauth2: [ ocx-ps-mfe:write ]
       tags:
         - operatorMfe
-      description: Creates or updates a product micro-frontend.
+      description: Creates or updates a microfrontend of a product by product name and appId of the microfrontend
       operationId: createOrUpdateMfe
       parameters:
         - name: productName
@@ -37,9 +39,9 @@ paths:
               $ref: '#/components/schemas/UpdateMfeRequest'
       responses:
         "201":
-          description: Create new micro-frontend
+          description: Microfrontend created successfully
         "204":
-          description: Update existing micro-frontend
+          description: Microfrontend updated successfully
         "400":
           description: Bad request
           content:

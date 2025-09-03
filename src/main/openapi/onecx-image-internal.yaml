@@ -1,12 +1,14 @@
 ---
 openapi: 3.0.3
 info:
-  title: onecx-product-store image import from file during the start of the application
+  title: onecx-product-store internal image service
+  description: This API provides endpoints to manage product-store images
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store-svc:8080"
 tags:
   - name: imagesInternal
+    description: Managing Images
 paths:
   /internal/images/{refId}/{refType}:
     post:
@@ -14,7 +16,7 @@ paths:
         - oauth2: [ ocx-ps:all, ocx-ps:write ]
       tags:
         - imagesInternal
-      description: Upload Images
+      description: Upload an image by its reference id and type
       parameters:
         - in: header
           name: Content-Length
@@ -43,7 +45,7 @@ paths:
               format: binary
       responses:
         "201":
-          description: CREATED
+          description: Image uploaded successfully
           content:
             application/json:
               schema:
@@ -55,7 +57,7 @@ paths:
         - oauth2: [ ocx-ps:all, ocx-ps:read ]
       tags:
         - imagesInternal
-      description: Get Image by id
+      description: Get an image by its reference id and type
       operationId: getImage
       parameters:
         - name: refId
@@ -70,7 +72,7 @@ paths:
             $ref: "#/components/schemas/RefType"
       responses:
         "200":
-          description: OK
+          description: Image retrieved successfully
           content:
             image/*:
               schema:
@@ -87,7 +89,7 @@ paths:
         - oauth2: [ ocx-ps:all, ocx-ps:delete ]
       tags:
         - imagesInternal
-      description: delete Image
+      description: Delete an image by its reference id and type
       operationId: deleteImage
       parameters:
         - name: refId
@@ -102,7 +104,7 @@ paths:
             $ref: "#/components/schemas/RefType"
       responses:
         "200":
-          description: OK
+          description: Image deleted successfully
           content:
             application/json:
               schema:

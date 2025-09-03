@@ -2,11 +2,13 @@
 openapi: 3.0.3
 info:
   title: onecx-product-store product operator service
+  description: This API provides endpoints for the onecx-product-store-operator to manage Products
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store:8080"
 tags:
   - name: operatorProduct
+    description: Managing Products
 paths:
   /operator/product/v1/update/{name}:
     put:
@@ -14,7 +16,7 @@ paths:
         - oauth2: [ ocx-ps-product:write ]
       tags:
         - operatorProduct
-      description: Creates or updates a product registration.
+      description: Creates or updates a product by its name
       operationId: createOrUpdateProduct
       parameters:
         - name: name
@@ -31,9 +33,9 @@ paths:
               $ref: '#/components/schemas/UpdateProductRequest'
       responses:
         "201":
-          description: Create new product
+          description: Product created successfully
         "204":
-          description: Update existing product
+          description: Product updated successfully
         "400":
           description: Bad request
           content:
