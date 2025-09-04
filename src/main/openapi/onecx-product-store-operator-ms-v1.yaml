@@ -2,11 +2,13 @@
 openapi: 3.0.3
 info:
   title: onecx-product-store ms operator service
+  description: This API provides endpoints for the onecx-product-store-operator to manage Microservices
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store:8080"
 tags:
   - name: operatorMs
+    description: Managing Microservices
 paths:
   /operator/ms/v1/{productName}/{appId}:
     put:
@@ -14,7 +16,7 @@ paths:
         - oauth2: [ ocx-ps-ms:write ]
       tags:
         - operatorMs
-      description: Creates or updates a product micro-service.
+      description: Creates or updates a microservice of a product by product name and appId of the microfrontend
       operationId: createOrUpdateMs
       parameters:
         - name: productName
@@ -37,9 +39,9 @@ paths:
               $ref: '#/components/schemas/UpdateMsRequest'
       responses:
         "201":
-          description: Create new micro-service
+          description: Microservice created successfully
         "204":
-          description: Update existing micro-service
+          description: Microservice updated successfully
         "400":
           description: Bad request
           content:

@@ -2,6 +2,7 @@
 openapi: 3.0.3
 info:
   title: onecx-product-store external service
+  description: This API provides endpoints to retrieve Products and Images
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store:8080"
@@ -14,7 +15,7 @@ paths:
         - oauth2: [ ocx-ps:read ]
       tags:
         - products
-      description: Get product by name
+      description: Get a product by its name
       operationId: getProductByName
       parameters:
         - name: name
@@ -24,7 +25,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Corresponding product
+          description: Product retrieved successfully
           content:
             application/json:
               schema:
@@ -37,7 +38,7 @@ paths:
         - oauth2: [ ocx-ps:read ]
       tags:
         - products
-      description: load products by criteria
+      description: Load products by criteria
       operationId: loadProductsByCriteria
       requestBody:
         content:
@@ -46,7 +47,7 @@ paths:
              $ref: '#/components/schemas/ProductItemLoadSearchCriteria'
       responses:
         "200":
-          description: Page result matching given criteria
+          description: Product search results retrieved successfully
           content:
             application/json:
               schema:
@@ -59,7 +60,7 @@ paths:
         - oauth2: [ ocx-ps:read ]
       tags:
         - products
-      description: load products and microfrontends by names (shell request)
+      description: Load products and microfrontends by names for onecx-shell requests only
       operationId: loadProductsByNames
       requestBody:
         content:
@@ -68,7 +69,7 @@ paths:
               $ref: '#/components/schemas/LoadProductRequest'
       responses:
         "200":
-          description: Result matching given request
+          description: Product search results for shell retrieved successfully
           content:
             application/json:
               schema:
@@ -91,7 +92,7 @@ paths:
               $ref: '#/components/schemas/ProductItemSearchCriteria'
       responses:
         "200":
-          description: Corresponding products
+          description: Product search results retrieved successfully
           content:
             application/json:
               schema:
@@ -108,7 +109,7 @@ paths:
         - oauth2: [ ocx-ps:read ]
       tags:
         - images
-      description: Get Image by id
+      description: Get an Logo by its reference id
       operationId: getProductLogo
       parameters:
         - name: refId
@@ -118,7 +119,7 @@ paths:
             type: string
       responses:
         "200":
-          description: OK
+          description: Product logo retrieved successfully
           content:
             image/*:
               schema:

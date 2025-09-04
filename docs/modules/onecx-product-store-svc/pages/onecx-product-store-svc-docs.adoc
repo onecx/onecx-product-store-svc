@@ -52,12 +52,14 @@ app:
   db:
     enabled: true
   operator:
-    keycloak:
-      client:
-        enabled: true
-        spec:
-          kcConfig:
-            defaultClientScopes: [ ocx-tn:read ]
+    microservice:
+      spec:
+        description: OneCX Product Store Backend Service
+        name: OneCX Product Store SVC
+
+----
+
+
     microservice:
       spec:
         description: OneCX Product Store Backend Service

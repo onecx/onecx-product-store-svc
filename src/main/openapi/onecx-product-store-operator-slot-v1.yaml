@@ -2,11 +2,13 @@
 openapi: 3.0.3
 info:
   title: onecx-product-store slot operator service
+  description: This API provides endpoints for the onecx-product-store-operator to manage Slots
   version: 1.0.0
 servers:
   - url: "http://onecx-product-store-svc:8080"
 tags:
   - name: operatorSlot
+    description: Managing Slots
 paths:
   /operator/slot/v1/{productName}/{appId}:
     put:
@@ -14,7 +16,7 @@ paths:
         - oauth2: [ ocx-ps-slot:write ]
       tags:
         - operatorSlot
-      description: Creates or updates a product slot.
+      description: Creates or updates a slot of a product by the product name and an appId of a microfrontend
       operationId: createOrUpdateSlot
       parameters:
         - name: productName
@@ -37,9 +39,9 @@ paths:
               $ref: '#/components/schemas/UpdateSlotRequest'
       responses:
         "201":
-          description: Create new slot
+          description: Slot created successfully
         "204":
-          description: Update existing slot
+          description: Slot updated successfully
         "400":
           description: Bad request
           content:
