@@ -1,6 +1,6 @@
 # onecx-product-store-svc
 
-OneCx product store service 
+OneCX Product Store Service 
 
 Rest interfaces:
 
