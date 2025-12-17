@@ -22,7 +22,6 @@ public class ImagesRestControllerV1 implements ImagesApi {
     ImageDAO imageDAO;
 
     @Override
-    @Transactional
     public Response getProductLogo(String refId) {
         Image image = imageDAO.findByRefIdAndRefType(refId, RefTypeDTO.LOGO.toString());
         if (image == null) {
