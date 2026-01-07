@@ -1,3 +1,2 @@
-** xref:documentation:onecx-product-store-svc:index.adoc[Product Store Service]
-*** External API(s)
-**** xref:documentation:onecx-product-store-svc:openapi/onecx-product-store-v1.adoc[Product Store V1]
+** xref:documentation:onecx-product-store-svc:index.adoc[Backend Service]
+*** xref:documentation:onecx-product-store-svc:openapi/onecx-product-store-v1.adoc[OpenAPI v1]
