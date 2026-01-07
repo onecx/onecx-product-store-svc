@@ -142,16 +142,3 @@ h| Version
 
 
 |===
-
-| 
-| 
-| 0.34.0
-
-| tkit-quarkus-oidc-health
-
-| 
-| 
-| 2.40.0
-
-
-|===
