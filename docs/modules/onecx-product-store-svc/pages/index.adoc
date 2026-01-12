@@ -1,8 +1,7 @@
 include::onecx-product-store-svc-attributes.adoc[opts=optional]
 
-== onecx-product-store-svc
+= OneCX Product Store Backend Service
 
-include::docs.adoc[opts=optional]
 
 
 include::onecx-product-store-svc-docs.adoc[opts=optional]
