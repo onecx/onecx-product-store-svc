@@ -1069,6 +1069,8 @@ components:
           type: string
         deprecated:
           type: boolean
+        shareScope:
+          type: string
         undeployed:
           type: boolean
         type:
@@ -1187,6 +1189,8 @@ components:
         note:
           type: string
         exposedModule:
+          type: string
+        shareScope:
           type: string
         deprecated:
           type: boolean
@@ -1414,6 +1418,8 @@ components:
           type: string
         exposedModule:
           type: string
+        shareScope:
+          type: string
         deprecated:
           type: boolean
         undeployed:
@@ -1505,6 +1511,8 @@ components:
         note:
           type: string
         exposedModule:
+          type: string
+        shareScope:
           type: string
         deprecated:
           type: boolean

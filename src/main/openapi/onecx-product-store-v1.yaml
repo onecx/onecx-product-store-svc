@@ -220,6 +220,8 @@ components:
           type: string
         exposedModule:
           type: string
+        shareScope:
+          type: string
         technology:
           type: string
         remoteEntry:
@@ -308,6 +310,8 @@ components:
         note:
           type: string
         exposedModule:
+          type: string
+        shareScope:
           type: string
         deprecated:
           type: boolean
