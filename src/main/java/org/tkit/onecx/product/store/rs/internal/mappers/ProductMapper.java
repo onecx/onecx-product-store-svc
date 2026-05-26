@@ -150,6 +150,7 @@ public interface ProductMapper {
     @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductCriteriaDTO mapCriteriaLists(Stream<String> providers, Stream<String> classifications);
 
+    @Mapping(target = "multitenancy", ignore = true)
     @Mapping(target = "names", ignore = true)
     @Mapping(target = "providers", ignore = true)
     @Mapping(target = "classifications", ignore = true)
