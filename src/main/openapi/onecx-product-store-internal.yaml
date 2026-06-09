@@ -859,8 +859,6 @@ components:
           type: array
           items:
             type: string
-        multitenancy:
-          type: boolean
         pageNumber:
           format: int32
           description: The number of page.

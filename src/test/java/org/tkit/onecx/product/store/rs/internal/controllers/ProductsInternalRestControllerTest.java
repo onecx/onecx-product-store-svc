@@ -231,7 +231,6 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     void searchProducts_shouldReturnProductListFullAttributeCheck_whenSearchCriteriaMatches() {
         var criteria = new ProductSearchCriteriaDTO();
         criteria.setNames(List.of(("product1")));
-        criteria.setMultitenancy(true);
         criteria.setPageNumber(0);
         criteria.setPageSize(100);
 

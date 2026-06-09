@@ -50,10 +50,6 @@ public class ProductDAO extends AbstractDAO<Product> {
                         root.get(Product_.CLASSIFICATIONS).get(ProductClassification_.VALUE).in(criteria.getClassifications()));
             }
 
-            if (criteria.getMultitenancy() != null) {
-                predicates.add(root.get(Product_.MULTITENANCY).equalTo(criteria.getMultitenancy()));
-            }
-
             if (!predicates.isEmpty()) {
                 cq.where(cb.and(predicates.toArray(new Predicate[0])));
             }
