@@ -8,11 +8,14 @@ import java.util.stream.Stream;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Subquery;
 
 import org.tkit.onecx.product.store.domain.criteria.MicrofrontendSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.models.Microfrontend;
 import org.tkit.onecx.product.store.domain.models.Microfrontend_;
+import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.Product_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
 import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
@@ -32,6 +35,15 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
 
             QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.PRODUCT_NAME),
                     criteria.getProductName());
+
+            if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
+                Subquery<String> productQuery = cq.subquery(String.class);
+                var productRoot = productQuery.from(Product.class);
+                productQuery.select(productRoot.get(Product_.NAME))
+                        .where(QueryCriteriaUtil.createSearchStringPredicate(cb, productRoot.get(Product_.DISPLAY_NAME),
+                                criteria.getProductDisplayName()));
+                predicates.add(root.get(Microfrontend_.PRODUCT_NAME).in(productQuery));
+            }
 
             if (criteria.getAppName() != null && !criteria.getAppName().isEmpty()) {
                 predicates.add(cb.or(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),

@@ -39,8 +39,8 @@ public class ProductDAO extends AbstractDAO<Product> {
                             root.get(Product_.DISPLAY_NAME).in(criteria.getNames())));
                 }
             }
-            if (criteria.getProductNames() != null && !criteria.getProductNames().isEmpty()) {
-                predicates.add(root.get(Product_.name).in(criteria.getProductNames()));
+            if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
+                predicates.add(root.get(Product_.DISPLAY_NAME).in(criteria.getProductDisplayName()));
             }
             if (criteria.getProviders() != null && !criteria.getProviders().isEmpty()) {
                 predicates.add(root.get(Product_.provider).in(criteria.getProviders()));

@@ -19,6 +19,7 @@ import gen.org.tkit.onecx.product.store.rs.internal.model.*;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface ProductMapper {
 
+    @Mapping(target = "productDisplayName", ignore = true)
     @Mapping(target = "productNames", ignore = true)
     @Mapping(target = "names", source = "names", qualifiedByName = "cleanStringList")
     ProductSearchCriteria map(ProductSearchCriteriaDTO data);
@@ -150,6 +151,7 @@ public interface ProductMapper {
     @Mapping(target = "removeClassificationsItem", ignore = true)
     ProductCriteriaDTO mapCriteriaLists(Stream<String> providers, Stream<String> classifications);
 
+    @Mapping(target = "productDisplayName", ignore = true)
     @Mapping(target = "names", ignore = true)
     @Mapping(target = "providers", ignore = true)
     @Mapping(target = "classifications", ignore = true)
