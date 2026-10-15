@@ -221,5 +221,24 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(response).isNotNull();
         assertThat(response.getTotalElements()).isEqualTo(1);
         assertThat(response.getStream()).isNotNull().hasSize(1);
+
+        criteria = new SlotSearchCriteriaDTO();
+        criteria.productDisplayName("p1");
+
+        response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(SlotPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(1);
+        assertThat(response.getStream()).isNotNull().hasSize(1);
+        assertThat(response.getStream().get(0).getProductName()).isEqualTo("product1");
     }
 }

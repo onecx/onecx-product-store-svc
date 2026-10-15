@@ -10,9 +10,12 @@ import java.util.stream.Stream;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Subquery;
 
 import org.tkit.onecx.product.store.domain.criteria.ProductSearchCriteria;
 import org.tkit.onecx.product.store.domain.criteria.SlotSearchCriteria;
+import org.tkit.onecx.product.store.domain.models.Product;
+import org.tkit.onecx.product.store.domain.models.Product_;
 import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.onecx.product.store.domain.models.Slot_;
 import org.tkit.quarkus.jpa.daos.AbstractDAO;
@@ -20,6 +23,7 @@ import org.tkit.quarkus.jpa.daos.Page;
 import org.tkit.quarkus.jpa.daos.PageResult;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 import org.tkit.quarkus.jpa.models.AbstractTraceableEntity_;
+import org.tkit.quarkus.jpa.utils.QueryCriteriaUtil;
 
 @ApplicationScoped
 public class SlotDAO extends AbstractDAO<Slot> {
@@ -33,6 +37,14 @@ public class SlotDAO extends AbstractDAO<Slot> {
             List<Predicate> predicates = new ArrayList<>();
             addSearchStringPredicate(predicates, cb, root.get(Slot_.NAME), criteria.getName());
             addSearchStringPredicate(predicates, cb, root.get(Slot_.PRODUCT_NAME), criteria.getProductName());
+            if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
+                Subquery<String> productQuery = cq.subquery(String.class);
+                var productRoot = productQuery.from(Product.class);
+                productQuery.select(productRoot.get(Product_.NAME))
+                        .where(QueryCriteriaUtil.createSearchStringPredicate(cb, productRoot.get(Product_.DISPLAY_NAME),
+                                criteria.getProductDisplayName()));
+                predicates.add(root.get(Slot_.PRODUCT_NAME).in(productQuery));
+            }
             addSearchStringPredicate(predicates, cb, root.get(Slot_.APP_ID), criteria.getAppId());
             if (!predicates.isEmpty()) {
                 cq.where(predicates.toArray(new Predicate[] {}));
