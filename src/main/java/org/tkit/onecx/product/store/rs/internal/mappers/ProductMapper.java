@@ -19,7 +19,6 @@ import gen.org.tkit.onecx.product.store.rs.internal.model.*;
 @Mapper(uses = { OffsetDateTimeMapper.class })
 public interface ProductMapper {
 
-    @Mapping(target = "productDisplayName", ignore = true)
     @Mapping(target = "productNames", ignore = true)
     @Mapping(target = "names", source = "names", qualifiedByName = "cleanStringList")
     ProductSearchCriteria map(ProductSearchCriteriaDTO data);

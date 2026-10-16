@@ -135,4 +135,11 @@ h| Version
 | 3.33.3.1
 
 
+| tkit-quarkus-oidc-health
+
+| 
+| 
+| 5.1.0
+
+
 |===

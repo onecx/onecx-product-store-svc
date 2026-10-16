@@ -412,6 +412,53 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response2.getStream()).isNotNull().hasSize(3);
     }
 
+    @Test
+    void searchMicrofrontends_withProductDisplayName_shouldReturnMatchingMicrofrontends() {
+        var criteria = new MicrofrontendSearchCriteriaDTO();
+        criteria.setProductDisplayName("p1");
+        criteria.setPageNumber(0);
+        criteria.setPageSize(100);
+
+        var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(1);
+        assertThat(response.getStream()).isNotNull().hasSize(1);
+        assertThat(response.getStream().get(0).getProductName()).isEqualTo("product1");
+    }
+
+    @Test
+    void searchMicrofrontends_withEmptyProductDisplayName_shouldReturnAllMicrofrontends() {
+        var criteria = new MicrofrontendSearchCriteriaDTO();
+        criteria.setProductDisplayName("");
+        criteria.setPageNumber(0);
+        criteria.setPageSize(100);
+
+        var response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(3);
+        assertThat(response.getStream()).isNotNull().hasSize(3);
+    }
+
     /**
      * Scenario: Search request with matching criteria results into response with a single microfrontend (mfe) in list matching
      * the

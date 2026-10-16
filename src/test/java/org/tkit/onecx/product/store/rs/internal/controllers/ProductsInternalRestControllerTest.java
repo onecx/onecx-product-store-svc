@@ -412,6 +412,53 @@ class ProductsInternalRestControllerTest extends AbstractTest {
     }
 
     @Test
+    void searchProductsWithProductDisplayName_shouldReturnMatchingProducts() {
+        var criteriaDTO = new ProductSearchCriteriaDTO();
+        criteriaDTO.setProductDisplayName("p1");
+        criteriaDTO.setPageNumber(0);
+        criteriaDTO.setPageSize(100);
+
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(1);
+        assertThat(data.getStream()).isNotNull().hasSize(1);
+        assertThat(data.getStream().get(0).getName()).isEqualTo("product1");
+    }
+
+    @Test
+    void searchProductsWithEmptyProductDisplayName_shouldReturnAllProducts() {
+        var criteriaDTO = new ProductSearchCriteriaDTO();
+        criteriaDTO.setProductDisplayName("");
+        criteriaDTO.setPageNumber(0);
+        criteriaDTO.setPageSize(100);
+
+        var data = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaDTO)
+                .post("/internal/products/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(ProductPageResultDTO.class);
+
+        assertThat(data).isNotNull();
+        assertThat(data.getTotalElements()).isEqualTo(3);
+        assertThat(data.getStream()).isNotNull().hasSize(3);
+    }
+
+    @Test
     void updateProductTest() {
         var updateDto = new UpdateProductRequestDTO();
         updateDto.setName("test01");
