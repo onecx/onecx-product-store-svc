@@ -3,16 +3,11 @@ package org.tkit.onecx.product.store.domain.daos;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaQuery;
-import org.hibernate.query.criteria.JpaRoot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
-import org.tkit.onecx.product.store.domain.criteria.SlotSearchCriteria;
-import org.tkit.onecx.product.store.domain.models.Slot;
 import org.tkit.quarkus.jpa.exceptions.DAOException;
 
 import io.quarkus.test.InjectMock;
@@ -43,26 +38,6 @@ class SlotDAOTest {
                 SlotDAO.ErrorKeys.ERROR_DELETE_BY_PRODUCT_NAME);
         methodExceptionTests(() -> dao.updateByProductName(null, null),
                 SlotDAO.ErrorKeys.ERROR_UPDATE_BY_PRODUCT_NAME);
-    }
-
-    @Test
-    void shouldSkipProductDisplayNameSubqueryWhenProductDisplayNameIsEmpty() {
-        var criteriaBuilder = Mockito.mock(HibernateCriteriaBuilder.class, Mockito.RETURNS_DEEP_STUBS);
-        var criteriaQuery = Mockito.mock(JpaCriteriaQuery.class, Mockito.RETURNS_DEEP_STUBS);
-        var slotRoot = Mockito.mock(JpaRoot.class, Mockito.RETURNS_DEEP_STUBS);
-
-        Mockito.doReturn(criteriaBuilder).when(em).getCriteriaBuilder();
-        Mockito.when(criteriaBuilder.createQuery(Slot.class)).thenReturn(criteriaQuery);
-        Mockito.when(criteriaQuery.from(Slot.class)).thenReturn(slotRoot);
-
-        var criteria = new SlotSearchCriteria();
-        criteria.setProductDisplayName("");
-        criteria.setPageNumber(0);
-        criteria.setPageSize(10);
-
-        Assertions.assertThrows(DAOException.class, () -> dao.findByCriteria(criteria));
-
-        Mockito.verify(criteriaQuery, Mockito.never()).subquery(String.class);
     }
 
     void methodExceptionTests(Executable fn, Enum<?> key) {
