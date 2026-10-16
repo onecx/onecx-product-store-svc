@@ -377,6 +377,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
     @Test
     void searchMicrofrontends_missing_and_blank_criteria_Test() {
+        // Scenario: Blank app and product name values - treat them as missing criteria and return all MFEs
         var criteriaBlank = new MicrofrontendSearchCriteriaDTO();
         criteriaBlank.setAppName("");
         criteriaBlank.setProductName("");
@@ -395,6 +396,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response).isNotNull();
         assertThat(response.getStream()).isNotNull().hasSize(3);
 
+        // Scenario: Missing criteria object - return all MFEs
         var criteriaMissing = new MicrofrontendSearchCriteriaDTO();
 
         var response2 = given()
@@ -410,6 +412,26 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
 
         assertThat(response2).isNotNull();
         assertThat(response2.getStream()).isNotNull().hasSize(3);
+
+        // Scenario: Empty product display name - still return all MFEs
+        var criteriaBlankDisplayName = new MicrofrontendSearchCriteriaDTO();
+        criteriaBlankDisplayName.setProductDisplayName("");
+        criteriaBlankDisplayName.setPageNumber(0);
+        criteriaBlankDisplayName.setPageSize(100);
+
+        var response3 = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaBlankDisplayName)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(response3).isNotNull();
+        assertThat(response3.getStream()).isNotNull().hasSize(3);
     }
 
     /**
@@ -424,7 +446,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
     @Test
     void searchMicrofrontends_shouldReturnMicrofrontendListWithSingleElement_whenSearchCriteriaDoesMatch() {
 
-        // 3 matching search criteria
+        // Scenario: Three matching search criteria - return the single matching MFE
         var criteria = new MicrofrontendSearchCriteriaDTO();
         criteria.setProductName("product1");
         criteria.setAppName("mfe1");
@@ -446,7 +468,7 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getTotalElements()).isEqualTo(1);
         assertThat(response.getStream()).isNotNull().hasSize(1);
 
-        // single matching search criteria
+        // Scenario: Single matching app name - still return the one matching MFE
         var criteria2 = new MicrofrontendSearchCriteriaDTO();
         criteria2.setAppName("mfe1");
 
@@ -465,7 +487,29 @@ class MicrofrontendsInternalRestControllerTest extends AbstractTest {
         assertThat(response2.getTotalElements()).isEqualTo(1);
         assertThat(response2.getStream()).isNotNull().hasSize(1);
 
-        // 2 matching search criteria
+        // Scenario: Search by product display name - return the MFE linked to that product
+        var criteriaByDisplayName = new MicrofrontendSearchCriteriaDTO();
+        criteriaByDisplayName.setProductDisplayName("p1");
+        criteriaByDisplayName.setPageNumber(0);
+        criteriaByDisplayName.setPageSize(100);
+
+        var responseByDisplayName = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteriaByDisplayName)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(MicrofrontendPageResultDTO.class);
+
+        assertThat(responseByDisplayName).isNotNull();
+        assertThat(responseByDisplayName.getTotalElements()).isEqualTo(1);
+        assertThat(responseByDisplayName.getStream()).isNotNull().hasSize(1);
+        assertThat(responseByDisplayName.getStream().get(0).getProductName()).isEqualTo("product1");
+
+        // Scenario: Two matching search criteria - keep returning the same single MFE
         var criteria3 = new MicrofrontendSearchCriteriaDTO();
         criteria3.setAppName("mfe1");
         criteria.setProductName("product1");

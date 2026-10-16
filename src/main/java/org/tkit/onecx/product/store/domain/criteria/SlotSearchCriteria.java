@@ -15,6 +15,8 @@ public class SlotSearchCriteria {
 
     private String productName;
 
+    private String productDisplayName;
+
     private Integer pageNumber;
 
     private Integer pageSize;

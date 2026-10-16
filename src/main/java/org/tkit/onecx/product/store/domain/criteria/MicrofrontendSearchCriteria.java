@@ -15,6 +15,8 @@ public class MicrofrontendSearchCriteria {
 
     private String productName;
 
+    private String productDisplayName;
+
     private Integer pageNumber;
 
     private Integer pageSize;

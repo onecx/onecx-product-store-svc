@@ -171,6 +171,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
 
     @Test
     void searchMSlotTest() {
+        // Scenario: No criteria provided - return all available slots
         var criteria = new SlotSearchCriteriaDTO();
 
         var response = given()
@@ -188,6 +189,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getTotalElements()).isEqualTo(3);
         assertThat(response.getStream()).isNotNull().hasSize(3);
 
+        // Scenario: Unknown app id - return no slots
         criteria.appId("notExisting");
 
         response = given()
@@ -205,6 +207,7 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getTotalElements()).isZero();
         assertThat(response.getStream()).isNotNull().isEmpty();
 
+        // Scenario: Matching app id, product name, and slot name - return the single slot
         criteria.productName("product1").appId("a1").name("slot1");
 
         response = given()
@@ -221,5 +224,44 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(response).isNotNull();
         assertThat(response.getTotalElements()).isEqualTo(1);
         assertThat(response.getStream()).isNotNull().hasSize(1);
+
+        // Scenario: Search by product display name - return the slot linked to that product
+        criteria = new SlotSearchCriteriaDTO();
+        criteria.productDisplayName("p1");
+
+        response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(SlotPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(1);
+        assertThat(response.getStream()).isNotNull().hasSize(1);
+        assertThat(response.getStream().get(0).getProductName()).isEqualTo("product1");
+
+        // Scenario: Empty product display name - treat it as no filtering and return all slots
+        criteria = new SlotSearchCriteriaDTO();
+        criteria.productDisplayName("");
+
+        response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(SlotPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(3);
+        assertThat(response.getStream()).isNotNull().hasSize(3);
     }
 }
