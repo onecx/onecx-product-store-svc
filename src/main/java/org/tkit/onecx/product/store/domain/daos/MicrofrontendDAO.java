@@ -38,7 +38,6 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
                 productPredicates.add(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.PRODUCT_NAME),
                         criteria.getProductName()));
             }
-
             if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
                 Subquery<String> productQuery = cq.subquery(String.class);
                 var productRoot = productQuery.from(Product.class);
@@ -47,18 +46,15 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
                                 criteria.getProductDisplayName()));
                 productPredicates.add(root.get(Microfrontend_.PRODUCT_NAME).in(productQuery));
             }
-
             if (!productPredicates.isEmpty()) {
                 predicates.add(cb.or(productPredicates.toArray(new Predicate[0])));
             }
-
             if (criteria.getAppName() != null && !criteria.getAppName().isEmpty()) {
                 predicates.add(cb.or(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),
                         criteria.getAppName()),
                         QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
                                 criteria.getAppName())));
             }
-
             if (criteria.getType() != null) {
                 predicates.add(cb.equal(root.get(Microfrontend_.TYPE), criteria.getType().toString()));
             }

@@ -225,6 +225,26 @@ class SlotsInternalRestControllerTest extends AbstractTest {
         assertThat(response.getTotalElements()).isEqualTo(1);
         assertThat(response.getStream()).isNotNull().hasSize(1);
 
+        // Scenario: Empty product name should be ignored and not filter by productName
+        criteria = new SlotSearchCriteriaDTO();
+        criteria.productName("")
+                .name("slot1");
+
+        response = given()
+                .auth().oauth2(getKeycloakClientToken("testClient"))
+                .contentType(APPLICATION_JSON)
+                .body(criteria)
+                .post("/search")
+                .then()
+                .statusCode(OK.getStatusCode())
+                .contentType(APPLICATION_JSON)
+                .extract()
+                .as(SlotPageResultDTO.class);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getTotalElements()).isEqualTo(2);
+        assertThat(response.getStream()).isNotNull().hasSize(2);
+
         // Scenario: Search by product display name - return the slot linked to that product
         criteria = new SlotSearchCriteriaDTO();
         criteria.productDisplayName("p1");
