@@ -19,8 +19,6 @@ public class ProductSearchCriteria {
 
     private List<String> classifications;
 
-    private String productDisplayName;
-
     private Integer pageNumber;
 
     private Integer pageSize;

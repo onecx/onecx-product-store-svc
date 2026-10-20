@@ -326,28 +326,6 @@ class ProductsInternalRestControllerTest extends AbstractTest {
         assertThat(data).isNotNull();
         assertThat(data.getTotalElements()).isEqualTo(1);
         assertThat(data.getStream().get(0).getClassifications()).isNotBlank().isNotNull();
-
-        // Scenario: search by product display name - return the matching product
-        var criteriaByDisplayName = new ProductSearchCriteriaDTO();
-        criteriaByDisplayName.setProductDisplayName("p1");
-        criteriaByDisplayName.setPageNumber(0);
-        criteriaByDisplayName.setPageSize(100);
-
-        data = given()
-                .auth().oauth2(getKeycloakClientToken("testClient"))
-                .contentType(APPLICATION_JSON)
-                .body(criteriaByDisplayName)
-                .post("/internal/products/search")
-                .then()
-                .statusCode(OK.getStatusCode())
-                .contentType(APPLICATION_JSON)
-                .extract()
-                .as(ProductPageResultDTO.class);
-
-        assertThat(data).isNotNull();
-        assertThat(data.getTotalElements()).isEqualTo(1);
-        assertThat(data.getStream()).isNotNull().hasSize(1);
-        assertThat(data.getStream().get(0).getName()).isEqualTo("product1");
     }
 
     @Test
@@ -436,25 +414,6 @@ class ProductsInternalRestControllerTest extends AbstractTest {
 
         assertThat(data2).isNotNull();
         assertThat(data2.getStream()).hasSize(3);
-
-        // Scenario: Empty product display name - still return all products
-        ProductSearchCriteriaDTO criteriaDTO3 = new ProductSearchCriteriaDTO();
-        criteriaDTO3.setProductDisplayName("");
-        criteriaDTO3.setPageNumber(0);
-        criteriaDTO3.setPageSize(100);
-        var data3 = given()
-                .auth().oauth2(getKeycloakClientToken("testClient"))
-                .contentType(APPLICATION_JSON)
-                .body(criteriaDTO3)
-                .post("/internal/products/search")
-                .then()
-                .statusCode(OK.getStatusCode())
-                .contentType(APPLICATION_JSON)
-                .extract()
-                .as(ProductPageResultDTO.class);
-
-        assertThat(data3).isNotNull();
-        assertThat(data3.getStream()).hasSize(3);
     }
 
     @Test
