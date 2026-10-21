@@ -35,17 +35,26 @@ public class SlotDAO extends AbstractDAO<Slot> {
             var root = cq.from(Slot.class);
 
             List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> productPredicates = new ArrayList<>();
+
             addSearchStringPredicate(predicates, cb, root.get(Slot_.NAME), criteria.getName());
-            addSearchStringPredicate(predicates, cb, root.get(Slot_.PRODUCT_NAME), criteria.getProductName());
+            addSearchStringPredicate(predicates, cb, root.get(Slot_.APP_ID), criteria.getAppId());
+
+            if (criteria.getProductName() != null && !criteria.getProductName().isEmpty()) {
+                productPredicates.add(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Slot_.PRODUCT_NAME),
+                        criteria.getProductName()));
+            }
             if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
                 Subquery<String> productQuery = cq.subquery(String.class);
                 var productRoot = productQuery.from(Product.class);
                 productQuery.select(productRoot.get(Product_.NAME))
                         .where(QueryCriteriaUtil.createSearchStringPredicate(cb, productRoot.get(Product_.DISPLAY_NAME),
                                 criteria.getProductDisplayName()));
-                predicates.add(root.get(Slot_.PRODUCT_NAME).in(productQuery));
+                productPredicates.add(root.get(Slot_.PRODUCT_NAME).in(productQuery));
             }
-            addSearchStringPredicate(predicates, cb, root.get(Slot_.APP_ID), criteria.getAppId());
+            if (!productPredicates.isEmpty()) {
+                predicates.add(cb.or(productPredicates.toArray(new Predicate[0])));
+            }
             if (!predicates.isEmpty()) {
                 cq.where(predicates.toArray(new Predicate[] {}));
             }

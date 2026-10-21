@@ -29,7 +29,6 @@ public class ProductDAO extends AbstractDAO<Product> {
             List<Predicate> predicates = new ArrayList<>();
             addProductNamesPredicates(criteria, cb, root, predicates);
             addNamesPredicates(criteria, cb, root, predicates);
-            addProductDisplayNamePredicate(criteria, cb, root, predicates);
             addProvidersPredicate(criteria, root, predicates);
             addClassificationsPredicate(criteria, root, predicates);
 
@@ -72,14 +71,6 @@ public class ProductDAO extends AbstractDAO<Product> {
 
         predicates.add(cb.or(root.get(Product_.NAME).in(criteria.getNames()),
                 root.get(Product_.DISPLAY_NAME).in(criteria.getNames())));
-    }
-
-    private void addProductDisplayNamePredicate(ProductSearchCriteria criteria, jakarta.persistence.criteria.CriteriaBuilder cb,
-            jakarta.persistence.criteria.Root<Product> root, List<Predicate> predicates) {
-        if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
-            predicates.add(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Product_.DISPLAY_NAME),
-                    criteria.getProductDisplayName()));
-        }
     }
 
     private void addProvidersPredicate(ProductSearchCriteria criteria, jakarta.persistence.criteria.Root<Product> root,

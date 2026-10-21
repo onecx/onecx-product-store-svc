@@ -32,26 +32,29 @@ public class MicrofrontendDAO extends AbstractDAO<Microfrontend> {
             var cq = cb.createQuery(Microfrontend.class);
             var root = cq.from(Microfrontend.class);
             List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> productPredicates = new ArrayList<>();
 
-            QueryCriteriaUtil.addSearchStringPredicate(predicates, cb, root.get(Microfrontend_.PRODUCT_NAME),
-                    criteria.getProductName());
-
+            if (criteria.getProductName() != null && !criteria.getProductName().isEmpty()) {
+                productPredicates.add(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.PRODUCT_NAME),
+                        criteria.getProductName()));
+            }
             if (criteria.getProductDisplayName() != null && !criteria.getProductDisplayName().isEmpty()) {
                 Subquery<String> productQuery = cq.subquery(String.class);
                 var productRoot = productQuery.from(Product.class);
                 productQuery.select(productRoot.get(Product_.NAME))
                         .where(QueryCriteriaUtil.createSearchStringPredicate(cb, productRoot.get(Product_.DISPLAY_NAME),
                                 criteria.getProductDisplayName()));
-                predicates.add(root.get(Microfrontend_.PRODUCT_NAME).in(productQuery));
+                productPredicates.add(root.get(Microfrontend_.PRODUCT_NAME).in(productQuery));
             }
-
+            if (!productPredicates.isEmpty()) {
+                predicates.add(cb.or(productPredicates.toArray(new Predicate[0])));
+            }
             if (criteria.getAppName() != null && !criteria.getAppName().isEmpty()) {
                 predicates.add(cb.or(QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_NAME),
                         criteria.getAppName()),
                         QueryCriteriaUtil.createSearchStringPredicate(cb, root.get(Microfrontend_.APP_ID),
                                 criteria.getAppName())));
             }
-
             if (criteria.getType() != null) {
                 predicates.add(cb.equal(root.get(Microfrontend_.TYPE), criteria.getType().toString()));
             }
