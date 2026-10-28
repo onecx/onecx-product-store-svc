@@ -17,7 +17,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(OperatorMfeRestControllerV1.class)
-@WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-operator-mfe.xml", deleteBeforeInsert = true, rinseAndRepeat = true)
 @GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps-mfe:write" })
 class OperatorMfeRestControllerV1Test extends AbstractTest {
 

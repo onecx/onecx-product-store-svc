@@ -16,7 +16,7 @@ import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 @TestHTTPEndpoint(ImagesRestControllerV1.class)
-@WithDBData(value = "data/test-v1.xml", deleteBeforeInsert = true, deleteAfterTest = true, rinseAndRepeat = true)
+@WithDBData(value = "data/test-v1.xml", deleteBeforeInsert = true, rinseAndRepeat = true)
 @GenerateKeycloakClient(clientName = "testClient", scopes = { "ocx-ps:read" })
 class ImagesRestControllerV1Test extends AbstractTest {
     private static final String MEDIA_TYPE_IMAGE_PNG = "image/png";
